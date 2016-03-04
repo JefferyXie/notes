@@ -1,0 +1,24 @@
+./protoc.exe --proto_path=G:/MyCodes/Java/bootservice/src/main/java/proto 
+	--java_out=G:/MyCodes/Java/bootservice/src/main/java/ 
+	G:/MyCodes/Java/bootservice/src/main/java/proto/securities.proto
+
+	https://developers.google.com/protocol-buffers/docs/reference/java-generated
+	http://www.javacodegeeks.com/2012/06/google-protocol-buffers-in-java.html
+	http://www.indelible.org/ink/protobuf-polymorphism/
+	https://developers.google.com/protocol-buffers/docs/javatutorial
+	
+I have this script 
+https://msstash.morningstar.com/projects/DO/repos/serversite/browse/Common/CalculationService/update-protogen.bat <https://msstash.morningstar.com/projects/DO/repos/serversite/browse/Common/CalculationService/update-protogen.bat>  
+that calls protoc then protogen (because protoc cannot write c#)
+http://www.cnblogs.com/shitouer/archive/2013/04/10/google-protocol-buffers-tutorial.html
+http://simplestcodings.blogspot.com/2010/11/serialization-using-google-protobuf.html
+
+https://mswiki.morningstar.com/pages/viewpage.action?pageId=166922779
+memcached
+libcurl
+https://www.hackthissite.org/articles/read/1078
+
+http://stackoverflow.com/questions/1160081/why-is-an-array-not-assignable-to-iterable
+
++review CR-DO @fchen2 @sxu
+

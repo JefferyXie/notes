@@ -1,0 +1,52 @@
+------------------------------------------------------------------------------------
+Download ViSimulator for Notepad++
+https://web.archive.org/web/20150515145616/http://www.visimulator.com/download.html
+Copy the .dll file to the plugins folder of Notepad++:
+	C://Program(x86)/notepad++/plugins
+
+------------------------------------------------------------------------------------
+async/await
+ConfigureAwait(true), ConfigureAwait(false)
+
+------------------------------------------------------------------------------------
+AppDomain
+https://msdn.microsoft.com/en-us/library/system.appdomain.aspx
+Application domains, which are represented by AppDomain objects, help provide isolation, unloading, 
+and security boundaries for executing managed code.
+1) Use application domains to isolate tasks that might bring down a process. If the state of the 
+AppDomain that's executing a task becomes unstable, the AppDomain can be unloaded without affecting 
+the process. This is important when a process must run for long periods without restarting. You can 
+also use application domains to isolate tasks that should not share data.
+
+2) If an assembly is loaded into the default application domain, it cannot be unloaded from memory 
+while the process is running. However, if you open a second application domain to load and execute 
+the assembly, the assembly is unloaded when that application domain is unloaded. Use this technique 
+to minimize the working set of long-running processes that occasionally use large DLLs.
+
+Multiple application domains can run in a single process; however, there is not a one-to-one correlation 
+between application domains and threads. Several threads can belong to a single application domain, and 
+while a given thread is not confined to a single application domain, at any given time, a thread executes 
+in a single application domain.
+
+------------------------------------------------------------------------------------
+MarshalByRefObject
+https://msdn.microsoft.com/en-us/library/system.marshalbyrefobject(v=vs.110).aspx
+An application domain is a partition in an operating system process where one or more applications reside. 
+Objects in the same application domain communicate directly. Objects in different application domains 
+communicate either by transporting copies of objects across application domain boundaries, or by using a 
+proxy to exchange messages.
+
+MarshalByRefObject is the base class for objects that communicate across application domain boundaries by 
+exchanging messages using a proxy. Objects that do not inherit from MarshalByRefObject are implicitly marshal 
+by value. When a remote application references a marshal by value object, a copy of the object is passed 
+across application domain boundaries.
+
+MarshalByRefObject objects are accessed directly within the boundaries of the local application domain. The 
+first time an application in a remote application domain accesses a MarshalByRefObject, a proxy is passed 
+to the remote application. Subsequent calls on the proxy are marshaled back to the object residing in the 
+local application domain.
+
+Types must inherit from MarshalByRefObject when the type is used across application domain boundaries, and 
+the state of the object must not be copied because the members of the object are not usable outside the 
+application domain where they were created.
+
