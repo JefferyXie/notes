@@ -273,7 +273,7 @@ let NERDTreeMinimalUI=1
 " 删除文件时自动删除文件对应 buffer
 let NERDTreeAutoDeleteBuffer=1
 " hide file types
-let NERDTreeIgnore=['\.o$','\.so$','\.a$','\.lib$','\.gz$']
+let NERDTreeIgnore=['\.o$','\.so$','\.a$','\.lib$','\.gz$','\.out$','\.so.*$','\.ui$','\.pro$','\.pro.user$','\.pro.user.*$']
 
 " ListToggle config
 let g:lt_location_list_toggle_map='<leader>l' " shortkey to toggle locationlist
