@@ -1,0 +1,42 @@
+How to install googletest?
+http://stackoverflow.com/questions/13513905/how-to-setup-googletest-as-a-shared-library-on-linux
+
+To install the package in ~/usr/gtest/ as shared libraries, together with sample build as well:
+
+1), 
+wget https://github.com/google/googletest/archive/release-1.7.0.tar.gz
+
+2), 
+$ mkdir ~/temp
+$ cd ~/temp
+$ unzip gtest-1.7.0.zip 
+$ cd gtest-1.7.0
+$ mkdir mybuild
+$ cd mybuild
+$ cmake -DBUILD_SHARED_LIBS=ON -Dgtest_build_samples=ON -G"Unix Makefiles" ..
+$ make
+$ cp -r ../include/gtest ~/usr/gtest/include/
+$ cp lib*.so ~/usr/gtest/lib
+
+3), add lib path to file /etc/ld.so.conf, then $ sudo ldconfig
+4), check if the GNU Linker knows the libs
+$ sudo ldconfig -v | grep gtest
+
+5), 
+To validate the installation, use the following test.c as a simple test example:
+
+    #include <gtest/gtest.h>
+    TEST(MathTest, TwoPlusTwoEqualsFour) {
+        EXPECT_EQ(2 + 2, 4);
+    }
+
+    int main(int argc, char **argv) {
+        ::testing::InitGoogleTest( &argc, argv );
+        return RUN_ALL_TESTS();
+    }
+To compile:
+
+    $ export GTEST_HOME=~/usr/gtest
+    $ export LD_LIBRARY_PATH=$GTEST_HOME/lib:$LD_LIBRARY_PATH
+    $ g++ -I $GTEST_HOME/include -L $GTEST_HOME/lib -lgtest -lgtest_main -lpthread test.cpp
+	

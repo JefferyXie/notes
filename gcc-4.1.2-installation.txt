@@ -1,0 +1,84 @@
+'makeinfo' is missing in your system
+
+you might want to install 'Texinfo' package or the 'GNU make' package
+
+How to install and maintain multiple gcc/g++?
+System is CentOS 7, current gcc/g++ 4.8.5, try to install gcc/g++ 4.1.2
+
+Related articles:
+http://www.cnblogs.com/yaoyansi/p/3950484.html
+http://blog.sina.com.cn/s/blog_4900f3fb0100jk86.html
+
+1) download source code
+$ cd ~/Downloads
+$ wget http://ftp.gnu.org/gnu/gcc/gcc-4.1.2/gcc-4.1.2.tar.bz2
+$ tar -xvjpf ./gcc-4.1.2.tar.bz2  ---> will extract to ./gcc-4.1.2
+
+2) configuration
+The configuration purpose is to determine where to install the gcc compiler and supporting languarges, etc.
+$ sudo mkdir /usr/local/gcc-4.1.2 ---> installation directory
+
+cd ~/Downloads/
+$ mkdir gcc-build
+$ ../gcc-4.1.2/configure --prefix=/usr/local/gcc-4.1.2 --program-suffix=412 --enable-shared 
+		--enable-threads=posix --enable-checking=release --with-system-zlib --disable-libunwind-exceptions 
+		--enable-languages=c,c++ --enable-__cxa_atexit
+		
+----> with --program-suffix=412, the generated executable is called gcc412 instead of gcc
+
+3) build
+$ make -j 2 bootstrap
+
+	During the compile:
+	a) You need to install glibc-devel.i686, you can run this command
+	$ yum install glibc-devel.i686
+	b) You need to intall texinfo (software document system)
+	$ yum install texinfo
+	c) It has a compiling error when you build gcc4.1.2:
+	../gcc/config/i386/linux-unwind.h:138:17: error: field 'info' has incomplete type " 
+	And here is the solution: http://forge.ispras.ru/issues/4295
+	It means that you need to change the code on line 136 in linux-unwind.h:
+	struct rt_sigframe {
+		int sig;
+		struct siginfo *pinfo;
+		void *puc;
+		struct siginfo info;
+	} *rt_ = context->cfa;
+	to 
+	struct rt_sigframe {
+		int sig;
+		siginfo_t *pinfo;
+		void *puc;
+		siginfo_t info;
+		struct ucontext uc;
+	} *rt_ = context->cfa;
+	You can download the modified file in http://files.cnblogs.com/yaoyansi/gcc412_build.zip.
+	d) It complains:
+	creating gij
+	GC Warning: Repeated allocation of very large block (appr. size 1048576000):
+		May lead to memory leak and poor performance.
+	GC Warning: Out of Memory!  Returning NIL!
+	GC Warning: Repeated allocation of very large block (appr. size 1048576000):
+		May lead to memory leak and poor performance.
+	GC Warning: Out of Memory!  Returning NIL!
+	Exception during runtime initialization
+	java.lang.OutOfMemoryError
+	   <<No stacktrace available>>
+
+	In ~/Downloads/gcc-build/, I searched all gij.o and gcc.o, and removed them, then built it again.
+
+4) install
+$ sudo make install   ---> gcc412 is installed into /usr/local/gcc-4.1.2
+
+5) make a symbol link in /usr/bin to make the call easier
+$ cd /usr/bin
+$ ln -s /usr/local/gcc-4.1.2/bin/gcc412 .
+$ ln -s /usr/local/gcc-4.1.2/bin/g++412 .
+
+
+Question: I'm not sure if it's necessary to add library path to the environment path.
+If it's necessary, follow the way to update it.
+http://serverfault.com/questions/102932/adding-a-directory-to-path-in-centos
+http://askubuntu.com/questions/60218/how-to-add-a-directory-to-my-path
+https://help.ubuntu.com/community/EnvironmentVariables
+http://stackoverflow.com/questions/13428910/how-to-set-the-environmental-variable-ld-library-path-in-linux

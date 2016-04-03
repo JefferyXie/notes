@@ -1,0 +1,96 @@
+EPEL
+
+EPEL (Extra Packages for Enterprise Linux) repository provides useful software packages that are not included in the official CentOS or Red Hat Enterprise Linux repositories.
+
+http://www.rackspace.com/knowledge_center/article/install-epel-and-additional-repositories-on-centos-and-red-hat
+
+How to list all installed packages on CentOS or RHEL?
+http://ask.xmodulo.com/list-all-installed-packages-centos-rhel.html
+1), The easiest way to show all installed packages on CentOS is via rpm command. The following command queries all installed packages and shows the result.
+$ rpm -qa
+However, the rpm command itself does not recognize the notion of repositories. So if you want to get a list of packages installed from a particular repository, rpm cannot help you.
+
+2), Similar to rpm, the yum package manager also allows you to get a list of installed packages.
+$ yum list installed
+
+Since the yum output contains repository information, if you want to get a list of RPM packages installed from a specific repository only, you can filter the output with grep. The following command shows a list of packages installed from EPEL repository.
+$ yum list installed | grep @epel
+
+Lists all installed and available packages.
+$ yum list all
+
+Lists all packages installed on your system. The rightmost column in the output lists the repository from which the package was retrieved.
+$ yum list installed
+
+Lists all available packages in all enabled repositories.
+$ yum list available
+
+Lists all package groups.
+$ yum grouplist
+
+How to list configured repositories?
+1), command line
+http://www.cyberciti.biz/faq/centos-fedora-redhat-yum-repolist-command-tolist-package-repositories/
+Lists the repository ID, name, and number of packages it provides for each enabled repository.
+$ yum repolist
+
+Pass -v for more detailed information
+yum -v repolist
+
+To list only enabled repos, enter:
+$ yum repolist enabled
+
+To list only disabled repos, enter:
+$ yum repolist disabled
+
+To list all repos (default), enter:
+$ yum repolist all
+
+2), check config file yum.repos.d
+This is the path of yum repository
+[root@localhost yum.repos.d]# pwd
+/etc/yum.repos.d
+
+This is the content of that directory
+[root@localhost yum.repos.d]# ll
+total 60
+-rw-r--r-- 1 root root  179 Jul 17 11:56 adobe-linux-i386.repo
+-rw-r--r-- 1 root root 1926 Jun 26 14:59 CentOS-Base.repo
+-rw-r--r-- 1 root root  637 Jun 26 14:59 CentOS-Debuginfo.repo
+-rw-r--r-- 1 root root  626 Jun 26 14:59 CentOS-Media.repo
+-rw-r--r-- 1 root root 2593 Jun 26 14:59 CentOS-Vault.repo
+-rw-r--r-- 1 root root  912 Jan 23  2011 elrepo.repo
+-rw-r--r-- 1 root root  957 May  9 21:25 epel.repo
+-rw-r--r-- 1 root root 1056 May  9 21:25 epel-testing.repo
+.
+.
+
+The difference between yum.conf and yum.repos.d is in earliar system yum.conf (/etc/yum.conf) was using, within a single file we have to configure everything it was very congesting so now what they did is, they created several repo files, instead of one repo file and all the repos are kept under /etc/yum.repos.d/ directory.
+
+How to install additional package from extra repository?
+http://superuser.com/questions/834862/how-to-install-g-4-9-2-in-cent-os-6-5
+https://www.softwarecollections.org/en/scls/rhscl/devtoolset-3/
+I use Scientific Linux Cern 6 repository to install gcc 4.9 and g++ 4.9 on my CentOS 6.5 and CentOS 6.6 systems. It does not install g++ 4.9.2. It installs g++ 4.9.1 instead which is good enough for my needs.
+Here are the commands I use to install it.
+
+$ cd /etc/yum.repos.d
+$ wget http://linuxsoft.cern.ch/cern/scl/slc6-scl.repo
+$ yum -y --nogpgcheck install devtoolset-3-gcc devtoolset-3-gcc-c++
+To enable the repository:
+$ scl enable devtoolset-3 bash
+
+To permanently enable scl on CentOS?
+In your ~/.bashrc or ~/.bash_profile Simply source the "enable" script provided with the devtoolset. For example, with the devtoolset 3, the command is:
+source /opt/rh/devtoolset-3/enable
+
+
+How to solve "Protected multilib versions" issue when doing update?
+The problem happens when doing update as below -
+
+$ sudo yum update
+$ ... Protected multilib versions: libitm-4.8.5-4.el7.i686 != libitm-4.9.1-10.el7.centos.x86_64
+
+Solution: search related package and remove it -
+$ rpm -aq | grep libitm
+$ yum remove libitm-4.8.5-4.el7.x86_64
+

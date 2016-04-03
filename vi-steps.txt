@@ -1,0 +1,21 @@
+How to config VI?
+
+1) install Vundle
+https://github.com/VundleVim/Vundle.vim
+
+2), open vi and :PluginInstall to install plugins (inclusing YCM)
+
+3), you will receive a warn message as below, don't be scared:
+
+ycm_client_support.[so|pyd|dll] and ycm_core.[so|pyd|dll] not detected;
+you need to compile YCM before using it. Read the docs!
+
+Let's compile YCM modules! You can compile both YCM and clang, or you can use your system's libclang, and only compile YCM. I will elaborate only compiling both.
+
+Make sure you have cmake, python-dev installed.
+
+cd ~/.vim/bundle/YouCompleteMe
+./install.sh --clang-completer
+
+4), update file ~/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py
+
