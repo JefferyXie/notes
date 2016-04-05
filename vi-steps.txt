@@ -19,3 +19,9 @@ cd ~/.vim/bundle/YouCompleteMe
 
 4), update file ~/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py
 
+5), to enable accessing system clipboard
+http://vim.wikia.com/wiki/Accessing_the_system_clipboard
+$ yum install vim-X11 
+Then add below command to ~/.bashrc:
+	# added by jeffery: use vimx which has clipboard enabled
+	if [ -e /usr/bin/vimx ]; then alias vim='/usr/bin/vimx' vi='/usr/bin/vimx'; fi
