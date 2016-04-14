@@ -75,10 +75,25 @@ $ cd /usr/bin
 $ ln -s /usr/local/gcc-4.1.2/bin/gcc412 .
 $ ln -s /usr/local/gcc-4.1.2/bin/g++412 .
 
+Questions:
+1) how to downgrade texinfo?
+	a), check the version
+	makeinfo --version
+	b), Remove the current texinfo via apt-get (I'm not sure if this is required, but I did it just to be safe).
+	c), Download the texinfo source:
+	wget http://ftp.gnu.org/gnu/texinfo/texinfo-4.13.tar.gz
+	Extract the source files:
 
-Question: I'm not sure if it's necessary to add library path to the environment path.
-If it's necessary, follow the way to update it.
-http://serverfault.com/questions/102932/adding-a-directory-to-path-in-centos
-http://askubuntu.com/questions/60218/how-to-add-a-directory-to-my-path
-https://help.ubuntu.com/community/EnvironmentVariables
-http://stackoverflow.com/questions/13428910/how-to-set-the-environmental-variable-ld-library-path-in-linux
+	gzip -dc < texinfo-4.13.tar.gz | tar -xf -
+	d), Configure, build and install
+	cd texinfo-4.13
+	./configure
+	make
+	sudo make install
+
+2) I'm not sure if it's necessary to add library path to the environment path.
+	If it's necessary, follow the way to update it.
+	http://serverfault.com/questions/102932/adding-a-directory-to-path-in-centos
+	http://askubuntu.com/questions/60218/how-to-add-a-directory-to-my-path
+	https://help.ubuntu.com/community/EnvironmentVariables
+	http://stackoverflow.com/questions/13428910/how-to-set-the-environmental-variable-ld-library-path-in-linux
