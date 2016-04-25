@@ -1,9 +1,11 @@
+------------------------------------------------------------------------------------
 EPEL
 
 EPEL (Extra Packages for Enterprise Linux) repository provides useful software packages that are not included in the official CentOS or Red Hat Enterprise Linux repositories.
 
 http://www.rackspace.com/knowledge_center/article/install-epel-and-additional-repositories-on-centos-and-red-hat
 
+------------------------------------------------------------------------------------
 How to list all installed packages on CentOS or RHEL?
 http://ask.xmodulo.com/list-all-installed-packages-centos-rhel.html
 1), The easiest way to show all installed packages on CentOS is via rpm command. The following command queries all installed packages and shows the result.
@@ -28,6 +30,7 @@ $ yum list available
 Lists all package groups.
 $ yum grouplist
 
+------------------------------------------------------------------------------------
 How to list configured repositories?
 1), command line
 http://www.cyberciti.biz/faq/centos-fedora-redhat-yum-repolist-command-tolist-package-repositories/
@@ -67,6 +70,7 @@ total 60
 
 The difference between yum.conf and yum.repos.d is in earliar system yum.conf (/etc/yum.conf) was using, within a single file we have to configure everything it was very congesting so now what they did is, they created several repo files, instead of one repo file and all the repos are kept under /etc/yum.repos.d/ directory.
 
+------------------------------------------------------------------------------------
 How to install additional package from extra repository?
 http://superuser.com/questions/834862/how-to-install-g-4-9-2-in-cent-os-6-5
 https://www.softwarecollections.org/en/scls/rhscl/devtoolset-3/
@@ -84,6 +88,7 @@ In your ~/.bashrc or ~/.bash_profile Simply source the "enable" script provided 
 source /opt/rh/devtoolset-3/enable
 
 
+------------------------------------------------------------------------------------
 How to solve "Protected multilib versions" issue when doing update?
 The problem happens when doing update as below -
 
@@ -94,3 +99,28 @@ Solution: search related package and remove it -
 $ rpm -aq | grep libitm
 $ yum remove libitm-4.8.5-4.el7.x86_64
 
+------------------------------------------------------------------------------------
+How to check system memory, virtual memory usage and configuration?
+$ free // Check system memory usage
+$ vmstat // Virtual memory statistics
+$ vmstat -s
+$ swapon -s // Display swap usage by device
+
+Display file or file system status
+$ stat
+
+------------------------------------------------------------------------------------
+GDB commands:
+$ set variable i=20
+$ set var i=20
+$ set (i=20)
+
+$ display i
+$ disp i
+
+$ watch i // trigger when i changes
+
+$ delete breakpoint
+
+$ info break
+$ info watch
