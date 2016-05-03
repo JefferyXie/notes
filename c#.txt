@@ -6,6 +6,9 @@ Copy the .dll file to the plugins folder of Notepad++:
 
 ------------------------------------------------------------------------------------
 async/await
+Async和Await异步编程的原理
+http://blog.csdn.net/dyllove98/article/details/9371839
+https://www.youtube.com/channel/UCda_RJU9-xB0Hswcrjn4SKw
 ConfigureAwait(true), ConfigureAwait(false)
 https://msdn.microsoft.com/en-us/library/hh156528.aspx
 http://stackoverflow.com/questions/14455293/how-to-and-when-use-async-and-await

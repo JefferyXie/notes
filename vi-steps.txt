@@ -1,5 +1,7 @@
 How to config VI?
 
+*NEW*: https://github.com/yangyangwithgnu/use_vim_as_ide
+
 1) install Vundle
 https://github.com/VundleVim/Vundle.vim
 
