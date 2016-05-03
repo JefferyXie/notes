@@ -1,0 +1,34 @@
+
+------------------------------------------------------------------------------------
+VI Commands
+
+1) remove all white space in a file and replace with a comma
+First delete the blank lines:
+:g/^\s*$/d
+Then use a substitution (:s///) over each line (%) to replace all (g) continuous whitespace (\s\+) with a comma (,)
+:%s/\s\+/,/g
+
+2) replace character/word in a file
+replace 'foo' with 'bar' in a file
+:%s/foo/bar/g
+replace only whole words exactly match
+:%s/\<foo\>/bar/g
+
+
+------------------------------------------------------------------------------------
+Valgrind
+
+// profile tool, performance analysis
+valgrind --tool=callgrind program arg1 arg2
+kcachegrind callgrind.out.$pid
+http://baptiste-wicht.com/posts/2011/09/profile-c-application-with-callgrind-kcachegrind.html
+
+// detect memory-related errors
+valgrind --leak-check=yes myprog arg1 arg2
+http://valgrind.org/docs/manual/quick-start.html
+
+// detect multi-thread errors
+valgrind --tool=helgrind myapplication
+http://valgrind.org/docs/manual/hg-manual.html
+
+
