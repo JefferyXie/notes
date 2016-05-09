@@ -110,6 +110,11 @@ Display file or file system status
 $ stat
 
 ------------------------------------------------------------------------------------
+How to check CPU infromation?
+$ lscpu
+$ cat /proc/cpuinfo
+
+------------------------------------------------------------------------------------
 GDB commands:
 $ set variable i=20
 $ set var i=20
