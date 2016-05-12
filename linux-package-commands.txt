@@ -99,33 +99,3 @@ Solution: search related package and remove it -
 $ rpm -aq | grep libitm
 $ yum remove libitm-4.8.5-4.el7.x86_64
 
-------------------------------------------------------------------------------------
-How to check system memory, virtual memory usage and configuration?
-$ free // Check system memory usage
-$ vmstat // Virtual memory statistics
-$ vmstat -s
-$ swapon -s // Display swap usage by device
-
-Display file or file system status
-$ stat
-
-------------------------------------------------------------------------------------
-How to check CPU infromation?
-$ lscpu
-$ cat /proc/cpuinfo
-
-------------------------------------------------------------------------------------
-GDB commands:
-$ set variable i=20
-$ set var i=20
-$ set (i=20)
-
-$ display i
-$ disp i
-
-$ watch i // trigger when i changes
-
-$ delete breakpoint
-
-$ info break
-$ info watch

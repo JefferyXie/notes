@@ -1,4 +1,3 @@
-
 ------------------------------------------------------------------------------------
 VI Commands
 
@@ -13,6 +12,12 @@ replace 'foo' with 'bar' in a file
 :%s/foo/bar/g
 replace only whole words exactly match
 :%s/\<foo\>/bar/g
+
+3) search word and list line number in a file
+:g/word/#
+
+4) search word in all files under current folder and list them
+:cw | grep -ir word .
 
 
 ------------------------------------------------------------------------------------
@@ -32,3 +37,44 @@ valgrind --tool=helgrind myapplication
 http://valgrind.org/docs/manual/hg-manual.html
 
 
+------------------------------------------------------------------------------------
+How to check system memory, virtual memory usage and configuration?
+$ free // Check system memory usage
+$ vmstat // Virtual memory statistics
+$ vmstat -s
+$ swapon -s // Display swap usage by device
+
+Display file or file system status
+$ stat
+
+------------------------------------------------------------------------------------
+How to check CPU infromation?
+$ lscpu
+$ cat /proc/cpuinfo
+
+------------------------------------------------------------------------------------
+GDB commands:
+$ set variable i=20
+$ set var i=20
+$ set (i=20)
+
+$ display i
+$ disp i
+
+$ watch i // trigger when i changes
+
+$ delete breakpoint
+
+$ info break
+$ info watch
+
+------------------------------------------------------------------------------------
+Network commands
+$ ss -s // sockets summary
+$ ss -lp // view open network ports with process name (p)
+$ ss -aplt // view all tcp (t) sockets
+$ ss -aplu // view all udp (u) sockets
+$ netstat -lnpt // view processes that are listening for tcp (t)
+$ netstat -lnpu // view processes that are listening for udp (t)
+$ ifconfig // can view if multicast is enabled or not
+$ netstat -g // view multicast groups information
