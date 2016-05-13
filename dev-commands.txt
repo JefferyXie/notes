@@ -78,3 +78,44 @@ $ netstat -lnpt // view processes that are listening for tcp (t)
 $ netstat -lnpu // view processes that are listening for udp (t)
 $ ifconfig // can view if multicast is enabled or not
 $ netstat -g // view multicast groups information
+
+------------------------------------------------------------------------------------
+Analyze kernel crash
+http://www.dedoimedo.com/computers/crash-analyze.html
+
+------------------------------------------------------------------------------------
+Debug core file
+http://yusufonlinux.blogspot.com/2010/11/debugging-core-using-gdb.html
+Enable core file dump
+http://www.cyberciti.biz/tips/linux-core-dumps.html
+1) Go to /etc/profile.d folder and create a *.sh file such as coredump.sh
+ulimit -c unlimited >/dev/null 2>&1
+2) Edit /etc/sysctl.conf, append the following lines:
+
+kernel.core_uses_pid = 1
+kernel.core_pattern = /tmp/core-%e-%s-%u-%g-%p-%t
+fs.suid_dumpable = 2
+
+Where:
+kernel.core_uses_pid = 1 – Appends the coring processes PID to the core file name.
+fs.suid_dumpable = 2 – Make sure you get core dumps for setuid programs.
+kernel.core_pattern = /tmp/core-%e-%s-%u-%g-%p-%t – When the application terminates abnormally, a core file should appear in the /tmp. The kernel.core_pattern sysctl controls exact location of core file. You can define the core file name with the following template whih can contain % specifiers which are substituted by the following values when a core file is created:
+%% – A single % character
+%p – PID of dumped process
+%u – real UID of dumped process
+%g – real GID of dumped process
+%s – number of signal causing dump
+%t – time of dump (seconds since 0:00h, 1 Jan 1970)
+%h – hostname (same as ’nodename’ returned by uname(2))
+%e – executable filename
+
+3) Reload the settings in /etc/sysctl.conf by running the following command:
+$ sysctl -p
+
+------------------------------------------------------------------------------------
+/etc/profile vs. /etc/bashrc, Login vs. non-Login shell, Interactive vs. non-Interactive shell
+http://bencane.com/2013/09/16/understanding-a-little-more-about-etcprofile-and-etcbashrc/
+http://askubuntu.com/questions/247738/why-is-etc-profile-not-invoked-for-non-login-shells
+
+
+
