@@ -19,6 +19,24 @@ replace only whole words exactly match
 4) search word in all files under current folder and list them
 :cw | grep -ir word .
 
+------------------------------------------------------------------------------------
+Shell command
+
+1) find specific file type under directory and count lines in the file
+$ find . -type f -iname *.cpp | xargs wc -l
+
+2) check system memory, virtual memory usage and configuration
+$ free // Check system memory usage
+$ vmstat // Virtual memory statistics
+$ vmstat -s
+$ swapon -s // Display swap usage by device
+
+3) display file or file system status
+$ stat
+
+4) check CPU infromation
+$ lscpu
+$ cat /proc/cpuinfo
 
 ------------------------------------------------------------------------------------
 Valgrind
@@ -35,22 +53,6 @@ http://valgrind.org/docs/manual/quick-start.html
 // detect multi-thread errors
 valgrind --tool=helgrind myapplication
 http://valgrind.org/docs/manual/hg-manual.html
-
-
-------------------------------------------------------------------------------------
-How to check system memory, virtual memory usage and configuration?
-$ free // Check system memory usage
-$ vmstat // Virtual memory statistics
-$ vmstat -s
-$ swapon -s // Display swap usage by device
-
-Display file or file system status
-$ stat
-
-------------------------------------------------------------------------------------
-How to check CPU infromation?
-$ lscpu
-$ cat /proc/cpuinfo
 
 ------------------------------------------------------------------------------------
 GDB commands:
@@ -82,6 +84,21 @@ $ netstat -g // view multicast groups information
 ------------------------------------------------------------------------------------
 Analyze kernel crash
 http://www.dedoimedo.com/computers/crash-analyze.html
+
+------------------------------------------------------------------------------------
+Trace system calls with strace
+http://linoxide.com/linux-command/linux-strace-command-examples/
+1) trace all system calls
+$ strace ls
+$ strace myprogam arg1 arg2
+2) trace specific system call
+// trace only 'open' system call
+$ strace -e open myprogram arg1 arg2 
+3) trace a process
+$ strace -p processid
+4) summary of system calls, time of execution, errors, etc.
+$ strace -c ls
+$ strace -c myprogram arg1 arg2
 
 ------------------------------------------------------------------------------------
 Debug core file
