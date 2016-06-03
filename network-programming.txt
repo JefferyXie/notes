@@ -27,3 +27,24 @@ http://www.tack.ch/multicast/
 C and Linux Socket topics
 http://www.tenouk.com/cnlinuxsockettutorials.html
 
+Socket programming and the C BSD API
+http://www.yolinux.com/TUTORIALS/Sockets.html
+
+http://inst.eecs.berkeley.edu/~ee122/fa09/notes/
+
+Network congestion
+http://linuxgazette.net/144/menon.html
+http://euclid.nmu.edu/~rappleto/Classes/CS228/Notes/IP-Protocols/tcp.html
+http://www.brendangregg.com/blog/2014-09-06/linux-ftrace-tcp-retransmit-tracing.html
+http://serverfault.com/questions/318909/how-passively-monitor-for-tcp-packet-loss-linux
+
+C10k - handle thousands of connections simultaneously
+http://www.kegel.com/c10k.html
+http://highscalability.com/blog/2013/5/13/the-secret-to-10-million-concurrent-connections-the-kernel-i.html
+http://stackoverflow.com/questions/2831434/how-to-retain-one-million-simultaneous-tcp-connections
+
+select, poll, and epoll
+http://www.ulduzsoft.com/2014/01/select-poll-epoll-practical-difference-for-system-architects/
+http://amsekharkernel.blogspot.com/2013/05/what-is-epoll-epoll-vs-select-call-and.html
+https://banu.com/blog/2/how-to-use-epoll-a-complete-example-in-c/
+

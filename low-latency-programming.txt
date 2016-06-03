@@ -16,3 +16,9 @@ http://www.javaworld.com/article/2076539/build-ci-sdlc/java-performance-programm
 https://www.ece.cmu.edu/~ece749/docs/acmCompSurveyHighPerfJava.pdf
 http://martinfowler.com/articles/lmax.html
 http://stackoverflow.com/questions/1481853/technique-or-utility-to-minimize-java-warm-up-time
+
+
+------------------------------------------------------------------------------------
+Why memory alignment impacts performance?
+http://www.songho.ca/misc/alignment/dataalign.html
+http://stackoverflow.com/questions/2006216/why-is-data-structure-alignment-important-for-performance

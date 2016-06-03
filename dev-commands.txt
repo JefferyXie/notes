@@ -74,8 +74,8 @@ $ info watch
 Network commands
 $ ss -s // sockets summary
 $ ss -lp // view open network ports with process name (p)
-$ ss -aplt // view all tcp (t) sockets
-$ ss -aplu // view all udp (u) sockets
+$ ss -aplt // view all tcp (t) listening(l) sockets
+$ ss -aplu // view all udp (u) listening(l) sockets
 $ netstat -lnpt // view processes that are listening for tcp (t)
 $ netstat -lnpu // view processes that are listening for udp (t)
 $ ifconfig // can view if multicast is enabled or not

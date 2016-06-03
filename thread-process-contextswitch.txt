@@ -13,19 +13,19 @@ A typical thread context switch on a single-core CPU happens like this:
 
 2) Non-trivial systems will have to initiate a hardware-protection-level change to enter a kernel-state so that the kernel code/data etc. can be accessed.
 
-2) Core state for the interrupted thread has to be saved. On a simple embedded system, this might just be pushing all registers onto the thread stack and saving the stack pointer in its TCB.
+3) Core state for the interrupted thread has to be saved. On a simple embedded system, this might just be pushing all registers onto the thread stack and saving the stack pointer in its TCB.
 
-3) Many systems switch to an OS-dedicated stack at this stage so that the bulk of OS-internal stack requirements are not inflicted on the stack of every thread.
+4) Many systems switch to an OS-dedicated stack at this stage so that the bulk of OS-internal stack requirements are not inflicted on the stack of every thread.
 
-4) It may be necessary to mark the thread stack position where the change to interrupt-state occurred to allow for nested interrupts.
+5) It may be necessary to mark the thread stack position where the change to interrupt-state occurred to allow for nested interrupts.
 
-5) The driver/system call runs and may change the set of ready threads by adding/removing TCB's from internal queues for the different thread priorities, eg. network card driver may have set an event or signaled a semaphore that another thread was waiting on, so that thread will be added to the ready set, or a running thread may have called sleep() and so elected to remove itself from the ready set.
+6) The driver/system call runs and may change the set of ready threads by adding/removing TCB's from internal queues for the different thread priorities, eg. network card driver may have set an event or signaled a semaphore that another thread was waiting on, so that thread will be added to the ready set, or a running thread may have called sleep() and so elected to remove itself from the ready set.
 
-6) The OS scheduler algorithm is run to decide which thread to run next, typically the highest-priority ready thread that is at the front of the queue for that priority. If the next-to-run thread belongs to a different process to the previously-run thread, some extra stuff is needed here, (see later).
+7) The OS scheduler algorithm is run to decide which thread to run next, typically the highest-priority ready thread that is at the front of the queue for that priority. If the next-to-run thread belongs to a different process to the previously-run thread, some extra stuff is needed here, (see later).
 
-7) The saved stack pointer from the TCB for that thread is retrieved and loaded into the hardware stack pointer.
+8) The saved stack pointer from the TCB for that thread is retrieved and loaded into the hardware stack pointer.
 
-8) The core state for the selected thread is restored. On my simple system, the registers would be popped from the stack of the selected thread. More complex systems will have to handle a return to user-level protection.
+9) The core state for the selected thread is restored. On my simple system, the registers would be popped from the stack of the selected thread. More complex systems will have to handle a return to user-level protection.
 
 9) An interrupt-return is performed, so transferring execution to the selected thread.
 
