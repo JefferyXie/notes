@@ -27,7 +27,7 @@ $ find . -type f -iname *.cpp | xargs wc -l
 
 2) check system memory, virtual memory usage and configuration
 $ free // Check system memory usage
-$ vmstat // Virtual memory statistics
+$ vmstat // Virtual memory statistics, can be used to see thread interruption & context switch times per second
 $ vmstat -s
 $ swapon -s // Display swap usage by device
 
@@ -69,6 +69,11 @@ $ delete breakpoint
 
 $ info break
 $ info watch
+
+// break when condition is met
+// http://stackoverflow.com/questions/1354637/how-do-i-set-persistent-and-conditional-watchpoints-on-locally-scoped-variables
+$ watch my_var if my_var > 3
+$ break main.c:123 if (var1 == 0)
 
 ------------------------------------------------------------------------------------
 Network commands

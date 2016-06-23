@@ -22,3 +22,32 @@ http://stackoverflow.com/questions/1481853/technique-or-utility-to-minimize-java
 Why memory alignment impacts performance?
 http://www.songho.ca/misc/alignment/dataalign.html
 http://stackoverflow.com/questions/2006216/why-is-data-structure-alignment-important-for-performance
+
+
+------------------------------------------------------------------------------------
+CPU, memory cache
+
+What every programmer should know about memory
+http://lwn.net/Articles/250967/
+Effective Use of the Shared Cache in Multi-core Architectures
+http://www.drdobbs.com/parallel/effective-use-of-the-shared-cache-in-mul/196902836
+
+CPU cache thrashing
+https://pomozok.wordpress.com/2011/11/29/cpu-cache-thrashing/
+CPU Cache and Why you care?
+http://www.aristeia.com/TalkNotes/ACCU2011_CPUCaches.pdf
+Why is one loop so much slower than two loops?
+http://stackoverflow.com/questions/8547778/why-is-one-loop-so-much-slower-than-two-loops
+
+
+------------------------------------------------------------------------------------
+Lock free
+
+Solving the ABA Problem for Lock-Free Free Lists
+http://moodycamel.com/blog/2014/solving-the-aba-problem-for-lock-free-free-lists
+Lock free ring-buffer
+http://www.linuxjournal.com/content/lock-free-multi-producer-multi-consumer-queue-ring-buffer?page=0,0
+https://github.com/natsys/blog/blob/master/lockfree_rb_q.cc
+http://www.codeproject.com/Articles/153898/Yet-another-implementation-of-a-lock-free-circular
+
+

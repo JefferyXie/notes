@@ -1,3 +1,12 @@
+linux内核调度算法
+http://blog.chinaunix.net/uid-25435571-id-3059350.html
+线程上下文切换的性能损耗测试
+http://www.cnblogs.com/EthanCai/p/3705834.html
+进程/线程上下文切换
+http://blog.csdn.net/maimang1001/article/details/9206167
+
+
+
 http://stackoverflow.com/questions/5440128/thread-context-switch-vs-process-context-switch
 
 The main distinction between a thread switch and a process switch is that during a thread switch, the virtual memory space remains the same, while it does not during a process switch. Both types involve handing control over to the operating system kernel to perform the context switch. The process of switching in and out of the OS kernel along with the cost of switching out the registers is the largest fixed cost of performing a context switch.
