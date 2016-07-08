@@ -27,3 +27,12 @@ $ yum install vim-X11
 Then add below command to ~/.bashrc:
 	# added by jeffery: use vimx which has clipboard enabled
 	if [ -e /usr/bin/vimx ]; then alias vim='/usr/bin/vimx' vi='/usr/bin/vimx'; fi
+
+	
+------------------------------------------------------------------------------------
+How to compile and install VI?
+https://gist.github.com/holguinj/11064609
+https://github.com/Valloric/YouCompleteMe/wiki/Building-Vim-from-source
+
+How to compile and install Ncurses?
+http://archive.linuxfromscratch.org/lfs-museum/3.3/LFS-BOOK-3.3-HTML/chapter06/ncurses.html
