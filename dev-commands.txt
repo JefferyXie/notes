@@ -1,4 +1,13 @@
 ------------------------------------------------------------------------------------
+Some links of tech resource
+C++/Python/Java/Design Patterns
+http://www.bogotobogo.com/index.php
+Socket programming
+https://www.ibm.com/support/knowledgecenter/ssw_i5_54/rzab6/rzab6soxoverview.htm
+Using multicast
+https://www.ibm.com/support/knowledgecenter/ssw_i5_54/rzab6/xmulticast.htm
+
+------------------------------------------------------------------------------------
 VI Commands
 
 1) remove all white space in a file and replace with a comma
@@ -37,6 +46,21 @@ $ stat
 4) check CPU infromation
 $ lscpu
 $ cat /proc/cpuinfo
+
+5) key combinations in bash
+Ctrl+A	move cursor to beginning of line
+Ctrl+D	log out of current shell session, equal to 'exit'
+Ctrl+E	move cursor to the end of line
+Ctrl+L	clear this terminal
+
+6) show all executable programs with the name
+$ which -a myprogram
+
+7) check which shell you are using
+$ echo $SHELL
+or
+$ cat /etc/passwd // find your user name line
+
 
 ------------------------------------------------------------------------------------
 Valgrind
