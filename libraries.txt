@@ -1,0 +1,23 @@
+------------------------------------------------------------------------------------
+Log
+C++ 日志库 boost::log 以及 glog (g2log,g3log) 的对比
+https://yq.aliyun.com/articles/2620
+glog
+https://github.com/google/glog
+g2log
+http://www.codeproject.com/Articles/288827/g-log-An-efficient-asynchronous-logger-using-Cplus
+g3log
+https://github.com/KjellKod/g3log
+
+boost::log
+http://theboostcpplibraries.com/boost.log
+
+
+------------------------------------------------------------------------------------
+gflags简明使用（解析配置命令行参数）
+http://dreamrunner.org/blog/2014/03/09/gflags-jian-ming-shi-yong/
+
+------------------------------------------------------------------------------------
+***The Boost C++ Libraries (book, articles, guidance)
+http://theboostcpplibraries.com/
+
