@@ -1,114 +1,126 @@
 ------------------------------------------------------------------------------------
 Some links of tech resource
-C++/Python/Java/Design Patterns
-http://www.bogotobogo.com/index.php
-Socket programming
-https://www.ibm.com/support/knowledgecenter/ssw_i5_54/rzab6/rzab6soxoverview.htm
-Using multicast
-https://www.ibm.com/support/knowledgecenter/ssw_i5_54/rzab6/xmulticast.htm
+
+    1) C++/Python/Java/Design Patterns
+    http://www.bogotobogo.com/index.php
+    2) Socket programming
+    https://www.ibm.com/support/knowledgecenter/ssw_i5_54/rzab6/rzab6soxoverview.htm
+    3) Using multicast
+    https://www.ibm.com/support/knowledgecenter/ssw_i5_54/rzab6/xmulticast.htm
+    4) QuickFix - open source lib for FIX protocol
+    http://www.quickfixengine.org/
+    5) UNIX ar Examples: How To Create, View, Extract, Modify C Archive Files (*.a)
+    http://www.thegeekstuff.com/2010/08/ar-command-examples/?utm_source=feedburner&utm_medium=feed&utm_campaign=Feed%3A+TheGeekStuff+(The+Geek+Stuff)
 
 ------------------------------------------------------------------------------------
 VI Commands
 
-1) remove all white space in a file and replace with a comma
-First delete the blank lines:
-:g/^\s*$/d
-Then use a substitution (:s///) over each line (%) to replace all (g) continuous whitespace (\s\+) with a comma (,)
-:%s/\s\+/,/g
+    1) remove all white space in a file and replace with a comma
+    First delete the blank lines:
+    :g/^\s*$/d
+    Then use a substitution (:s///) over each line (%) to replace all (g) continuous whitespace (\s\+) with a comma (,)
+    :%s/\s\+/,/g
 
-2) replace character/word in a file
-replace 'foo' with 'bar' in a file
-:%s/foo/bar/g
-replace only whole words exactly match
-:%s/\<foo\>/bar/g
+    2) replace character/word in a file
+    replace 'foo' with 'bar' in a file
+    :%s/foo/bar/g
+    replace only whole words exactly match
+    :%s/\<foo\>/bar/g
 
-3) search word and list line number in a file
-:g/word/#
+    3) search word and list line number in a file
+    :g/word/#
 
-4) search word in all files under current folder and list them
-:cw | grep -ir word .
+    4) search word in all files under current folder and list them
+    :cw | grep -ir word .
+
 
 ------------------------------------------------------------------------------------
 Shell command
 
-1) find specific file type under directory and count lines in the file
-$ find . -type f -iname *.cpp | xargs wc -l
+    1) find specific file type under directory and count lines in the file
+    $ find . -type f -iname *.cpp | xargs wc -l
+    $ find . -type f -iname *.cpp -or -iname *.h | xargs wc -l
 
-2) check system memory, virtual memory usage and configuration
-$ free // Check system memory usage
-$ vmstat // Virtual memory statistics, can be used to see thread interruption & context switch times per second
-$ vmstat -s
-$ swapon -s // Display swap usage by device
+    2) check system memory, virtual memory usage and configuration
+    $ free // Check system memory usage
+    $ vmstat // Virtual memory statistics, can be used to see thread interruption & context switch times per second
+    $ vmstat -s
+    $ swapon -s // Display swap usage by device
 
-3) display file or file system status
-$ stat
+    3) display file or file system status
+    $ stat
 
-4) check CPU infromation
-$ lscpu
-$ cat /proc/cpuinfo
+    4) check CPU infromation
+    $ lscpu
+    $ cat /proc/cpuinfo
 
-5) key combinations in bash
-Ctrl+A	move cursor to beginning of line
-Ctrl+D	log out of current shell session, equal to 'exit'
-Ctrl+E	move cursor to the end of line
-Ctrl+L	clear this terminal
+    5) key combinations in bash
+    Ctrl+A	move cursor to beginning of line
+    Ctrl+D	log out of current shell session, equal to 'exit'
+    Ctrl+E	move cursor to the end of line
+    Ctrl+L	clear this terminal
+    Ctrl+U  clear from current pos until beginning of line
+    Ctrl+K  clear from current pos to the end of line
 
-6) show all executable programs with the name
-$ which -a myprogram
+    6) show all executable programs with the name
+    $ which -a myprogram
 
-7) check which shell you are using
-$ echo $SHELL
-or
-$ cat /etc/passwd // find your user name line
+    7) check which shell you are using
+    $ echo $SHELL
+    or
+    $ cat /etc/passwd // find your user name line
 
 
 ------------------------------------------------------------------------------------
 Valgrind
 
-// profile tool, performance analysis
-valgrind --tool=callgrind program arg1 arg2
-kcachegrind callgrind.out.$pid
-http://baptiste-wicht.com/posts/2011/09/profile-c-application-with-callgrind-kcachegrind.html
+    // profile tool, performance analysis
+    valgrind --tool=callgrind program arg1 arg2
+    kcachegrind callgrind.out.$pid
+    http://baptiste-wicht.com/posts/2011/09/profile-c-application-with-callgrind-kcachegrind.html
 
-// detect memory-related errors
-valgrind --leak-check=yes myprog arg1 arg2
-http://valgrind.org/docs/manual/quick-start.html
+    // detect memory-related errors
+    valgrind --leak-check=yes myprog arg1 arg2
+    http://valgrind.org/docs/manual/quick-start.html
 
-// detect multi-thread errors
-valgrind --tool=helgrind myapplication
-http://valgrind.org/docs/manual/hg-manual.html
+    // detect multi-thread errors
+    valgrind --tool=helgrind myapplication
+    http://valgrind.org/docs/manual/hg-manual.html
 
 ------------------------------------------------------------------------------------
 GDB commands:
-$ set variable i=20
-$ set var i=20
-$ set (i=20)
+    $ set variable i=20
+    $ set var i=20
+    $ set (i=20)
 
-$ display i
-$ disp i
+    $ display i
+    $ disp i
 
-$ watch i // trigger when i changes
+    $ watch i // trigger when i changes
 
-$ delete breakpoint
+    $ delete breakpoint
 
-$ info break
-$ info watch
+    $ info break
+    $ info watch
 
-// break when condition is met
-// http://stackoverflow.com/questions/1354637/how-do-i-set-persistent-and-conditional-watchpoints-on-locally-scoped-variables
-$ watch my_var if my_var > 3
-$ break main.c:123 if (var1 == 0)
+    // break when condition is met
+    // http://stackoverflow.com/questions/1354637/how-do-i-set-persistent-and-conditional-watchpoints-on-locally-scoped-variables
+    $ watch my_var if my_var > 3
+    $ break main.c:123 if (var1 == 0)
+
+    // remotely debug with DDD
+    http://www.codeproject.com/Articles/14983/Remote-Debugging-using-GDB
 
 ------------------------------------------------------------------------------------
 Network commands
-$ ss -s // sockets summary
-$ ss -lp // view open network ports with process name (p)
-$ ss -aplt // view all tcp (t) listening(l) sockets
-$ ss -aplu // view all udp (u) listening(l) sockets
-$ netstat -lnpt // view processes that are listening for tcp (t)
-$ netstat -lnpu // view processes that are listening for udp (t)
-$ ifconfig // can view if multicast is enabled or not
-$ netstat -g // view multicast groups information
+    $ ss -s // sockets summary
+    $ ss -lp // view open network ports with process name (p)
+    $ ss -aplt // view all tcp (t) listening(l) sockets
+    $ ss -aplu // view all udp (u) listening(l) sockets
+    $ netstat -lnpt // view processes that are listening for tcp (t)
+    $ netstat -lnpu // view processes that are listening for udp (t)
+    $ ifconfig // can view if multicast is enabled or not
+    $ netstat -g // view multicast groups information
 
 ------------------------------------------------------------------------------------
 Analyze kernel crash
@@ -116,52 +128,67 @@ http://www.dedoimedo.com/computers/crash-analyze.html
 
 ------------------------------------------------------------------------------------
 Trace system calls with strace
-http://linoxide.com/linux-command/linux-strace-command-examples/
-1) trace all system calls
-$ strace ls
-$ strace myprogam arg1 arg2
-2) trace specific system call
-// trace only 'open' system call
-$ strace -e open myprogram arg1 arg2 
-3) trace a process
-$ strace -p processid
-4) summary of system calls, time of execution, errors, etc.
-$ strace -c ls
-$ strace -c myprogram arg1 arg2
+    http://linoxide.com/linux-command/linux-strace-command-examples/
+    1) trace all system calls
+    $ strace ls
+    $ strace myprogam arg1 arg2
+    2) trace specific system call
+    // trace only 'open' system call
+    $ strace -e open myprogram arg1 arg2 
+    3) trace a process
+    $ strace -p processid
+    4) summary of system calls, time of execution, errors, etc.
+    $ strace -c ls
+    $ strace -c myprogram arg1 arg2
+    5) this will show you all syscalls the program is doing if your process ID is 12345. 
+    // http://unix.stackexchange.com/questions/166541/how-to-know-where-a-program-is-stuck-in-linux
+    strace -s 99 -ffp 12345
+    6) see calls stack with gdb, bt
+    // ftp://ftp.gnu.org/old-gnu/Manuals/gdb/html_node/gdb_42.html
+    $ sleep 3600 &
+      [2] 2621
+    $ gdb
+    (gdb) attach 2621
+    (gdb) bt
+    #0  0x00007feda374e6b0 in __nanosleep_nocancel () from /lib64/libc.so.6
+    #1  0x0000000000403ee7 in ?? ()
+    #2  0x0000000000403d70 in ?? ()
+    #3  0x000000000040185d in ?? ()
+    #4  0x00007feda36b8b05 in __libc_start_main () from /lib64/libc.so.6
+    #5  0x0000000000401969 in ?? ()
+    (gdb)
 
 ------------------------------------------------------------------------------------
 Debug core file
-http://yusufonlinux.blogspot.com/2010/11/debugging-core-using-gdb.html
-Enable core file dump
-http://www.cyberciti.biz/tips/linux-core-dumps.html
-1) Go to /etc/profile.d folder and create a *.sh file such as coredump.sh
-ulimit -c unlimited >/dev/null 2>&1
-2) Edit /etc/sysctl.conf, append the following lines:
+    http://yusufonlinux.blogspot.com/2010/11/debugging-core-using-gdb.html
+    Enable core file dump
+    http://www.cyberciti.biz/tips/linux-core-dumps.html
+    1) Go to /etc/profile.d folder and create a *.sh file such as coredump.sh
+    ulimit -c unlimited >/dev/null 2>&1
+    2) Edit /etc/sysctl.conf, append the following lines:
 
-kernel.core_uses_pid = 1
-kernel.core_pattern = /tmp/core-%e-%s-%u-%g-%p-%t
-fs.suid_dumpable = 2
+    kernel.core_uses_pid = 1
+    kernel.core_pattern = /tmp/core-%e-%s-%u-%g-%p-%t
+    fs.suid_dumpable = 2
 
-Where:
-kernel.core_uses_pid = 1 – Appends the coring processes PID to the core file name.
-fs.suid_dumpable = 2 – Make sure you get core dumps for setuid programs.
-kernel.core_pattern = /tmp/core-%e-%s-%u-%g-%p-%t – When the application terminates abnormally, a core file should appear in the /tmp. The kernel.core_pattern sysctl controls exact location of core file. You can define the core file name with the following template whih can contain % specifiers which are substituted by the following values when a core file is created:
-%% – A single % character
-%p – PID of dumped process
-%u – real UID of dumped process
-%g – real GID of dumped process
-%s – number of signal causing dump
-%t – time of dump (seconds since 0:00h, 1 Jan 1970)
-%h – hostname (same as ’nodename’ returned by uname(2))
-%e – executable filename
+    Where:
+    kernel.core_uses_pid = 1 – Appends the coring processes PID to the core file name.
+    fs.suid_dumpable = 2 – Make sure you get core dumps for setuid programs.
+    kernel.core_pattern = /tmp/core-%e-%s-%u-%g-%p-%t – When the application terminates abnormally, a core file should appear in the /tmp. The kernel.core_pattern sysctl controls exact location of core file. You can define the core file name with the following template whih can contain % specifiers which are substituted by the following values when a core file is created:
+    %% – A single % character
+    %p – PID of dumped process
+    %u – real UID of dumped process
+    %g – real GID of dumped process
+    %s – number of signal causing dump
+    %t – time of dump (seconds since 0:00h, 1 Jan 1970)
+    %h – hostname (same as ’nodename’ returned by uname(2))
+    %e – executable filename
 
-3) Reload the settings in /etc/sysctl.conf by running the following command:
-$ sysctl -p
+    3) Reload the settings in /etc/sysctl.conf by running the following command:
+    $ sysctl -p
 
 ------------------------------------------------------------------------------------
 /etc/profile vs. /etc/bashrc, Login vs. non-Login shell, Interactive vs. non-Interactive shell
-http://bencane.com/2013/09/16/understanding-a-little-more-about-etcprofile-and-etcbashrc/
-http://askubuntu.com/questions/247738/why-is-etc-profile-not-invoked-for-non-login-shells
-
-
+    http://bencane.com/2013/09/16/understanding-a-little-more-about-etcprofile-and-etcbashrc/
+    http://askubuntu.com/questions/247738/why-is-etc-profile-not-invoked-for-non-login-shells
 
