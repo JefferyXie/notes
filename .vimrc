@@ -313,4 +313,3 @@ set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*.o,*.a
 " :CtrlPBuffer/:CtrlPMRU to start CtrlP in find buffer or MRU file mode
 " :CtrlPMixed to search in files, buffers, and MRU files at the same time
 
-
