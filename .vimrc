@@ -75,15 +75,19 @@ set laststatus=2
 set cursorline " highlight current row
 "set cursorcolumn " highlight current column
 set hlsearch " highlight search result
+highlight Search guibg=Yellow guifg=Black ctermbg=Yellow ctermfg=Black
+
+highlight Comment ctermfg=lightblue 
+highlight LineNr term=bold cterm=NONE ctermfg=DarkGrey ctermbg=NONE gui=NONE guifg=DarkGrey guibg=NONE 
 
 " Disable highlight when <leader><cr> is pressed, <silent> tells vi to show no message
 map <silent> <leader><cr> :noh<cr> 
 " Remove the Windows ^M when encodings get messed up
 noremap <leader>m mmHmt:%s/<C-V><cr>//ge<cr>'tzt'm
 " Search all files in current folder/project and show the occurrences
-nnoremap <leader>vv :grep -ir <cword> --exclude='*.o' --exclude='*.so' --exclude='*.a' */** <cr>:cwindow<cr>
+nnoremap <leader>vv :grep -ir <cword> --exclude='tags' --exclude='*.o' --exclude='*.so' --exclude='*.a' */** <cr>:cwindow<cr>
 " Search all inherited classes
-nnoremap <leader>cc :grep -r :.*<cword> --exclude='*.o' --exclude='*.so' --exclude='*.cpp' --exclude='*.a' */** <cr>:cwindow<cr>
+nnoremap <leader>cc :grep -r :.*<cword> --exclude='tags' --exclude='*.o' --exclude='*.so' --exclude='*.cpp' --exclude='*.a' */** <cr>:cwindow<cr>
 
 set clipboard=unnamedplus " enable copy/paste between different vi instances
 "source $VIMRUNTIME/ftplugin/man.vim " launch man command inside vi
@@ -134,29 +138,22 @@ call vundle#begin()
 
 " let Vundle manage Vundle, required
 Plugin 'gmarik/Vundle.vim'
-Plugin 'Valloric/YouCompleteMe'
+Plugin 'Valloric/YouCompleteMe' " cannot use YCM since it requires glibc2.14+
 Plugin 'scrooloose/syntastic'
 Plugin 'bling/vim-airline' " lean & mean status/tabline for vim that is light as air
 Plugin 'SirVer/ultisnips' " ultimate solution for snippet
 "Plugin 'edsono/vim-matchit'
 Plugin 'elzr/vim-json' " distinct highlighting of keywords vs values, json
-"Plugin 'justinmk/vim-sneak'
-"Plugin 'kien/ctrlp.vim'
 "Plugin 'ludovicchabant/vim-lawrencium'
 Plugin 'majutsushi/tagbar' " browse tags of current file and create a sidebar that displays the ctags-generated tags of current file
 "Plugin 'mhinz/vim-signify'
 "Plugin 'plasticboy/vim-markdown'
-"Plugin 'scrooloose/nerdcommenter'
-"Plugin 'sjl/gundo.vim'
 "Plugin 'tpope/vim-fugitive'
-"Plugin 'tyru/open-browser.vim'
-"Plugin 'vim-scripts/a.vim'
 Plugin 'flazz/vim-colorschemes'
 Plugin 'scrooloose/nerdtree' " explore filesystem and open file and directory
 Plugin 'Xuyuanp/nerdtree-git-plugin' " plugin of NERDTree showing git status flags
 Plugin 'geordanr/pylint' " python syntax check
 Plugin 'Valloric/ListToggle' " toggle the display of quickfix list and location-list
-"Plugin 'nathanaelkane/vim-indent-guides' " visually display indent levels
 "Plugin 'vim-scripts/taglist.vim' " source code browser
 Plugin 'octol/vim-cpp-enhanced-highlight' " highlighting for c++11/14
 Plugin 'Mizuchi/STL-Syntax' " improved c++11/14 STL highlighting
@@ -169,6 +166,13 @@ Plugin 'craigemery/vim-autotag' " automatically discover and properly update cta
 Plugin 'vim-scripts/BufOnly.vim' " Delete all the buffers except the current/named buffer
 ":BufOnly without an argument will unload all buffers but the current one.
 ":BufOnly with an argument will close all buffers but the supplied buffer name/number.
+Plugin 'vim-airline/vim-airline-themes'
+Plugin 'vim-scripts/a.vim' " switch between .h/.c
+Plugin 'klen/python-mode' " python plugin bundle
+Plugin 'davidhalter/jedi-vim' " python auto complete
+Plugin 'ruediger/Boost-Pretty-Printer' " GDB Pretty Printers for Boost
+Plugin 'kshenoy/vim-signature' " toggle, display and navigate marks
+Plugin 'vim-scripts/BOOKMARKS--Mark-and-Highlight-Full-Lines' " Easily Highlight Lines with Marks, and Add/Remove Marks 
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -185,25 +189,21 @@ filetype plugin on
 " see :h vundle for more details or wiki for FAQ
 " Put your non-Plugin stuff after this line
 
-
-" to config YouCompleteMe 
-" https://github.com/yangyangwithgnu/use_vim_as_ide
-let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py'   " 配置默认的ycm_extra_conf.py
-" YCM 补全菜单配色
-" 菜单
-"highlight Pmenu ctermfg=2 ctermbg=3 guifg=#005f87 guibg=#EEE8D5
-" 选中项
-"highlight PmenuSel ctermfg=2 ctermbg=3 guifg=#AFD700 guibg=#106900
-" 补全功能在注释中无效
-let g:ycm_complete_in_comments=0 
-" 允许 vim 加载 .ycm_extra_conf.py 文件，不再提示
-let g:ycm_confirm_extra_conf=0
+" YouCompleteMe config
+" 配置默认的ycm_extra_conf.py
+"let g:ycm_global_ycm_extra_conf = '/home/jexie/jeffery/.ycm_extra_conf.py'   
+let g:ycm_global_ycm_extra_conf = '/home/jexie/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py'
+" 补全功能在注释中有效
+let g:ycm_complete_in_comments=1
+" 允许 vim 加载 .ycm_extra_conf.py 文件，需要提示！
+let g:ycm_confirm_extra_conf=1
+" NEVER load another .ycm_extra_conf.py under debesys folder!
+let g:ycm_extra_conf_globlist = ['/home/jexie/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/*','!/home/jexie/work/debesys/*']
+"let g:ycm_extra_conf_globlist = ['/home/jexie/jeffery/*','!/home/jexie/work/debesys/*']
 " 开启 YCM 标签补全引擎
 let g:ycm_collect_identifiers_from_tags_files=1
 " 引入 C++ 标准库tags
-"set tags+=/usr/include/c++/4.8.3/tags
-" YCM 集成 OmniCppComplete 补全引擎，设置其快捷键
-inoremap <leader>; <C-x><C-o>
+set tags+=/opt/gcc/include/c++/4.9.1/tags
 " 补全内容不以分割子窗口形式出现，只显示补全列表
 set completeopt-=preview
 " 从第一个键入字符就开始罗列匹配项
@@ -212,12 +212,15 @@ let g:ycm_min_num_of_chars_for_completion=1
 let g:ycm_cache_omnifunc=0
 " 语法关键字补全         
 let g:ycm_seed_identifiers_with_syntax=1
+" Goto definition
+nnoremap <leader>jc :YcmCompleter GoToDeclaration<CR>
+" 只能是 #include 或已打开的文件
+nnoremap <leader>jd :YcmCompleter GoToDefinition<CR>
 
 " To avoid YCM conflict with UltiSnips with tab key
 " http://www.alexeyshmalko.com/2014/youcompleteme-ultimate-autocomplete-plugin-for-vim/
 let g:ycm_key_list_select_completion=[]
 let g:ycm_key_list_previous_completion=[]
-
 
 " to config Syntastic, enable c++11 and use libc++ library with gcc
 " http://vi.stackexchange.com/questions/3190/syntastic-c14-support
@@ -225,16 +228,13 @@ let g:syntastic_cpp_checkers=['gcc']
 let g:syntastic_cpp_compiler='gcc'
 let g:syntastic_cpp_compiler_options=' -std=c++11 -stdlib=libc++ '
 "let g:ycm_show_diagnostics_ui=0
-"let g:syntastic_cpp_compiler='clang++'
-"let g:syntastic_cpp_compiler_options=' -std=c++11 -stdlib=libc++ '
 let g:syntastic_always_populate_loc_list=1
-let g:syntastic_auto_loc_list=1
+let g:syntastic_auto_loc_list=0
 let g:syntastic_check_on_open=1
 let g:syntastic_check_on_wq=0
 
 " search first in current directory then file directory for tag file
-set tags=tags,./tags
-
+set tags+=tags,./tags
 
 " airline config: display all buffers when there's only one tab open
 let g:airline#extensions#tabline#enabled=1 " enable the list of buffers
@@ -244,7 +244,6 @@ let g:airline#extensions#tabline#left_alt_sep='|'
 " close current buffer and move to the previous one - to replicate the idea of
 " closing a tab
 nmap <leader>bq :bp <BAR> bd #<CR> 
-
 
 " tagbar config
 nmap <F8> :TagbarToggle<CR>
@@ -273,7 +272,7 @@ let NERDTreeMinimalUI=1
 " 删除文件时自动删除文件对应 buffer
 let NERDTreeAutoDeleteBuffer=1
 " hide file types
-let NERDTreeIgnore=['\.o$','\.so$','\.a$','\.lib$','\.gz$','\.out$','\.so.*$','\.ui$','\.pro$','\.pro.user$','\.pro.user.*$']
+let NERDTreeIgnore=['\.zip$','\.o$','\.so$','\.a$','\.lib$','\.gz$','\.out$','\.so.*$','\.ui$','\.pro$','\.pro.user$','\.pro.user.*$']
 
 " ListToggle config
 let g:lt_location_list_toggle_map='<leader>l' " shortkey to toggle locationlist
@@ -313,4 +312,100 @@ set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*.o,*.a
 " :CtrlPBuffer/:CtrlPMRU to start CtrlP in find buffer or MRU file mode
 " :CtrlPMixed to search in files, buffers, and MRU files at the same time
 
+" this part has been moved to auto-tag plugin
+function! UpdateTags()
+    execute ":!ctags -R --languages=C++ --c++-kinds=+p --fields=+iaS --extra=+q ./ "
+    echohl StatusLine | echo "C/C++ tag updated" | echohl None
+endfunction
+nnoremap <F5> :call UpdateTags()
+
+" a.vim hotkeys
+":A switches to the header file corresponding to the current file being edited (or vise versa)
+":AS splits and switches
+":AV vertical splits and switches
+":IH switches to file under cursor
+":IHS splits and switches
+":IHV vertical splits and switches
+"<Leader>ih switches to file under cursor
+"<Leader>is switches to the alternate file of file under cursor (e.g. on  <foo.h> switches to foo.cpp)
+
+" python-mode config
+" <Leader>b     Set, unset breakpoint (g:pymode_breakpoint enabled)
+" [[            Jump on previous class or function (normal, visual, operator modes)
+" ]]            Jump on next class or function (normal, visual, operator modes)
+" [M            Jump on previous class or method (normal, visual, operator modes)
+" ]M            Jump on next class or method (normal, visual, operator modes)
+let g:pymode_rope = 1 " use davidhalter/jedi-vim instead
+
+" Documentation
+let g:pymode_doc = 1
+let g:pymode_doc_key = 'K'
+
+"Linting
+let g:pymode_lint = 1
+let g:pymode_lint_checker = "pyflakes,pep8"
+" Auto check on save
+let g:pymode_lint_write = 1
+" ignore warning when #columns exceeds 80, empty line at the end of file
+let g:pymode_lint_ignore="E501,W601,W391"
+
+" Support virtualenv
+let g:pymode_virtualenv = 1
+
+" Enable breakpoints plugin
+let g:pymode_breakpoint = 1
+let g:pymode_breakpoint_bind = '<leader>b'
+
+" syntax highlighting
+let g:pymode_syntax = 1
+let g:pymode_syntax_all = 1
+let g:pymode_syntax_indent_errors = g:pymode_syntax_all
+let g:pymode_syntax_space_errors = g:pymode_syntax_all
+
+" Don't autofold code
+let g:pymode_folding = 0
+
+" vim-signature shortcuts
+"  m.           If no mark on line, place the next available mark. Otherwise, remove (first) existing mark.
+"  m-           Delete all marks from the current line
+"  m<Space>     Delete all marks from the current buffer
+"  ]`           Jump to next mark
+"  [`           Jump to prev mark
+"  m/           Open location list and display marks from current buffer
+
+" BOOKMARKS--Mark-and-Highlight-Full-Lines shortcuts
+" <F1>            Turn on/update highlighting for all lines with markers
+" <F2>            Turn off highlighting for lines with markers
+" <SHIFT-F2> Erase all markers [a-z]
+" <F5>             Add a mark on the current line (and highlight)
+" <SHIFT-F5> Remove the mark on the current line
+
+" compile shortcut, how to make sure compile current file's folder?
+nmap <Leader>m :wa<CR>:make<CR>:cw<CR>
+
+function! AutoCompile()
+    execute ":wa"
+    let pre_dir = getcwd()
+    let cur_dir = expand("%:p:h")
+    silent execute ":cd " . cur_dir
+    silent execute ":make"
+    silent execute ":cd " . pre_dir
+    silent execute ":cw"
+    silent execute ":redraw!"
+    "echohl StatusLine | echo "Compiled!" | echohl None
+endfunction
+nmap <Leader>m :call AutoCompile()
+
+" nerdtree-git-plugin config
+let g:NERDTreeIndicatorMapCustom = {
+    \ "Modified"  : "*",
+    \ "Staged"    : "@",
+    \ "Untracked" : "$",
+    \ "Renamed"   : ">",
+    \ "Unmerged"  : "=",
+    \ "Deleted"   : "!",
+    \ "Dirty"     : "!",
+    \ "Clean"     : "&",
+    \ "Unknown"   : "?"
+    \ }
 

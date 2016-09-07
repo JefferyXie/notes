@@ -1,0 +1,27 @@
+[user]
+	name = JefferyXieTT
+	email = jeffery.xie@tradingtechnologies.com
+[core]
+	editor = vi
+[diff]
+	tool = meld
+[merge]
+	tool = meld
+[color]
+    diff = auto
+    status = auto
+    branch = auto
+    interactive = auto
+    ui = true
+    pager = true
+[alias]
+	glog = log --graph --date-order --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
+	myglog = log --graph --date-order --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative --author=\"JefferyXieTT\"
+	st = status
+	co = checkout
+	br = branch
+    unpushed = "!git log origin/$(git name-rev --name-only HEAD).. --name-status"
+    branch-name = "!git rev-parse --abbrev-ref HEAD"
+
+[push]
+	default = current

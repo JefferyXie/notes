@@ -30,6 +30,9 @@ $ yum list available
 Lists all package groups.
 $ yum grouplist
 
+Check whether any updates are available for your installed packages.
+$ yum check-update
+
 ------------------------------------------------------------------------------------
 How to list configured repositories?
 1), command line
@@ -77,9 +80,15 @@ https://www.softwarecollections.org/en/scls/rhscl/devtoolset-3/
 I use Scientific Linux Cern 6 repository to install gcc 4.9 and g++ 4.9 on my CentOS 6.5 and CentOS 6.6 systems. It does not install g++ 4.9.2. It installs g++ 4.9.1 instead which is good enough for my needs.
 Here are the commands I use to install it.
 
+Solution 1:
+$ yum install centos-release-scl-rh
+$ yum install devtoolset-3-gcc devtoolset-3-gcc-c++
+
+Solution 2:
 $ cd /etc/yum.repos.d
 $ wget http://linuxsoft.cern.ch/cern/scl/slc6-scl.repo
 $ yum -y --nogpgcheck install devtoolset-3-gcc devtoolset-3-gcc-c++
+
 To enable the repository:
 $ scl enable devtoolset-3 bash
 
@@ -98,4 +107,43 @@ $ ... Protected multilib versions: libitm-4.8.5-4.el7.i686 != libitm-4.9.1-10.el
 Solution: search related package and remove it -
 $ rpm -aq | grep libitm
 $ yum remove libitm-4.8.5-4.el7.x86_64
+
+
+Query all installed packages and filter by packagename
+$ rpm -qa packagename
+List all files an installed package contains
+$ rpm -ql packagename
+Query a not-yet-installed package and list files included
+$ rpm -qlp packagefilename
+
+------------------------------------------------------------------------------------
+How to install Python 2.7 and Python 3.3 on CentOS 6?
+DON'T INSTALL WITH RPM PACKAGE DIRECTLY WHICH WILL CAUSE PROBLEM!!
+It is critical that you use make altinstall when you install your custom version of Python. If you use the normal make install you will end up with two different versions of Python in the filesystem both named python. This can lead to problems that are very hard to diagnose.
+http://toomuchdata.com/2014/02/16/how-to-install-python-on-centos/
+
+After installation, I want to make python2.7 as default while hiding python2.6 or lower version. Here are what I do in my VM -
+1) see what I have under /usr/bin about python
+> ll | grep python
+-rwxr-xr-x    2 root root        9032 Aug 18 10:14 python
+lrwxrwxrwx    1 root root           6 Aug 23 17:04 python2 -> python
+-rwxr-xr-x    2 root root        9032 Aug 18 10:14 python2.6
+-rwxr-xr-x    1 root root        1418 Aug 18 10:14 python2.6-config
+lrwxrwxrwx    1 root root          16 Aug 23 17:04 python-config -> python2.6-config
+
+2) the python should be identical with python2.6, so remove python
+
+3) remove python2 and python-config
+
+4) then go to /usr/local/bin, add symbol links python, python2, python-config which results in below
+>ll | grep python
+lrwxrwxrwx 1 root root        7 Sep  4 23:06 python -> python2
+lrwxrwxrwx 1 root root        9 Sep  4 23:06 python2 -> python2.7
+-rwxr-xr-x 1 root root     9752 Sep  4 22:25 python2.7
+-rwxr-xr-x 1 root root     1687 Sep  4 22:25 python2.7-config
+lrwxrwxrwx 1 root root       16 Sep  4 23:04 python-config -> python2.7-config
+
+
+How To Install LLVM and Clang on CentOS 6?
+https://www.vultr.com/docs/how-to-install-llvm-and-clang-on-centos-6
 

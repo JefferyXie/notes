@@ -5,7 +5,7 @@ How to config VI?
 1) install Vundle
 https://github.com/VundleVim/Vundle.vim
 
-2), open vi and :PluginInstall to install plugins (inclusing YCM)
+2), open vi and :PluginInstall to install plugins (including YCM)
 
 3), you will receive a warn message as below, don't be scared:
 
@@ -17,11 +17,23 @@ Let's compile YCM modules! You can compile both YCM and clang, or you can use yo
 Make sure you have cmake, python-dev installed.
 
 cd ~/.vim/bundle/YouCompleteMe
-./install.sh --clang-completer
+./install.py --clang-completer
 
-4), update file ~/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py
+4), YCM requires libclang3.8 and will by default download from site. However this version needs GLIBC2.14 or higher. If your OS, such as CentOS 6, doesn't qualify, you should build libclang3.8 with source code and then run below command to install YCM -
+./install.sh --clang-completer --system-libclang
+https://github.com/Valloric/YouCompleteMe/issues/538
 
-5), to enable accessing system clipboard
+Please go to linux-package-commands.txt see how to build libclang3.8!
+
+* Some useful commands for YCM:
+:YcmDiags // see if any errors or warnings were detected in your file. If your YCM doesn't work as expected, this command will tell you details!!!
+:YcmCompleter // list a number of additional IDE-like features in YCM, like semantic GoTo, type information, FixIt and refactoring.
+
+5), update file ~/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py
+You actually can put this file under any folder and even generate file for specific project. After changing the file, run :YcmDiags to see if there's error!!
+http://zx9229.blog.163.com/blog/static/2114492682015521113159673/
+
+6), to enable accessing system clipboard
 http://vim.wikia.com/wiki/Accessing_the_system_clipboard
 $ yum install vim-X11 
 Then add below command to ~/.bashrc:
@@ -36,3 +48,4 @@ https://github.com/Valloric/YouCompleteMe/wiki/Building-Vim-from-source
 
 How to compile and install Ncurses?
 http://archive.linuxfromscratch.org/lfs-museum/3.3/LFS-BOOK-3.3-HTML/chapter06/ncurses.html
+

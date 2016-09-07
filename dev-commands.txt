@@ -11,6 +11,9 @@ Some links of tech resource
     http://www.quickfixengine.org/
     5) UNIX ar Examples: How To Create, View, Extract, Modify C Archive Files (*.a)
     http://www.thegeekstuff.com/2010/08/ar-command-examples/?utm_source=feedburner&utm_medium=feed&utm_campaign=Feed%3A+TheGeekStuff+(The+Geek+Stuff)
+	6) Backup and restore X system
+	http://tamxuanla.blogspot.com/2015/10/how-to-backup-full-centos-server_22.html
+	http://www.centoscn.com/image-text/2013/0418/318.html
 
 ------------------------------------------------------------------------------------
 VI Commands
@@ -32,7 +35,15 @@ VI Commands
 
     4) search word in all files under current folder and list them
     :cw | grep -ir word .
-
+	
+	5) compare difference between files, this uses vimdiff application
+	> vi -d file1 file2 file3
+	   you can also use melt which is gui tool
+	> meld
+	
+	6) open/reload .vimrc without leaving current vi
+	:split $MYVIMRC
+	:source $MYVIMRC
 
 ------------------------------------------------------------------------------------
 Shell command
@@ -69,8 +80,107 @@ Shell command
     $ echo $SHELL
     or
     $ cat /etc/passwd // find your user name line
+	
+	8) Print the lists of directories and candidate libraries stored in the current cache
+	$ ldconfig -p
+	$ ldconfig -p | grep /usr/local
 
+------------------------------------------------------------------------------------
+tmux
 
+	https://danielmiessler.com/study/tmux/
+	http://www.hamvocke.com/blog/a-guide-to-customizing-your-tmux-conf/
+	https://gist.github.com/spicycode/1229612
+	
+	1) with .tmux.conf
+	
+	// split window vertically
+	Ctrl+b v
+	// split window horizontally
+	Ctrl+b s
+
+	// resize pane
+	Ctrl+b J/K/H/L
+
+	// switch/select pane
+	Alt J/K/H/L
+	Alt arrow
+
+	// switch/select window
+	Shift arrow
+
+	2) without .tmux.conf, tmux built-in default commands
+	
+	// split window into left-right panes
+	Ctrl+b %
+
+	// split window into top-bottom panes
+	Ctrl+b "
+
+	// navigate panes
+	Ctrl+b arrow
+
+	// create new window
+	Ctrl+b c
+
+	// go to previous window
+	Ctrl+b p
+
+	// go to next window
+	Ctrl+b n
+
+	// go to specific window
+	Ctrl+b '
+	then input the window's index
+
+	// detach a session
+	Ctrl+b d
+
+	// list sessions
+	Ctrl+b s (works within tmux window)
+	tmux ls
+
+	// attach to an existing session
+	tmux attach -t number
+
+	// kill a session
+	tmux kill-session -t number
+
+------------------------------------------------------------------------------------
+GIT
+
+	1) To view which commit(s) have not yet been pushed
+	$ git log origin/(branch-name)..
+	Or,
+	$ git log origin/(branch-name).. --name_status
+	Or, add alias to 
+	git log origin/$(git name-rev --name-only HEAD).. --name_status
+	
+	2) add files to commit
+	$ git add -A	// stages All
+	$ git add .		// stages new and modified, without deleted
+	$ git add -u	// stages modified and deleted, without new
+	
+	3) undo git reset
+	http://stackoverflow.com/questions/2510276/undoing-git-reset
+	$ git reflog	// list log of all ref updates (e.g., checkout, reset, commit, merge)
+	$ git reset 'HEAD@{1}'	// reset to specific commit
+	Or,
+	$ git reset sha1-hash	// sha1-hash is from ref update list
+	
+	4) compare file difference 
+	$ git diff origin/master -- [local-path]
+	Or,
+	$ git diff origin/branch-name:remote/path/file.txt  local/path/file.txt
+	
+	5) view remote branches
+	$ git branch -r
+	view both local and remote branches
+	$ git branch -a
+	
+	display remote information in general and how it relates to local repository
+	$ git remote show origin
+	
 ------------------------------------------------------------------------------------
 Valgrind
 
@@ -96,12 +206,20 @@ GDB commands:
     $ display i
     $ disp i
 
-    $ watch i // trigger when i changes
+	// hardware watchpoints, triggered when the variable changes
+    $ watch i 
 
     $ delete breakpoint
 
     $ info break
     $ info watch
+	
+	// to print char array/pointer, use /s (treat variable as string if possible) 
+	// char* chArr = "abcd";
+	// void* p = chArr;
+	$ p /s chArr
+	$ p /s (char*)p
+
 
     // break when condition is met
     // http://stackoverflow.com/questions/1354637/how-do-i-set-persistent-and-conditional-watchpoints-on-locally-scoped-variables
@@ -110,6 +228,41 @@ GDB commands:
 
     // remotely debug with DDD
     http://www.codeproject.com/Articles/14983/Remote-Debugging-using-GDB
+	
+	// STL support - GDB pretty-printers
+	https://www.rethinkdb.com/blog/make-debugging-easier-with-custom-pretty-printers/
+	https://sourceware.org/gdb/wiki/STLSupport
+	// to print in the old style, use /r (raw)
+	$ print /r variable
+	
+	// Print a description of the type of expression expr. ptype differs from whatis by printing a detailed description, instead of just the name of the type.
+	$ ptype expr
+	// Show information about the current source file--that is, the source file for the function containing the current point of execution
+	$ info source
+
+	// set breakpoint, variable, custom command inside a file and load it either in .gdbinit or on the fly
+	https://sourceware.org/gdb/onlinedocs/gdb/Command-Files.html
+	
+	// Ctrl-C as program is running
+	What if the program is running but you forgot to set breakpoints? You can hit CTRL-C and that'll stop the program wherever it happens to be and return you to a "(gdb)" prompt. At that point, you could set up a proper breakpoint somewhere and continue to that breakpoint.
+	
+	// info
+	$ info win  // list opened windows in the layout
+	$ focus next // activate next window, or use shortcut Ctrl+x o
+	$ fs n
+	$ fs SRC	// activate the window SRC
+	$ fs CMD	// activate the window CMD
+	
+	Tui short keys -
+	Ctrl+x o // activate next window
+	Ctrl+x a // switch between TUI and terminal
+	Ctrl+l   // refresh screen
+	
+	If current activate window is not CMD, use short keys -
+	Ctrl+p // show previous command
+	Ctrl+n // show next command
+	Ctrl+b // move cursor backwards among the command
+	Ctrl+f // move cursor forwards among the command
 
 ------------------------------------------------------------------------------------
 Network commands
