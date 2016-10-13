@@ -1,0 +1,17 @@
+C++ cast, static_cast, reinterpret_cast, etc.
+https://www.quora.com/How-do-you-explain-the-differences-among-static_cast-reinterpret_cast-const_cast-and-dynamic_cast-to-a-new-C++-programmer
+http://stackoverflow.com/questions/6855686/what-is-the-difference-between-static-cast-and-reinterpret-cast
+
+C++11 rvalues and move semantics confusion (return statement)
+http://stackoverflow.com/questions/4986673/c11-rvalues-and-move-semantics-confusion-return-statement?rq=1
+
+shared_ptr, week_ptr
+http://stackoverflow.com/questions/9200664/how-is-the-stdtr1shared-ptr-implemented
+http://programmers.stackexchange.com/questions/274801/raw-weak-ptr-unique-ptr-shared-ptr-etc-how-to-choose-them-wisely
+http://www.drdobbs.com/weak-pointers/184402026
+
+How much does exception handling impact performance?
+http://stackoverflow.com/questions/13835817/are-exceptions-in-c-really-slow
+
+Stack unwinding and how it works?
+http://stackoverflow.com/questions/2331316/what-is-stack-unwinding

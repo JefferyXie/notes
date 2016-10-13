@@ -14,6 +14,8 @@ Some links of tech resource
 	6) Backup and restore X system
 	http://tamxuanla.blogspot.com/2015/10/how-to-backup-full-centos-server_22.html
 	http://www.centoscn.com/image-text/2013/0418/318.html
+	7) scp command examples: copy file/folder between remote/local, remote/remote
+	http://www.hypexr.org/linux_scp_help.php/
 
 ------------------------------------------------------------------------------------
 VI Commands
@@ -29,6 +31,7 @@ VI Commands
     :%s/foo/bar/g
     replace only whole words exactly match
     :%s/\<foo\>/bar/g
+	
 
     3) search word and list line number in a file
     :g/word/#
@@ -84,6 +87,37 @@ Shell command
 	8) Print the lists of directories and candidate libraries stored in the current cache
 	$ ldconfig -p
 	$ ldconfig -p | grep /usr/local
+	
+	9) 3 ways to view contents of zip file
+	$ unzip -l name.zip
+	$ less name.zip
+	$ vi name.zip
+	
+	10) enable ssh service
+	$ yum install openssh-server openssh-clients  // install packages
+	$ chkconfig sshd on   // ssh service will start automatically goingforward after boot
+	$ service sshd start  // manually start the service
+	
+	// different ways to check if ssh service is on
+	$ service sshd status
+	$ /etc/init.d/sshd status
+	$ netstat -tulpn | grep :22  // check if port 22 is opened
+	$ ps aux | grep sshd
+
+	11) search word and replace in multiple files
+	http://stackoverflow.com/questions/11392478/how-to-replace-a-string-in-multiple-files-in-linux-command-line
+	
+	Use grep + xargs + sed:
+	> grep -rl string1 somedir/ | xargs sed -i 's/string1/string2/g'
+	Examples:
+	> grep -rl 'windows' ./ | xargs sed -i 's/windows/linux/g'
+
+	Use find + sed
+	> find ./ -type f -exec sed -i 's/string1/string2/g' {} \;
+	
+	Separate steps:
+	> cd /your/folder
+	> sed -i 's/string1/string2/g' *
 
 ------------------------------------------------------------------------------------
 tmux
@@ -181,6 +215,39 @@ GIT
 	display remote information in general and how it relates to local repository
 	$ git remote show origin
 	
+	6) [TODO, needs verification!] What if there is merge conflict when push a commit, you want to overwrite local changes with remote?
+
+	// abort the failed automatic merge
+	$ git reset --merge.
+	// $ git merge --abort is equivalent to $ git reset --merge when MERGE_HEAD is present. MERGE_HEAD is present when a merge is in progress.
+
+	// launch merge tool to merge conflicts. As always, make sure you have no uncommitted changes before you start a merge.
+	$ git mergetool
+	...
+
+	----
+	// Since your pull was unsuccessful then just HEAD is the last "valid" commit on your branch (not HEAD^):
+	$ git reset --hard HEAD
+	// The other piece you want is to let their changes over-ride your changes.
+	$ git fetch origin
+	$ git reset --hard origin
+	
+	7) Revert changes made to your working copy, do this:
+	$ git checkout .
+	
+	Revert changes made to the index (i.e., that you have added), do this. Warning this will reset all of your unpushed commits to master!:
+	$ git reset
+
+	If you want to revert a change that you have committed, do this:
+	$ git revert commit-hash-code
+
+	If you want to remove untracked files (e.g., new files, generated files):
+	$ git clean -f
+
+	Or untracked directories (e.g., new or automatically generated directories):
+	$ git clean -fd
+
+
 ------------------------------------------------------------------------------------
 Valgrind
 
@@ -345,3 +412,77 @@ Debug core file
     http://bencane.com/2013/09/16/understanding-a-little-more-about-etcprofile-and-etcbashrc/
     http://askubuntu.com/questions/247738/why-is-etc-profile-not-invoked-for-non-login-shells
 
+VirtualBox: enable symbol links
+	VBoxManage setextradata [VM_NAME] VBoxInternal2/SharedFoldersEnableSymlinksCreate/[SHARE_NAME] 1
+	http://askubuntu.com/questions/446317/how-to-make-guest-os-follow-symlinks-from-shared-folder
+
+	
+------------------------------------------------------------------------------------
+Uninstall software that were installed by '$ make install'
+	http://stackoverflow.com/questions/1439950/whats-the-opposite-of-make-install-ie-how-do-you-uninstall-a-library-in-lin
+	1) firstly try $ make uninstall and see if it works
+	$ make uninstall
+	2) if no, running $ make -n install can be helpful, since it will show the steps that the software would take to install itself but won't actually do anything. You can then manually reverse those steps.
+	$ make -n install
+	3) if no, see if there is a manifest file which lists all the files that were installed with $ make install. (I used this for CodeLite under CentOS6.7.)
+	You can run this command:
+	$ cat install_manifest.txt | xargs echo sudo rm | sh
+
+	
+------------------------------------------------------------------------------------
+Backup whole system or partition, create image file, and used by VirtualBox
+	http://unix.stackexchange.com/questions/132797/how-to-dd-a-remote-disk-using-ssh-on-local-machine-and-save-to-a-local-disk
+	http://serverfault.com/questions/439128/dd-on-entire-disk-but-do-not-want-empty-portion
+
+	1) Backup
+	Run from remote computer
+	$ dd if=/dev/sda | gzip -1 - | ssh user@local dd of=image.gz	// gzip -1, means fastest/lowest compression
+	Run from local computer
+	$ ssh user@remote "dd if=/dev/sda | gzip -1 -" | dd of=image.gz
+
+	Or 
+	$ dd if=/dev/sda | gzip > backup.img.gz							// output image file to the local
+
+	One note: if you had a lot of files which were recently deleted, image size may be still large (deleting file does not necessarily zeroes underlying sectors). You can wipe free space by creating and immediately deleting large file containing zeros:
+	$ dd if=/dev/zero of=bigfile bs=1M     # let it run and quit by disk full error
+	$ rm bigfile
+	
+	2) Restore
+	Restore
+	$ cat backup.img.gz | gunzip | dd of=/dev/sda
+	$ gunzip backup.img.gz | dd of=/dev/sda
+
+	3) Check running status
+	$ pkill -USR1 dd
+	Or
+	$ kill -SIGUSR1 26431(pid)
+
+	Live example:
+	$ ssh skinner "dd if=/dev/sda5 | gzip -1 -" | dd of=image.gz
+	$ ll | grep image.gz
+	-rw-rw-r--.   1 saml saml  59775805 May 31 01:03 image.gz
+
+	4) Use with VirtualBox
+	https://blog.sleeplessbeastie.eu/2012/04/29/virtualbox-convert-raw-image-to-vdi-and-otherwise/
+	Let's assume that we have raw image of the sdb device:
+	$ sudo dd if=/dev/sdb of=./sdb.raw
+	
+	To use it with VirtualBox we need to convert it to the VDI format:
+	$ VBoxManage convertdd sdb.raw sdb.vdi --format VDI
+	
+	To use it with VMware we need to convert it to the VMDK format:
+	$ VBoxManage convertdd sdb.raw sdb.vmdk --format VMDK
+	
+	Convert between VDI/VMDK formats:
+	$ VBoxManage clonehd sdb.vdi sdb.vmdk --format VMDK
+	$ VBoxManage clonehd sdb.vmdk sdb.vdi --format VDI
+	
+	Convert to the RAW image:
+	$ VBoxManage clonehd sdb.vdi sdb.raw --format RAW
+	
+	Alternative solution to get back raw image after applying modifications is to use qemu-img command from qemu package:
+	$ qemu-img convert -f vmdk sdb.vmdk -O raw sdb.raw
+	
+	Now we can write image to the device:
+	$ sudo dd if=./sdb.raw of=/dev/sdb
+		

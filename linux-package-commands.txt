@@ -7,143 +7,155 @@ http://www.rackspace.com/knowledge_center/article/install-epel-and-additional-re
 
 ------------------------------------------------------------------------------------
 How to list all installed packages on CentOS or RHEL?
-http://ask.xmodulo.com/list-all-installed-packages-centos-rhel.html
-1), The easiest way to show all installed packages on CentOS is via rpm command. The following command queries all installed packages and shows the result.
-$ rpm -qa
-However, the rpm command itself does not recognize the notion of repositories. So if you want to get a list of packages installed from a particular repository, rpm cannot help you.
+	http://ask.xmodulo.com/list-all-installed-packages-centos-rhel.html
+	1), The easiest way to show all installed packages on CentOS is via rpm command. The following command queries all installed packages and shows the result.
+	$ rpm -qa
+	However, the rpm command itself does not recognize the notion of repositories. So if you want to get a list of packages installed from a particular repository, rpm cannot help you.
 
-2), Similar to rpm, the yum package manager also allows you to get a list of installed packages.
-$ yum list installed
+	2), Similar to rpm, the yum package manager also allows you to get a list of installed packages.
+	$ yum list installed
 
-Since the yum output contains repository information, if you want to get a list of RPM packages installed from a specific repository only, you can filter the output with grep. The following command shows a list of packages installed from EPEL repository.
-$ yum list installed | grep @epel
+	Since the yum output contains repository information, if you want to get a list of RPM packages installed from a specific repository only, you can filter the output with grep. The following command shows a list of packages installed from EPEL repository.
+	$ yum list installed | grep @epel
 
-Lists all installed and available packages.
-$ yum list all
+	Lists all installed and available packages.
+	$ yum list all
 
-Lists all packages installed on your system. The rightmost column in the output lists the repository from which the package was retrieved.
-$ yum list installed
+	Lists all packages installed on your system. The rightmost column in the output lists the repository from which the package was retrieved.
+	$ yum list installed
 
-Lists all available packages in all enabled repositories.
-$ yum list available
+	Lists all available packages in all enabled repositories.
+	$ yum list available
 
-Lists all package groups.
-$ yum grouplist
+	Lists all package groups.
+	$ yum grouplist
 
-Check whether any updates are available for your installed packages.
-$ yum check-update
+	Check whether any updates are available for your installed packages.
+	$ yum check-update
+
+------------------------------------------------------------------------------------
+Important group package for development
+	$ sudo yum groupinstall "Additional Development"
+	*	Additional Development
+	*   Development tools
+	*   Debugging Tools
+	*	Desktop Debugging and Performance Tools
+	*	Java Platform
+	*	Performance Tools
 
 ------------------------------------------------------------------------------------
 How to list configured repositories?
-1), command line
-http://www.cyberciti.biz/faq/centos-fedora-redhat-yum-repolist-command-tolist-package-repositories/
-Lists the repository ID, name, and number of packages it provides for each enabled repository.
-$ yum repolist
+	1), command line
+	http://www.cyberciti.biz/faq/centos-fedora-redhat-yum-repolist-command-tolist-package-repositories/
+	Lists the repository ID, name, and number of packages it provides for each enabled repository.
+	$ yum repolist
 
-Pass -v for more detailed information
-yum -v repolist
+	Pass -v for more detailed information
+	yum -v repolist
 
-To list only enabled repos, enter:
-$ yum repolist enabled
+	To list only enabled repos, enter:
+	$ yum repolist enabled
 
-To list only disabled repos, enter:
-$ yum repolist disabled
+	To list only disabled repos, enter:
+	$ yum repolist disabled
 
-To list all repos (default), enter:
-$ yum repolist all
+	To list all repos (default), enter:
+	$ yum repolist all
 
-2), check config file yum.repos.d
-This is the path of yum repository
-[root@localhost yum.repos.d]# pwd
-/etc/yum.repos.d
+	2), check config file yum.repos.d
+	This is the path of yum repository
+	[root@localhost yum.repos.d]# pwd
+	/etc/yum.repos.d
 
-This is the content of that directory
-[root@localhost yum.repos.d]# ll
-total 60
--rw-r--r-- 1 root root  179 Jul 17 11:56 adobe-linux-i386.repo
--rw-r--r-- 1 root root 1926 Jun 26 14:59 CentOS-Base.repo
--rw-r--r-- 1 root root  637 Jun 26 14:59 CentOS-Debuginfo.repo
--rw-r--r-- 1 root root  626 Jun 26 14:59 CentOS-Media.repo
--rw-r--r-- 1 root root 2593 Jun 26 14:59 CentOS-Vault.repo
--rw-r--r-- 1 root root  912 Jan 23  2011 elrepo.repo
--rw-r--r-- 1 root root  957 May  9 21:25 epel.repo
--rw-r--r-- 1 root root 1056 May  9 21:25 epel-testing.repo
-.
-.
+	This is the content of that directory
+	[root@localhost yum.repos.d]# ll
+	total 60
+	-rw-r--r-- 1 root root  179 Jul 17 11:56 adobe-linux-i386.repo
+	-rw-r--r-- 1 root root 1926 Jun 26 14:59 CentOS-Base.repo
+	-rw-r--r-- 1 root root  637 Jun 26 14:59 CentOS-Debuginfo.repo
+	-rw-r--r-- 1 root root  626 Jun 26 14:59 CentOS-Media.repo
+	-rw-r--r-- 1 root root 2593 Jun 26 14:59 CentOS-Vault.repo
+	-rw-r--r-- 1 root root  912 Jan 23  2011 elrepo.repo
+	-rw-r--r-- 1 root root  957 May  9 21:25 epel.repo
+	-rw-r--r-- 1 root root 1056 May  9 21:25 epel-testing.repo
+	.
+	.
 
-The difference between yum.conf and yum.repos.d is in earliar system yum.conf (/etc/yum.conf) was using, within a single file we have to configure everything it was very congesting so now what they did is, they created several repo files, instead of one repo file and all the repos are kept under /etc/yum.repos.d/ directory.
+	The difference between yum.conf and yum.repos.d is in earliar system yum.conf (/etc/yum.conf) was using, within a single file we have to configure everything it was very congesting so now what they did is, they created several repo files, instead of one repo file and all the repos are kept under /etc/yum.repos.d/ directory.
 
 ------------------------------------------------------------------------------------
 How to install additional package from extra repository?
-http://superuser.com/questions/834862/how-to-install-g-4-9-2-in-cent-os-6-5
-https://www.softwarecollections.org/en/scls/rhscl/devtoolset-3/
-I use Scientific Linux Cern 6 repository to install gcc 4.9 and g++ 4.9 on my CentOS 6.5 and CentOS 6.6 systems. It does not install g++ 4.9.2. It installs g++ 4.9.1 instead which is good enough for my needs.
-Here are the commands I use to install it.
+	http://superuser.com/questions/834862/how-to-install-g-4-9-2-in-cent-os-6-5
+	https://www.softwarecollections.org/en/scls/rhscl/devtoolset-3/
+	I use Scientific Linux Cern 6 repository to install gcc 4.9 and g++ 4.9 on my CentOS 6.5 and CentOS 6.6 systems. It does not install g++ 4.9.2. It installs g++ 4.9.1 instead which is good enough for my needs.
+	Here are the commands I use to install it.
 
-Solution 1:
-$ yum install centos-release-scl-rh
-$ yum install devtoolset-3-gcc devtoolset-3-gcc-c++
+	Solution 1:
+	$ yum install centos-release-scl-rh
+	$ yum install devtoolset-3-gcc devtoolset-3-gcc-c++
 
-Solution 2:
-$ cd /etc/yum.repos.d
-$ wget http://linuxsoft.cern.ch/cern/scl/slc6-scl.repo
-$ yum -y --nogpgcheck install devtoolset-3-gcc devtoolset-3-gcc-c++
+	Solution 2:
+	$ cd /etc/yum.repos.d
+	$ wget http://linuxsoft.cern.ch/cern/scl/slc6-scl.repo
+	$ yum -y --nogpgcheck install devtoolset-3-gcc devtoolset-3-gcc-c++
 
-To enable the repository:
-$ scl enable devtoolset-3 bash
+	To enable the repository:
+	$ scl enable devtoolset-3 bash
 
-To permanently enable scl on CentOS?
-In your ~/.bashrc or ~/.bash_profile Simply source the "enable" script provided with the devtoolset. For example, with the devtoolset 3, the command is:
-source /opt/rh/devtoolset-3/enable
+	To permanently enable scl on CentOS?
+	In your ~/.bashrc or ~/.bash_profile Simply source the "enable" script provided with the devtoolset. For example, with the devtoolset 3, the command is:
+	source /opt/rh/devtoolset-3/enable
 
 
 ------------------------------------------------------------------------------------
 How to solve "Protected multilib versions" issue when doing update?
-The problem happens when doing update as below -
+	The problem happens when doing update as below -
 
-$ sudo yum update
-$ ... Protected multilib versions: libitm-4.8.5-4.el7.i686 != libitm-4.9.1-10.el7.centos.x86_64
+	$ sudo yum update
+	$ ... Protected multilib versions: libitm-4.8.5-4.el7.i686 != libitm-4.9.1-10.el7.centos.x86_64
 
-Solution: search related package and remove it -
-$ rpm -aq | grep libitm
-$ yum remove libitm-4.8.5-4.el7.x86_64
+	Solution: search related package and remove it -
+	$ rpm -aq | grep libitm
+	$ yum remove libitm-4.8.5-4.el7.x86_64
 
 
-Query all installed packages and filter by packagename
-$ rpm -qa packagename
-List all files an installed package contains
-$ rpm -ql packagename
-Query a not-yet-installed package and list files included
-$ rpm -qlp packagefilename
+	Query all installed packages and filter by packagename
+	$ rpm -qa packagename
+	List all files an installed package contains
+	$ rpm -ql packagename
+	Query a not-yet-installed package and list files included
+	$ rpm -qlp packagefilename
 
 ------------------------------------------------------------------------------------
 How to install Python 2.7 and Python 3.3 on CentOS 6?
-DON'T INSTALL WITH RPM PACKAGE DIRECTLY WHICH WILL CAUSE PROBLEM!!
-It is critical that you use make altinstall when you install your custom version of Python. If you use the normal make install you will end up with two different versions of Python in the filesystem both named python. This can lead to problems that are very hard to diagnose.
-http://toomuchdata.com/2014/02/16/how-to-install-python-on-centos/
+	DON'T INSTALL WITH RPM PACKAGE DIRECTLY WHICH WILL CAUSE PROBLEM!!
+	It is critical that you use make altinstall when you install your custom version of Python. If you use the normal make install you will end up with two different versions of Python in the filesystem both named python. This can lead to problems that are very hard to diagnose.
+	http://toomuchdata.com/2014/02/16/how-to-install-python-on-centos/
 
-After installation, I want to make python2.7 as default while hiding python2.6 or lower version. Here are what I do in my VM -
-1) see what I have under /usr/bin about python
-> ll | grep python
--rwxr-xr-x    2 root root        9032 Aug 18 10:14 python
-lrwxrwxrwx    1 root root           6 Aug 23 17:04 python2 -> python
--rwxr-xr-x    2 root root        9032 Aug 18 10:14 python2.6
--rwxr-xr-x    1 root root        1418 Aug 18 10:14 python2.6-config
-lrwxrwxrwx    1 root root          16 Aug 23 17:04 python-config -> python2.6-config
+	After installation, I want to make python2.7 as default while hiding python2.6 or lower version. Here are what I do in my VM -
+	1) see what I have under /usr/bin about python
+	> ll | grep python
+	-rwxr-xr-x    2 root root        9032 Aug 18 10:14 python
+	lrwxrwxrwx    1 root root           6 Aug 23 17:04 python2 -> python
+	-rwxr-xr-x    2 root root        9032 Aug 18 10:14 python2.6
+	-rwxr-xr-x    1 root root        1418 Aug 18 10:14 python2.6-config
+	lrwxrwxrwx    1 root root          16 Aug 23 17:04 python-config -> python2.6-config
 
-2) the python should be identical with python2.6, so remove python
+	2) the python should be identical with python2.6, so remove python
 
-3) remove python2 and python-config
+	3) remove python2 and python-config
 
-4) then go to /usr/local/bin, add symbol links python, python2, python-config which results in below
->ll | grep python
-lrwxrwxrwx 1 root root        7 Sep  4 23:06 python -> python2
-lrwxrwxrwx 1 root root        9 Sep  4 23:06 python2 -> python2.7
--rwxr-xr-x 1 root root     9752 Sep  4 22:25 python2.7
--rwxr-xr-x 1 root root     1687 Sep  4 22:25 python2.7-config
-lrwxrwxrwx 1 root root       16 Sep  4 23:04 python-config -> python2.7-config
+	4) then go to /usr/local/bin, add symbol links python, python2, python-config which results in below
+	>ll | grep python
+	lrwxrwxrwx 1 root root        7 Sep  4 23:06 python -> python2
+	lrwxrwxrwx 1 root root        9 Sep  4 23:06 python2 -> python2.7
+	-rwxr-xr-x 1 root root     9752 Sep  4 22:25 python2.7
+	-rwxr-xr-x 1 root root     1687 Sep  4 22:25 python2.7-config
+	lrwxrwxrwx 1 root root       16 Sep  4 23:04 python-config -> python2.7-config
 
 
 How To Install LLVM and Clang on CentOS 6?
 https://www.vultr.com/docs/how-to-install-llvm-and-clang-on-centos-6
 
+How to add GNOME to a CentOS Minimal Install?
+http://www.idevelopment.info/data/Unix/Linux/LINUX_AddGNOMEToCentOSMinimalInstall.shtml

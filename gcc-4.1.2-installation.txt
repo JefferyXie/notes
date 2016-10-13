@@ -1,7 +1,4 @@
-'makeinfo' is missing in your system
-
-you might want to install 'Texinfo' package or the 'GNU make' package
-
+------------------------------------------------------------------------------------
 How to install and maintain multiple gcc/g++?
 System is CentOS 7, current gcc/g++ 4.8.5, try to install gcc/g++ 4.1.2
 
@@ -97,3 +94,12 @@ Questions:
 	http://askubuntu.com/questions/60218/how-to-add-a-directory-to-my-path
 	https://help.ubuntu.com/community/EnvironmentVariables
 	http://stackoverflow.com/questions/13428910/how-to-set-the-environmental-variable-ld-library-path-in-linux
+	
+------------------------------------------------------------------------------------
+CentOS6.2编译安装codelite5.3, wxWidgets
+	http://blog.csdn.net/alading2009/article/details/13625153
+
+------------------------------------------------------------------------------------
+CentOS6 compile and install tmux
+	https://gist.github.com/rothgar/cecfbd74597cc35a6018
+
