@@ -49,7 +49,6 @@ define pp
     print $arg0
     print *($arg0)
 end
-
 document pp
     Print pointer and content.
     Syntax: pp pvariable
@@ -58,6 +57,18 @@ document pp
     pp pv
 end
 
+# print smart pointer and content
+define ps
+    print $arg0
+    pp $arg0._M_ptr
+end
+document ps
+    Print smart pointer and content.
+    Syntax: ps pvariable
+    Example:
+    shared_ptr<int> sp(new int(10));
+    ps sp
+end
 
 #
 # void * arr[]  -- via parray command   
@@ -127,12 +138,11 @@ end
 # 
 #python
 #import sys
-#sys.path.insert(0, '/home/jexie/.vim/bundle/STD-Pretty-Printer')
-#sys.path.insert(0, '/home/jexie/.vim/bundle/STD-Pretty-Printer/libstdcxx.v6')
+#sys.path.insert(0, '/home/jeffery/.vim/bundle/STD-Pretty-Printer')
+#sys.path.insert(0, '/home/jeffery/.vim/bundle/STD-Pretty-Printer/libstdcxx.v6')
 #from libstdcxx.v6.printers import register_libstdcxx_printers
+#register_libstdcxx_printers (None)
 #end
-
-#    register_libstdcxx_printers (None)
 
 # Or we can use following tips
 # 
@@ -140,6 +150,4 @@ end
 #
 # C++ related beautifiers (optional)
 #
-
-
 
