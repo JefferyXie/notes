@@ -21,3 +21,7 @@ http://dreamrunner.org/blog/2014/03/09/gflags-jian-ming-shi-yong/
 ***The Boost C++ Libraries (book, articles, guidance)
 http://theboostcpplibraries.com/
 
+
+------------------------------------------------------------------------------------
+libcds: C++ Concurrent Data Structures (lock free)
+http://libcds.sourceforge.net/

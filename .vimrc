@@ -85,15 +85,11 @@ map <silent> <leader><cr> :noh<cr>
 " Remove the Windows ^M when encodings get messed up
 noremap <leader>m mmHmt:%s/<C-V><cr>//ge<cr>'tzt'm
 " Search all files in current folder/project and show the occurrences
-nnoremap <leader>vv :grep -ir <cword> --exclude='tags' --exclude='*.o' --exclude='*.so' --exclude='*.a' */** <cr>:cwindow<cr>
+nnoremap <leader>vv :grep -ir <cword> --exclude='tags' --exclude='*.o' --exclude='*.so' --exclude='*.a' --exclude='*.swp' */** <cr>:cwindow<cr>
 " Search all inherited classes
 nnoremap <leader>cc :grep -r :.*<cword> --exclude='tags' --exclude='*.o' --exclude='*.so' --exclude='*.cpp' --exclude='*.a' */** <cr>:cwindow<cr>
 
 set clipboard=unnamedplus " enable copy/paste between different vi instances
-"source $VIMRUNTIME/ftplugin/man.vim " launch man command inside vi
-" let g:Powerline_colorscheme='solarized256' " set status bar style
-" avoid writing #includes and macros every time you open a cpp file
-autocmd BufNewFile *.cpp r /path/to/file.cpp
 set foldmethod=indent " fold based on indent
 "set foldmethod=syntax " fold based on syntax
 set nofoldenable " turn off fold when launch vi
@@ -156,16 +152,14 @@ Plugin 'geordanr/pylint' " python syntax check
 Plugin 'Valloric/ListToggle' " toggle the display of quickfix list and location-list
 "Plugin 'vim-scripts/taglist.vim' " source code browser
 Plugin 'octol/vim-cpp-enhanced-highlight' " highlighting for c++11/14
-Plugin 'Mizuchi/STL-Syntax' " improved c++11/14 STL highlighting
+"Plugin 'Mizuchi/STL-Syntax' " improved c++11/14 STL highlighting
 Plugin 'Yggdroot/indentLine' " display the indention levels with thin vertical line
 Plugin 'sukima/xmledit' " auto add tag when editing xml
 Plugin 'kien/ctrlp.vim' " CtrlP to search files
-Plugin 'vim-scripts/mru.vim' " manage Most Recently Used files, command :MRU 
+"Plugin 'vim-scripts/mru.vim' " manage Most Recently Used files, command :MRU 
 "Plugin 'vim-scripts/cscope.vim' "create cscope database and connect to existing proper database automatically
 Plugin 'craigemery/vim-autotag' " automatically discover and properly update ctags files on save
 Plugin 'vim-scripts/BufOnly.vim' " Delete all the buffers except the current/named buffer
-":BufOnly without an argument will unload all buffers but the current one.
-":BufOnly with an argument will close all buffers but the supplied buffer name/number.
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'vim-scripts/a.vim' " switch between .h/.c
 Plugin 'klen/python-mode' " python plugin bundle
@@ -179,7 +173,7 @@ call vundle#end()            " required
 "filetype plugin indent on    " required
 " To ignore plugin indent changes, instead use:
 filetype plugin on
-"
+
 " Brief help
 " :PluginList       - lists configured plugins
 " :PluginInstall    - installs plugins; append `!` to update or just :PluginUpdate
@@ -203,7 +197,7 @@ let g:ycm_extra_conf_globlist = ['/home/jexie/.vim/bundle/YouCompleteMe/third_pa
 " 开启 YCM 标签补全引擎
 let g:ycm_collect_identifiers_from_tags_files=1
 " 引入 C++ 标准库tags
-set tags+=/opt/gcc/include/c++/4.9.1/tags
+set tags+=~/c++-4.4.4.tags
 " 补全内容不以分割子窗口形式出现，只显示补全列表
 set completeopt-=preview
 " 从第一个键入字符就开始罗列匹配项
@@ -226,7 +220,9 @@ let g:ycm_key_list_previous_completion=[]
 " http://vi.stackexchange.com/questions/3190/syntastic-c14-support
 let g:syntastic_cpp_checkers=['gcc']
 let g:syntastic_cpp_compiler='gcc'
-let g:syntastic_cpp_compiler_options=' -std=c++11 -stdlib=libc++ '
+let g:syntastic_cpp_compiler_options=' -std=c++14 -stdlib=libc++ '
+" Is it necessary to have below line for python syntax check?
+"let g:syntastic_python_checkers=['pylint']
 "let g:ycm_show_diagnostics_ui=0
 let g:syntastic_always_populate_loc_list=1
 let g:syntastic_auto_loc_list=0
@@ -272,7 +268,7 @@ let NERDTreeMinimalUI=1
 " 删除文件时自动删除文件对应 buffer
 let NERDTreeAutoDeleteBuffer=1
 " hide file types
-let NERDTreeIgnore=['\.zip$','\.o$','\.so$','\.a$','\.lib$','\.gz$','\.out$','\.so.*$','\.ui$','\.pro$','\.pro.user$','\.pro.user.*$']
+let NERDTreeIgnore=['\.swp$','\.zip$','\.o$','\.so$','\.a$','\.lib$','\.gz$','\.out$','\.so.*$','\.ui$','\.pro$','\.pro.user$','\.pro.user.*$']
 
 " ListToggle config
 let g:lt_location_list_toggle_map='<leader>l' " shortkey to toggle locationlist
@@ -282,6 +278,7 @@ let g:lt_height=10
 " vim-cpp-enhanced-highlight config
 let g:cpp_class_scope_highlight=1
 let g:cpp_experimental_template_highlight=1
+let g:cpp_concepts_highlight=1
 
 " indentLine config
 let g:indentLine_char='|'
@@ -314,7 +311,7 @@ set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*.o,*.a
 
 " this part has been moved to auto-tag plugin
 function! UpdateTags()
-    execute ":!ctags -R --languages=C++ --c++-kinds=+p --fields=+iaS --extra=+q ./ "
+    execute ":!ctags -R --language-force=c++ --c++-kinds=+p --fields=+iaS --extra=+q ./ "
     echohl StatusLine | echo "C/C++ tag updated" | echohl None
 endfunction
 nnoremap <F5> :call UpdateTags()
@@ -380,9 +377,7 @@ let g:pymode_folding = 0
 " <F5>             Add a mark on the current line (and highlight)
 " <SHIFT-F5> Remove the mark on the current line
 
-" compile shortcut, how to make sure compile current file's folder?
-nmap <Leader>m :wa<CR>:make<CR>:cw<CR>
-
+" compile shortcut: \m, \mc
 function! AutoCompile()
     execute ":wa"
     let pre_dir = getcwd()
@@ -396,6 +391,27 @@ function! AutoCompile()
 endfunction
 nmap <Leader>m :call AutoCompile()
 
+function! AutoClean()
+    execute ":wa"
+    let pre_dir = getcwd()
+    let cur_dir = expand("%:p:h")
+    silent execute ":cd " . cur_dir
+    silent execute ":make clean"
+    silent execute ":cd " . pre_dir
+    silent execute ":cw"
+    silent execute ":redraw!"
+    "echohl StatusLine | echo "Compiled!" | echohl None
+endfunction
+nmap <Leader>mc :call AutoClean()
+
+" BufOnly shortcut: \qa
+":BufOnly without an argument will unload all buffers but the current one.
+":BufOnly with an argument will close all buffers but the supplied buffer name/number.
+function! BufOnly_close()
+    execute ":BufOnly"
+endfunction
+nmap <Leader>qa :call BufOnly_close()
+
 " nerdtree-git-plugin config
 let g:NERDTreeIndicatorMapCustom = {
     \ "Modified"  : "*",
@@ -404,8 +420,14 @@ let g:NERDTreeIndicatorMapCustom = {
     \ "Renamed"   : ">",
     \ "Unmerged"  : "=",
     \ "Deleted"   : "!",
-    \ "Dirty"     : "^",
+    \ "Dirty"     : "!",
     \ "Clean"     : "&",
     \ "Unknown"   : "?"
     \ }
+
+" enable FZF by adding FZF directory to runtimepath (all vi plugins are part
+" of rtp).
+" :FZF
+" :FZF ..
+set rtp+=~/.fzf
 

@@ -15,3 +15,13 @@ http://stackoverflow.com/questions/13835817/are-exceptions-in-c-really-slow
 
 Stack unwinding and how it works?
 http://stackoverflow.com/questions/2331316/what-is-stack-unwinding
+
+Template Q/A
+https://isocpp.org/wiki/faq/templates
+
+Hans-J. Boehm: multi-threads, memory model
+http://www.hboehm.info/
+
+Using constexpr to Improve Security, Performance and Encapsulation in C++
+http://blog.smartbear.com/c-plus-plus/using-constexpr-to-improve-security-performance-and-encapsulation-in-c/
+http://stackoverflow.com/questions/4748083/when-should-you-use-constexpr-capability-in-c11
