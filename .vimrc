@@ -186,18 +186,18 @@ filetype plugin on
 " YouCompleteMe config
 " 配置默认的ycm_extra_conf.py
 "let g:ycm_global_ycm_extra_conf = '/home/jexie/jeffery/.ycm_extra_conf.py'   
-let g:ycm_global_ycm_extra_conf = '/home/jexie/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py'
+let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py'
 " 补全功能在注释中有效
 let g:ycm_complete_in_comments=1
 " 允许 vim 加载 .ycm_extra_conf.py 文件，需要提示！
 let g:ycm_confirm_extra_conf=1
 " NEVER load another .ycm_extra_conf.py under debesys folder!
-let g:ycm_extra_conf_globlist = ['/home/jexie/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/*','!/home/jexie/work/debesys/*']
+let g:ycm_extra_conf_globlist = ['~/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/*','!~/work/debesys/*']
 "let g:ycm_extra_conf_globlist = ['/home/jexie/jeffery/*','!/home/jexie/work/debesys/*']
 " 开启 YCM 标签补全引擎
 let g:ycm_collect_identifiers_from_tags_files=1
 " 引入 C++ 标准库tags
-set tags+=~/c++-4.4.4.tags
+set tags+=~/c++-4.8.5.tags
 " 补全内容不以分割子窗口形式出现，只显示补全列表
 set completeopt-=preview
 " 从第一个键入字符就开始罗列匹配项
