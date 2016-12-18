@@ -1,8 +1,9 @@
 [user]
-	name = JefferyXieTT
-	email = jeffery.xie@tradingtechnologies.com
+	email = jeffery.xie@gmail.com
+	name = JefferyXie
 [core]
 	editor = vi
+	filemode = false
 [diff]
 	tool = meld
 [merge]
@@ -16,7 +17,7 @@
     pager = true
 [alias]
 	glog = log --graph --date-order --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
-	myglog = log --graph --date-order --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative --author=\"JefferyXieTT\"
+	myglog = log --graph --date-order --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative --author=\"JefferyXie\"
 	st = status
 	co = checkout
 	br = branch

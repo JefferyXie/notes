@@ -163,15 +163,15 @@ filetype plugin on
 
 " YouCompleteMe config
 " 配置默认的ycm_extra_conf.py
-"let g:ycm_global_ycm_extra_conf = '/home/jexie/jeffery/.ycm_extra_conf.py'   
-let g:ycm_global_ycm_extra_conf = '/home/jexie/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py'
+"let g:ycm_global_ycm_extra_conf = '/home/jeffery/.ycm_extra_conf.py'   
+let g:ycm_global_ycm_extra_conf = '/home/jeffery/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py'
 " 补全功能在注释中有效
 let g:ycm_complete_in_comments=1
 " 允许 vim 加载 .ycm_extra_conf.py 文件，需要提示！
 let g:ycm_confirm_extra_conf=1
 " NEVER load another .ycm_extra_conf.py under debesys folder!
-let g:ycm_extra_conf_globlist = ['/home/jexie/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/*','!/home/jexie/work/debesys/*']
-"let g:ycm_extra_conf_globlist = ['/home/jexie/jeffery/*','!/home/jexie/work/debesys/*']
+let g:ycm_extra_conf_globlist = ['/home/jeffery/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/*','!/home/jeffery/work/debesys/*']
+"let g:ycm_extra_conf_globlist = ['/home/jeffery/jeffery/*','!/home/jeffery/work/debesys/*']
 " 开启 YCM 标签补全引擎
 let g:ycm_collect_identifiers_from_tags_files=1
 " 引入 C++ 标准库tags
