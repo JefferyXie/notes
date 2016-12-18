@@ -99,29 +99,6 @@ set tabstop=4 softtabstop=4 shiftwidth=4 expandtab
 " can get around it by holding down shift when selecting text not to go into
 " visual mode allowing you to use the copy menu.
 set mouse=v " with this, copy menu works again
-" don't need below mapping keys to make vi different from windows
-"map <C-a> GVgg
-"map <C-n> :enew
-"map <C-o> :e . <Enter>
-"map <C-s> :w <Enter>
-"map <C-c> y
-"map <C-v> p
-"map <C-x> d
-"map <C-z> u
-"map <C-t> :tabnew <Enter>
-"map <C-i> >>
-"map <C-w> :close <Enter>
-"map <C-W> :q! <Enter>
-"map <C-f> /
-"map <F3> n
-"map <C-h> :%s/
-map <Tab> :bn <Enter>
-" shortcurt for switch among split windows
-"map <C-j> <C-W>j " Ctrl+j = Ctrl+W+j
-"map <C-k> <C-W>k
-"map <C-h> <C-W>h
-"map <C-l> <C-W>l
-
 
 " 5/18/2015: added by Jeffery for Vundle
 set nocompatible              " be iMproved, required
@@ -240,9 +217,6 @@ let g:airline#extensions#tabline#enabled=1 " enable the list of buffers
 let g:airline#extensions#tabline#left_sep=' '
 let g:airline#extensions#tabline#left_alt_sep='|'
 " let g:airline#extensions#tabline#fnamemod=':t' " show just the filename
-" close current buffer and move to the previous one - to replicate the idea of
-" closing a tab
-nmap <leader>bq :bp <BAR> bd #<CR> 
 
 " tagbar config
 nmap <F8> :TagbarToggle<CR>
@@ -381,41 +355,6 @@ let g:pymode_folding = 0
 " <F5>             Add a mark on the current line (and highlight)
 " <SHIFT-F5> Remove the mark on the current line
 
-" compile shortcut: \m, \mc
-function! AutoCompile()
-    execute ":wa"
-    let pre_dir = getcwd()
-    let cur_dir = expand("%:p:h")
-    silent execute ":cd " . cur_dir
-    silent execute ":make"
-    silent execute ":cd " . pre_dir
-    silent execute ":cw"
-    silent execute ":redraw!"
-    "echohl StatusLine | echo "Compiled!" | echohl None
-endfunction
-nmap <Leader>m :call AutoCompile()
-
-function! AutoClean()
-    execute ":wa"
-    let pre_dir = getcwd()
-    let cur_dir = expand("%:p:h")
-    silent execute ":cd " . cur_dir
-    silent execute ":make clean"
-    silent execute ":cd " . pre_dir
-    silent execute ":cw"
-    silent execute ":redraw!"
-    "echohl StatusLine | echo "Compiled!" | echohl None
-endfunction
-nmap <Leader>mc :call AutoClean()
-
-" BufOnly shortcut: \qa
-":BufOnly without an argument will unload all buffers but the current one.
-":BufOnly with an argument will close all buffers but the supplied buffer name/number.
-function! BufOnly_close()
-    execute ":BufOnly"
-endfunction
-nmap <Leader>qa :call BufOnly_close()
-
 " nerdtree-git-plugin config
 let g:NERDTreeIndicatorMapCustom = {
     \ "Modified"  : "*",
@@ -434,4 +373,67 @@ let g:NERDTreeIndicatorMapCustom = {
 " :FZF
 " :FZF ..
 set rtp+=~/.fzf
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"
+"                           shortcuts mapping
+"
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+map <Tab> :bn <Enter>
+map <S-Tab> :bp <Enter>
+" create a new file: Ctrl+N
+map <C-n> :enew <CR>
+
+" close current buffer and move to the previous one: Ctrl+X
+map <C-x> :bp <BAR> bd #<CR>
+
+" close others buffers: Shift+X
+":BufOnly without an argument will unload all buffers but the current one.
+":BufOnly with an argument will close all buffers but the supplied buffer name/number.
+function! BufOnly_close()
+    execute ":BufOnly"
+endfunction
+nmap <S-x> :call BufOnly_close() <cr>
+
+" {make}: Ctrl+M
+function! AutoCompile()
+    execute ":wa"
+    let pre_dir = getcwd()
+    let cur_dir = expand("%:p:h")
+    silent execute ":cd " . cur_dir
+    silent execute ":make"
+    silent execute ":cd " . pre_dir
+    silent execute ":cw"
+    silent execute ":redraw!"
+    echohl StatusLine | echo "Compiled!" | echohl None
+endfunction
+nmap <C-m> :call AutoCompile() <cr>
+
+" {make clean}: Ctrl+C
+function! AutoClean()
+    execute ":wa"
+    let pre_dir = getcwd()
+    let cur_dir = expand("%:p:h")
+    silent execute ":cd " . cur_dir
+    silent execute ":make clean"
+    silent execute ":cd " . pre_dir
+    silent execute ":cw"
+    silent execute ":redraw!"
+    echohl StatusLine | echo "Cleaned up!" | echohl None
+endfunction
+nmap <C-c> :call AutoClean() <cr>
+
+" search shortcut: Ctrl+F
+function! AutoSearch()
+    execute ":wa"
+    "call inputsave()
+    let search_word = input('Search(case insensitive): ')
+    "call inputrestore()
+    let search_cmd = ":grep -ir " . search_word . " --exclude='tags' --exclude='*.o' --exclude='*.so' --exclude='*.a' --exclude='*.swp' */**"
+    silent execute search_cmd
+    silent execute ":cwindow"
+    silent execute ":redraw!"
+endfunction
+nmap <C-f> :call AutoSearch() <cr>
 

@@ -51,11 +51,14 @@ VI Commands
 ------------------------------------------------------------------------------------
 Shell command
 
-    1) find specific file type under directory and count lines in the file
+    1) Find specific file type under directory and count lines in the file
     $ find . -type f -iname *.cpp | xargs wc -l
     $ find . -type f -iname *.cpp -or -iname *.h | xargs wc -l
+
+	Search words within specific depth
+	$ find . -maxdepth 2 -type f -exec grep 'word' {} \;
 	
-	2) find file/folder and delete
+	Find file/folder and delete
 	$ find . -type f -iname filename | xargs -0 rm -f
 	$ find . -type d -iname foldername | xargs -0 rm -r
 	$ find . -type f -iname filename -exec rm -rf {} \;
@@ -256,7 +259,17 @@ GIT
 
 	Or untracked directories (e.g., new or automatically generated directories):
 	$ git clean -fd
+	
+	8) Merge specific file(s) from other branch
+	Checkout latest version from other branch and overwrite existing ones in current branch
+	$ git checkout source_branch <paths>...
 
+	9) Get a list of deleted files and output the full path
+	$ git log --diff-filter=D --summary | grep delete
+	Get the commit id associated with the file
+	$ git log --all -- /file/path
+	View the file's history visually
+	$ gitk -- /file/path
 
 ------------------------------------------------------------------------------------
 Valgrind
@@ -442,8 +455,8 @@ Uninstall software that were installed by '$ make install'
 Fuzzy Finder - FZF
 	1) 3 main search modes:
 	CTRL-T - file search
-	CTRL-R - directory search
-	ALT-C - command line history search
+	CTRL-R - command line history search
+	ALT-C - directory search
 
 	2) Search pattern
 	Token	Description						Match type
@@ -467,6 +480,11 @@ Fuzzy Finder - FZF
 	$ cd **<TAB>
 	Directories under ~/github that match `fzf`
 	$ cd ~/github/fzf**<TAB>
+	Select single/multiple processes with <TAB> or <shift-TAB> keys
+	$ kill -9 <TAB>
+	Select from ssh/export history
+	$ ssh **<TAB>
+	$ export **<TAB>
 
 ------------------------------------------------------------------------------------
 Backup whole system or partition, create image file, and used by VirtualBox
@@ -525,3 +543,16 @@ Backup whole system or partition, create image file, and used by VirtualBox
 	Now we can write image to the device:
 	$ sudo dd if=./sdb.raw of=/dev/sdb
 		
+------------------------------------------------------------------------------------
+Run program automatically
+	Place to make app automatically run on boot
+	http://stackoverflow.com/questions/7221757/run-automatically-program-on-startup-under-linux-ubuntu
+	/etc/init.d
+	/etc/init	// algoserver, hsm scrip files are here to make them auto run, there're environment and parameter inside scripts
+
+	Re-start the program if program fails
+	http://askubuntu.com/questions/251577/how-to-supervise-and-automatically-restart-a-process
+	http://superuser.com/questions/507576/how-to-automatically-restart-a-linux-background-process-if-it-fails
+
+SSH public/private key authentication
+	https://kb.iu.edu/d/aews
