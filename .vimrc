@@ -81,13 +81,13 @@ highlight Comment ctermfg=lightblue
 highlight LineNr term=bold cterm=NONE ctermfg=DarkGrey ctermbg=NONE gui=NONE guifg=DarkGrey guibg=NONE 
 
 " Disable highlight when <leader><cr> is pressed, <silent> tells vi to show no message
-map <silent> <leader><cr> :noh<cr> 
+noremap <silent> <leader><cr> :noh<cr> 
 " Remove the Windows ^M when encodings get messed up
 noremap <leader>m mmHmt:%s/<C-V><cr>//ge<cr>'tzt'm
 " Search all files in current folder/project and show the occurrences
-nnoremap <leader>vv :grep -ir <cword> --exclude='tags' --exclude='*.o' --exclude='*.so' --exclude='*.a' --exclude='*.swp' */** <cr>:cwindow<cr>
+noremap <leader>vv :grep -ir <cword> --exclude='tags' --exclude='*.o' --exclude='*.so' --exclude='*.a' --exclude='*.swp' */** <cr>:cwindow<cr>
 " Search all inherited classes
-nnoremap <leader>cc :grep -r :.*<cword> --exclude='tags' --exclude='*.o' --exclude='*.so' --exclude='*.cpp' --exclude='*.a' */** <cr>:cwindow<cr>
+noremap <leader>cc :grep -r :.*<cword> --exclude='tags' --exclude='*.o' --exclude='*.so' --exclude='*.cpp' --exclude='*.a' */** <cr>:cwindow<cr>
 
 set clipboard=unnamedplus " enable copy/paste between different vi instances
 set foldmethod=indent " fold based on indent
@@ -185,10 +185,10 @@ let g:ycm_cache_omnifunc=0
 " 语法关键字补全         
 let g:ycm_seed_identifiers_with_syntax=1
 " Goto definition, supported in filetypes: 'c, cpp, objc, objcpp, cs, go, python, rust'
-"nnoremap <leader>jc :YcmCompleter GoToDeclaration<CR>
-nnoremap <leader>jc :YcmCompleter GoTo<CR>
+"noremap <leader>jc :YcmCompleter GoToDeclaration<CR>
+noremap <leader>jc :YcmCompleter GoTo<CR>
 " Goto definition, supported in filetypes: 'c, cpp, objc, objcpp, cs, go, javascript, python, rust, typescript'
-nnoremap <leader>jd :YcmCompleter GoToDefinition<CR>
+noremap <leader>jd :YcmCompleter GoToDefinition<CR>
 " specify python version
 let g:ycm_python_binary_path = '/usr/local/bin/python3.3'
 
@@ -220,7 +220,7 @@ let g:airline#extensions#tabline#left_alt_sep='|'
 " let g:airline#extensions#tabline#fnamemod=':t' " show just the filename
 
 " tagbar config
-nmap <F8> :TagbarToggle<CR>
+noremap <F8> :TagbarToggle<CR>
 "let g:tagbar_left=1
 let g:tagbar_right=1
 let g:tagbar_width=20
@@ -234,7 +234,7 @@ autocmd StdinReadPre * let s:std_in=1 " open NERDTree if no file is specified
 autocmd VimEnter * if argc()==0&&!exists("s:std_in") | NERDTree | endif
 " close vi if only window left open is NERDTree
 autocmd bufenter * if (winnr("$")==1&&exists("b:NERDTreeType")&&b:NERDTreeType=="primary") | q | endif
-nmap <F9> :NERDTreeToggle<CR>
+noremap <F9> :NERDTreeToggle<CR>
 " 设置NERDTree子窗口宽度
 let NERDTreeWinSize=25
 " 设置NERDTree子窗口位置
@@ -292,7 +292,7 @@ function! UpdateTags()
     execute ":!ctags -R --language-force=c++ --c++-kinds=+p --fields=+iaS --extra=+q ./ "
     echohl StatusLine | echo "C/C++ tag updated" | echohl None
 endfunction
-nnoremap <F5> :call UpdateTags()
+noremap <F5> :call UpdateTags()
 
 " a.vim hotkeys
 ":A switches to the header file corresponding to the current file being edited (or vise versa)
@@ -381,13 +381,13 @@ set rtp+=~/.fzf
 "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-map <Tab> :bn <Enter>
-map <S-Tab> :bp <Enter>
+noremap <Tab> :bn <Enter>
+noremap <S-Tab> :bp <Enter>
 " create a new file: Ctrl+N
-map <C-n> :enew <CR>
+noremap <C-n> :enew <CR>
 
 " close current buffer and move to the previous one: Ctrl+X
-map <C-x> :bp <BAR> bd #<CR>
+noremap <C-x> :bp <BAR> bd #<CR>
 
 " close others buffers: Shift+X
 ":BufOnly without an argument will unload all buffers but the current one.
@@ -395,7 +395,7 @@ map <C-x> :bp <BAR> bd #<CR>
 function! BufOnly_close()
     execute ":BufOnly"
 endfunction
-nmap <S-x> :call BufOnly_close() <cr>
+noremap <S-x> :call BufOnly_close() <cr>
 
 " {make}: \+M
 function! AutoCompile()
@@ -409,7 +409,7 @@ function! AutoCompile()
     silent execute ":redraw!"
     echohl StatusLine | echo "Compiled!" | echohl None
 endfunction
-nmap <leader>m :call AutoCompile() <cr>
+noremap <leader>m :call AutoCompile() <cr>
 
 " {make clean}: \+C
 function! AutoClean()
@@ -423,7 +423,7 @@ function! AutoClean()
     silent execute ":redraw!"
     echohl StatusLine | echo "Cleaned up!" | echohl None
 endfunction
-nmap <leader>c :call AutoClean() <cr>
+noremap <leader>c :call AutoClean() <cr>
 
 " search shortcut: \+F
 function! AutoSearch()
@@ -436,5 +436,5 @@ function! AutoSearch()
     silent execute ":cwindow"
     silent execute ":redraw!"
 endfunction
-nmap <leader>f :call AutoSearch() <cr>
+noremap <leader>f :call AutoSearch() <cr>
 
