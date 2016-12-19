@@ -163,15 +163,15 @@ filetype plugin on
 
 " YouCompleteMe config
 " 配置默认的ycm_extra_conf.py
-"let g:ycm_global_ycm_extra_conf = '/home/jeffery/.ycm_extra_conf.py'   
-let g:ycm_global_ycm_extra_conf = '/home/jeffery/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py'
+"let g:ycm_global_ycm_extra_conf = '/home/jexie/jeffery/.ycm_extra_conf.py'   
+let g:ycm_global_ycm_extra_conf = '/home/jexie/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py'
 " 补全功能在注释中有效
 let g:ycm_complete_in_comments=1
 " 允许 vim 加载 .ycm_extra_conf.py 文件，需要提示！
 let g:ycm_confirm_extra_conf=1
 " NEVER load another .ycm_extra_conf.py under debesys folder!
-let g:ycm_extra_conf_globlist = ['/home/jeffery/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/*','!/home/jeffery/work/debesys/*']
-"let g:ycm_extra_conf_globlist = ['/home/jeffery/jeffery/*','!/home/jeffery/work/debesys/*']
+let g:ycm_extra_conf_globlist = ['/home/jexie/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/*','!/home/jexie/work/debesys/*']
+"let g:ycm_extra_conf_globlist = ['/home/jexie/jeffery/*','!/home/jexie/work/debesys/*']
 " 开启 YCM 标签补全引擎
 let g:ycm_collect_identifiers_from_tags_files=1
 " 引入 C++ 标准库tags
@@ -184,10 +184,12 @@ let g:ycm_min_num_of_chars_for_completion=1
 let g:ycm_cache_omnifunc=0
 " 语法关键字补全         
 let g:ycm_seed_identifiers_with_syntax=1
-" Goto definition, can be used for python as well
-nnoremap <leader>jc :YcmCompleter GoToDeclaration<CR>
-" Goto definition, can be used for python as well
-nnoremap <leader>jd :YcmCompleter GoToDefinition<CR>
+" Goto definition, supported in filetypes: 'c, cpp, objc, objcpp, cs, go, python, rust'
+"nnoremap <leader>jc :YcmCompleter GoToDeclaration<CR>
+nnoremap <C+'> :YcmCompleter GoTo<CR>
+" Goto definition, supported in filetypes: 'c, cpp, objc, objcpp, cs, go, javascript, python, rust, typescript'
+"nnoremap <leader>jd :YcmCompleter GoToDefinition<CR>
+nnoremap <C+;> :YcmCompleter GoToDefinition<CR>
 " specify python version
 let g:ycm_python_binary_path = '/usr/local/bin/python3.3'
 
@@ -342,7 +344,7 @@ let g:pymode_folding = 0
 
 " vim-signature shortcuts
 "  m.           If no mark on line, place the next available mark. Otherwise, remove (first) existing mark.
-"  m-           Delete all marks from the current line
+  m-           Delete all marks from the current line
 "  m<Space>     Delete all marks from the current buffer
 "  ]`           Jump to next mark
 "  [`           Jump to prev mark
@@ -424,16 +426,16 @@ function! AutoClean()
 endfunction
 nmap <C-c> :call AutoClean() <cr>
 
-" search shortcut: Ctrl+F
+" search shortcut: Shift+F
 function! AutoSearch()
     execute ":wa"
     "call inputsave()
     let search_word = input('Search(case insensitive): ')
     "call inputrestore()
-    let search_cmd = ":grep -ir " . search_word . " --exclude='tags' --exclude='*.o' --exclude='*.so' --exclude='*.a' --exclude='*.swp' */**"
+    let search_cmd = ":grep -ir -F " . "'" . search_word . "'" . " --exclude='tags' --exclude='*.o' --exclude='*.so' --exclude='*.a' --exclude='*.swp' */**"
     silent execute search_cmd
     silent execute ":cwindow"
     silent execute ":redraw!"
 endfunction
-nmap <C-f> :call AutoSearch() <cr>
+nmap <S-f> :call AutoSearch() <cr>
 
