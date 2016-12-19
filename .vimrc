@@ -186,10 +186,9 @@ let g:ycm_cache_omnifunc=0
 let g:ycm_seed_identifiers_with_syntax=1
 " Goto definition, supported in filetypes: 'c, cpp, objc, objcpp, cs, go, python, rust'
 "nnoremap <leader>jc :YcmCompleter GoToDeclaration<CR>
-nnoremap <C+'> :YcmCompleter GoTo<CR>
+nnoremap <leader>jc :YcmCompleter GoTo<CR>
 " Goto definition, supported in filetypes: 'c, cpp, objc, objcpp, cs, go, javascript, python, rust, typescript'
-"nnoremap <leader>jd :YcmCompleter GoToDefinition<CR>
-nnoremap <C+;> :YcmCompleter GoToDefinition<CR>
+nnoremap <leader>jd :YcmCompleter GoToDefinition<CR>
 " specify python version
 let g:ycm_python_binary_path = '/usr/local/bin/python3.3'
 
@@ -344,7 +343,7 @@ let g:pymode_folding = 0
 
 " vim-signature shortcuts
 "  m.           If no mark on line, place the next available mark. Otherwise, remove (first) existing mark.
-  m-           Delete all marks from the current line
+"  m-           Delete all marks from the current line
 "  m<Space>     Delete all marks from the current buffer
 "  ]`           Jump to next mark
 "  [`           Jump to prev mark
@@ -398,7 +397,7 @@ function! BufOnly_close()
 endfunction
 nmap <S-x> :call BufOnly_close() <cr>
 
-" {make}: Ctrl+M
+" {make}: \+M
 function! AutoCompile()
     execute ":wa"
     let pre_dir = getcwd()
@@ -410,9 +409,9 @@ function! AutoCompile()
     silent execute ":redraw!"
     echohl StatusLine | echo "Compiled!" | echohl None
 endfunction
-nmap <C-m> :call AutoCompile() <cr>
+nmap <leader>m :call AutoCompile() <cr>
 
-" {make clean}: Ctrl+C
+" {make clean}: \+C
 function! AutoClean()
     execute ":wa"
     let pre_dir = getcwd()
@@ -424,9 +423,9 @@ function! AutoClean()
     silent execute ":redraw!"
     echohl StatusLine | echo "Cleaned up!" | echohl None
 endfunction
-nmap <C-c> :call AutoClean() <cr>
+nmap <leader>c :call AutoClean() <cr>
 
-" search shortcut: Shift+F
+" search shortcut: \+F
 function! AutoSearch()
     execute ":wa"
     "call inputsave()
@@ -437,5 +436,5 @@ function! AutoSearch()
     silent execute ":cwindow"
     silent execute ":redraw!"
 endfunction
-nmap <S-f> :call AutoSearch() <cr>
+nmap <leader>f :call AutoSearch() <cr>
 
