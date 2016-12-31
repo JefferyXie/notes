@@ -25,3 +25,11 @@ http://theboostcpplibraries.com/
 ------------------------------------------------------------------------------------
 libcds: C++ Concurrent Data Structures (lock free)
 http://libcds.sourceforge.net/
+
+
+------------------------------------------------------------------------------------
+libcurl: client-side URL transfers, http, https, ftp, etc.
+http://curl.haxx.se
+curlpp: C++ version of libcurl
+https://github.com/jpbarrette/curlpp
+

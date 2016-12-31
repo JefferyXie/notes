@@ -125,7 +125,6 @@ Plugin 'majutsushi/tagbar' " browse tags of current file and create a sidebar th
 Plugin 'flazz/vim-colorschemes'
 Plugin 'scrooloose/nerdtree' " explore filesystem and open file and directory
 Plugin 'Xuyuanp/nerdtree-git-plugin' " plugin of NERDTree showing git status flags
-Plugin 'geordanr/pylint' " python syntax check
 Plugin 'Valloric/ListToggle' " toggle the display of quickfix list and location-list
 "Plugin 'vim-scripts/taglist.vim' " source code browser
 Plugin 'octol/vim-cpp-enhanced-highlight' " highlighting for c++11/14
@@ -139,9 +138,9 @@ Plugin 'craigemery/vim-autotag' " automatically discover and properly update cta
 Plugin 'vim-scripts/BufOnly.vim' " Delete all the buffers except the current/named buffer
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'vim-scripts/a.vim' " switch between .h/.c
-Plugin 'klen/python-mode' " python plugin bundle
-"Plugin 'davidhalter/jedi-vim' " python auto complete. No needed since YCM
-"covers it
+"Plugin 'klen/python-mode' " python plugin bundle
+Plugin 'python-mode/python-mode' " python plugin bundle
+"Plugin 'davidhalter/jedi-vim' " python auto complete. No needed since YCM covers it
 Plugin 'ruediger/Boost-Pretty-Printer' " GDB Pretty Printers for Boost
 Plugin 'kshenoy/vim-signature' " toggle, display and navigate marks
 Plugin 'vim-scripts/BOOKMARKS--Mark-and-Highlight-Full-Lines' " Easily Highlight Lines with Marks, and Add/Remove Marks 
@@ -164,13 +163,13 @@ filetype plugin on
 " YouCompleteMe config
 " 配置默认的ycm_extra_conf.py
 "let g:ycm_global_ycm_extra_conf = '/home/jexie/jeffery/.ycm_extra_conf.py'   
-let g:ycm_global_ycm_extra_conf = '/home/jexie/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py'
+let g:ycm_global_ycm_extra_conf = '/home/jeffery/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py'
 " 补全功能在注释中有效
 let g:ycm_complete_in_comments=1
 " 允许 vim 加载 .ycm_extra_conf.py 文件，需要提示！
 let g:ycm_confirm_extra_conf=1
 " NEVER load another .ycm_extra_conf.py under debesys folder!
-let g:ycm_extra_conf_globlist = ['/home/jexie/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/*','!/home/jexie/work/debesys/*']
+let g:ycm_extra_conf_globlist = ['/home/jeffery/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/*','!/home/jeffery/work/debesys/*']
 "let g:ycm_extra_conf_globlist = ['/home/jexie/jeffery/*','!/home/jexie/work/debesys/*']
 " 开启 YCM 标签补全引擎
 let g:ycm_collect_identifiers_from_tags_files=1
@@ -202,13 +201,13 @@ let g:ycm_key_list_previous_completion=[]
 let g:syntastic_cpp_checkers=['gcc']
 let g:syntastic_cpp_compiler='gcc'
 let g:syntastic_cpp_compiler_options=' -std=c++14 -stdlib=libc++ '
-" Is it necessary to have below line for python syntax check?
-"let g:syntastic_python_checkers=['pylint']
 "let g:ycm_show_diagnostics_ui=0
 let g:syntastic_always_populate_loc_list=1
 let g:syntastic_auto_loc_list=0
 let g:syntastic_check_on_open=1
 let g:syntastic_check_on_wq=0
+" disable python check since python-mode does better job than Syntastic
+let g:syntastic_mode_map = { 'passive_filetypes': ['python'] }
 
 " search first in current directory then file directory for tag file
 set tags+=tags,./tags
@@ -246,7 +245,7 @@ let NERDTreeMinimalUI=1
 " 删除文件时自动删除文件对应 buffer
 let NERDTreeAutoDeleteBuffer=1
 " hide file types
-let NERDTreeIgnore=['\.swp$','\.zip$','\.o$','\.so$','\.a$','\.lib$','\.gz$','\.out$','\.so.*$','\.ui$','\.pro$','\.pro.user$','\.pro.user.*$']
+let NERDTreeIgnore=['\.pyc$','\.swp$','\.zip$','\.o$','\.so$','\.a$','\.lib$','\.gz$','\.out$','\.so.*$','\.ui$','\.pro$','\.pro.user$','\.pro.user.*$']
 
 " ListToggle config
 let g:lt_location_list_toggle_map='<leader>l' " shortkey to toggle locationlist
@@ -305,23 +304,26 @@ noremap <F5> :call UpdateTags()
 "<Leader>is switches to the alternate file of file under cursor (e.g. on  <foo.h> switches to foo.cpp)
 
 " python-mode config
+" doesn't need to install pylint, rope, pydoc, pyflakes, etc.
+" <Leader>r     Run python code
 " <Leader>b     Set, unset breakpoint (g:pymode_breakpoint enabled)
-" [[            Jump on previous class or function (normal, visual, operator modes)
-" ]]            Jump on next class or function (normal, visual, operator modes)
-" [M            Jump on previous class or method (normal, visual, operator modes)
-" ]M            Jump on next class or method (normal, visual, operator modes)
-let g:pymode_rope = 1 " use davidhalter/jedi-vim instead
 
-" Documentation
+" by default python-mode uses python 2 syntax checking, we need VI support python3 to enable here
+"let g:pymode_python = 'python3'
+
+" rope is a python refactoring lib, code completion and code assists
+let g:pymode_rope = 0 " disable rope before understanding it
+
+" pydoc show documentation for current word
 let g:pymode_doc = 1
-let g:pymode_doc_key = 'K'
+let g:pymode_doc_bind = '<leader>d' " show pydoc for current word
 
-"Linting
+" pylint is python code static checker
 let g:pymode_lint = 1
-let g:pymode_lint_checker = "pyflakes,pep8" " 11/28/16 should we change to below line?
-" let g:pymode_lint_checkers = ['pylint', 'pyflakes', 'pep8', 'mccabe']
-" Auto check on save
-let g:pymode_lint_write = 1
+let g:pymode_lint_checkers = ['pylint', 'mccabe']
+"let g:pymode_lint_checkers = ['pylint', 'pyflakes', 'pep8', 'mccabe']
+" auto check on save
+let g:pymode_lint_on_write = 1
 " ignore warning when #columns exceeds 80, empty line at the end of file
 let g:pymode_lint_ignore="E501,W601,W391"
 
@@ -340,6 +342,19 @@ let g:pymode_syntax_space_errors = g:pymode_syntax_all
 
 " Don't autofold code
 let g:pymode_folding = 0
+
+" NOT tested yet, from https://realpython.com/blog/python/vim-and-python-a-match-made-in-heaven/
+" python with virtualenv support
+" This determines if you are running inside a virtualenv, and then switches to that specific virtualenv and sets up your system path so that YouCompleteMe will find the appropriate site packages.
+py << EOF
+import os
+import sys
+if 'VIRTUAL_ENV' in os.environ:
+  project_base_dir = os.environ['VIRTUAL_ENV']
+  activate_this = os.path.join(project_base_dir, 'bin/activate_this.py')
+  execfile(activate_this, dict(__file__=activate_this))
+EOF
+" end NOT tested yet
 
 " vim-signature shortcuts
 "  m.           If no mark on line, place the next available mark. Otherwise, remove (first) existing mark.
