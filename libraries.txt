@@ -33,3 +33,29 @@ http://curl.haxx.se
 curlpp: C++ version of libcurl
 https://github.com/jpbarrette/curlpp
 
+// curl command line
+http://stackoverflow.com/questions/356705/how-to-send-a-header-using-a-http-request-through-a-curl-call
+// command line 
+> curl https://id.ttstage.com/oauth/token -d 'grant_type=password&username=jeffery.xie@tradingtechnologies.com&password=Learn123' -H 'Authorization: Basic YjdiOTk3NGU4ZTIyNDRlMzg3YWI2NGNhZGQwZDY2N2E6ODMwYjViMzkxYjQ3NGE0NzgwYTg2OTdkMDM5NmEyNzc2MmFhNDAzNjdlODU0OTU3OGFlNzExNDlkZjhjNzhjNQ==' -v 
+
+// python
+>>> import requests
+>>> r = requests.post(url='https://id.ttstage.com/oauth/token', data={'grant_type': 'password', 'username': 'jeffery.xie@tradingtechnologies.com', 'password': 'Learn123'}, headers={'Authorization': 'Basic YjdiOTk3NGU4ZTIyNDRlMzg3YWI2NGNhZGQwZDY2N2E6ODMwYjViMzkxYjQ3NGE0NzgwYTg2OTdkMDM5NmEyNzc2MmFhNDAzNjdlODU0OTU3OGFlNzExNDlkZjhjNzhjNQ=='})
+>>> print(r.content)
+>>> r.text
+
+------------------------------------------------------------------------------------
+libconfig: reading, manipulating, and writing structured configuration files.
+http://www.hyperrealm.com/libconfig/libconfig_manual.html
+https://www.pacificsimplicity.ca/blog/libconfig-reading-and-editingwriting-c-tutorial
+
+------------------------------------------------------------------------------------
+libjson: C++ interface json lib
+https://sourceforge.net/projects/libjson/
+libjson-c: C interface json lib
+https://linuxprograms.wordpress.com/2010/05/20/json-c-libjson-tutorial/
+https://github.com/json-c/json-c
+
+------------------------------------------------------------------------------------
+UNIX System Calls and Subroutines using C (pointer, file, I/O, process, IPC, socket, thread, etc.)
+https://users.cs.cf.ac.uk/Dave.Marshall/C/

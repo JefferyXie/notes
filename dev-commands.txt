@@ -63,6 +63,9 @@ Shell command
 	$ find . -type d -iname foldername | xargs -0 rm -r
 	$ find . -type f -iname filename -exec rm -rf {} \;
 
+	Find multi-type files, copy and keep origin directory hierachy
+	$ cd your/source/path && find . -type f \( -name *.cpp -o -name *.hpp -o -name *.txt \) -exec cp --parents {} ~/temp/abc/ \;
+
     2) check system memory, virtual memory usage and configuration
     $ free // Check system memory usage
     $ vmstat // Virtual memory statistics, can be used to see thread interruption & context switch times per second
@@ -126,6 +129,15 @@ Shell command
 	Separate steps:
 	> cd /your/folder
 	> sed -i 's/string1/string2/g' *
+	
+	12) use {cut} to distill specific field from output
+	List sub-directories, get the directory name (last second field), and remove the directories
+	> ls -d /your/target/dir | rev | cut -d '/' -f 2 | rev | xargs -r rm -rf
+	The command equals to:
+	> rm -r /your/target/dir/*/
+
+	Get root partition's usage percentage, -P is to output in Posix format so no wrapped lines
+	> df -Ph | awk '$6=="/" {print $5}' | cut -d '%' -f 1
 
 ------------------------------------------------------------------------------------
 tmux
@@ -364,7 +376,20 @@ Network commands
     $ netstat -lnpu // view processes that are listening for udp (t)
     $ ifconfig // can view if multicast is enabled or not
     $ netstat -g // view multicast groups information
+	$ route -n // view gateway/routing table
+	$ netstat -rn // view gateway/routing table
+	$ netstat -ap --unix // list local unix sockets
 
+	tcpdump
+	Command sample one by one
+	http://www.tecmint.com/12-tcpdump-commands-a-network-sniffer-tool/
+	http://rationallyparanoid.com/articles/tcpdump.html
+	Tutorial
+	https://danielmiessler.com/study/tcpdump/#gs.ez4xqXk
+	http://www.alexonlinux.com/tcpdump-for-dummies
+	man page, include details what tcp/ip header is composed of, should read!
+	http://www.tcpdump.org/tcpdump_man.html
+	
 ------------------------------------------------------------------------------------
 Analyze kernel crash
 http://www.dedoimedo.com/computers/crash-analyze.html
