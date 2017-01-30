@@ -581,3 +581,13 @@ Run program automatically
 
 SSH public/private key authentication
 	https://kb.iu.edu/d/aews
+
+HowTo Remove Executable Flag from Files in Virtual Box Shared Folder on Linux Guest
+	https://polach.me/howto-remove-executable-flag-from-files-in-virtual-box-shared-folder-on-linux-guest/
+	Manually mount the shared folder
+		> sudo mount -t vboxsf -o uid=0,gid=1001,umask=007,fmode=660 vm_share /media/sf_vm_share
+			where @gid is groupid of vboxsf (> grep vboxsf /etc/group)
+				  @vm_share is the shared folder's name, see from VirtualBox
+				  @sf_vm_share is the directory name created under /media
+	To auto mount when reboot, add below command to /etc/fstab
+		vm_share /media/sf_vm_share vboxsf rw,fmode=660,umask=007,uid=0,gid=1001, 0 0

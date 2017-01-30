@@ -77,8 +77,9 @@ set cursorline " highlight current row
 set hlsearch " highlight search result
 highlight Search guibg=Yellow guifg=Black ctermbg=Yellow ctermfg=Black
 
-highlight Comment ctermfg=lightblue 
-highlight LineNr term=bold cterm=NONE ctermfg=DarkGrey ctermbg=NONE gui=NONE guifg=DarkGrey guibg=NONE 
+highlight Comment ctermfg=LightBlue 
+highlight LineNr cterm=NONE ctermfg=DarkGrey ctermbg=NONE gui=NONE guifg=DarkGrey guibg=NONE 
+highlight CursorLineNr cterm=bold ctermfg=Yellow ctermbg=DarkGrey gui=bold guifg=Yellow guibg=DarkGrey
 
 " Disable highlight when <leader><cr> is pressed, <silent> tells vi to show no message
 noremap <silent> <leader><cr> :noh<cr> 
@@ -325,7 +326,7 @@ let g:pymode_lint_checkers = ['pylint', 'mccabe']
 " auto check on save
 let g:pymode_lint_on_write = 1
 " ignore warning when #columns exceeds 80, empty line at the end of file
-let g:pymode_lint_ignore="E501,W601,W391"
+let g:pymode_lint_ignore="E501,W601,W391,C0326,C0111"
 
 " Support virtualenv
 let g:pymode_virtualenv = 1
@@ -400,6 +401,17 @@ noremap <Tab> :bn <Enter>
 noremap <S-Tab> :bp <Enter>
 " create a new file: Ctrl+N
 noremap <C-n> :enew <CR>
+" resize current window height by 5 rows
+noremap <C-up> <C-w>+5
+noremap <C-down> <C-w>-5
+" resize current window width by 5 cols
+noremap <C-left> <C-w><5
+noremap <C-right> <C-w>>5
+" move cursor to left/right/up/down window
+noremap <A-left> <C-w><Left>
+noremap <A-right> <C-w><Right>
+noremap <A-up> <C-w><Up>
+noremap <A-down> <C-w><Down>
 
 " close current buffer and move to the previous one: Ctrl+X
 noremap <C-x> :bp <BAR> bd #<CR>
@@ -418,11 +430,18 @@ function! AutoCompile()
     let pre_dir = getcwd()
     let cur_dir = expand("%:p:h")
     silent execute ":cd " . cur_dir
-    silent execute ":make"
+
+    let message_status = "Compiled!"
+    if filereadable("makefile") || filereadable("Makefile")
+        silent execute ":make"
+    else
+        let message_status = "No makefile or Makefile found."
+    endif
+
     silent execute ":cd " . pre_dir
     silent execute ":cw"
     silent execute ":redraw!"
-    echohl StatusLine | echo "Compiled!" | echohl None
+    echohl StatusLine | echo message_status | echohl None
 endfunction
 noremap <leader>m :call AutoCompile() <cr>
 
@@ -432,11 +451,18 @@ function! AutoClean()
     let pre_dir = getcwd()
     let cur_dir = expand("%:p:h")
     silent execute ":cd " . cur_dir
-    silent execute ":make clean"
+
+    let message_status = "Cleaned up!"
+    if filereadable("makefile") || filereadable("Makefile")
+        silent execute ":make clean"
+    else
+        let message_status = "No makefile or Makefile found."
+    endif
+
     silent execute ":cd " . pre_dir
     silent execute ":cw"
     silent execute ":redraw!"
-    echohl StatusLine | echo "Cleaned up!" | echohl None
+    echohl StatusLine | echo message_status | echohl None
 endfunction
 noremap <leader>c :call AutoClean() <cr>
 
@@ -445,11 +471,15 @@ function! AutoSearch()
     execute ":wa"
     "call inputsave()
     let search_word = input('Search(case insensitive): ')
-    "call inputrestore()
-    let search_cmd = ":grep -ir -F " . "'" . search_word . "'" . " --exclude='tags' --exclude='*.o' --exclude='*.so' --exclude='*.a' --exclude='*.swp' */**"
-    silent execute search_cmd
-    silent execute ":cwindow"
-    silent execute ":redraw!"
+    " do nothing if input is just empty character
+    let temp_word = substitute(search_word, '^\s*\(.\{-}\)\s*$', '\1', '')
+    if len(temp_word) > 0
+        "call inputrestore()
+        let search_cmd = ":grep -ir -F " . "'" . search_word . "'" . " --exclude='tags' --exclude='*.o' --exclude='*.so' --exclude='*.a' --exclude='*.swp' */**"
+        silent execute search_cmd
+        silent execute ":cwindow"
+        silent execute ":redraw!"
+    endif
 endfunction
 noremap <leader>f :call AutoSearch() <cr>
 
