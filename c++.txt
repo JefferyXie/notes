@@ -5,6 +5,28 @@ http://stackoverflow.com/questions/6855686/what-is-the-difference-between-static
 C++11 rvalues and move semantics confusion (return statement)
 http://stackoverflow.com/questions/4986673/c11-rvalues-and-move-semantics-confusion-return-statement?rq=1
 
+	http://stackoverflow.com/questions/27501400/the-implementation-of-stdforward
+	// lvalue version
+	template <class T>
+	T&& forward(typename std::remove_reference<T>::type& t) noexcept
+	{
+		return static_cast<T&&>(t);
+	}
+	// rvalue version
+	template <class T>
+	T&& forward(typename std::remove_reference<T>::type&& t) noexcept
+	{
+		static_assert(!std::is_lvalue_reference<T>::value,
+					  "Can not forward an rvalue as an lvalue.");
+		return static_cast<T&&>(t);
+	}
+	http://stackoverflow.com/questions/7510182/how-does-stdmove-transfer-values-into-rvalues
+	template <typename T>
+	typename remove_reference<T>::type&& move(T&& arg)
+	{
+	  return static_cast<typename remove_reference<T>::type&&>(arg);
+	}
+
 shared_ptr, week_ptr
 http://stackoverflow.com/questions/9200664/how-is-the-stdtr1shared-ptr-implemented
 http://programmers.stackexchange.com/questions/274801/raw-weak-ptr-unique-ptr-shared-ptr-etc-how-to-choose-them-wisely
@@ -25,3 +47,10 @@ http://www.hboehm.info/
 Using constexpr to Improve Security, Performance and Encapsulation in C++
 http://blog.smartbear.com/c-plus-plus/using-constexpr-to-improve-security-performance-and-encapsulation-in-c/
 http://stackoverflow.com/questions/4748083/when-should-you-use-constexpr-capability-in-c11
+
+Linux process avoid resource competition - semphore
+http://blog.csdn.net/ljianhui/article/details/10243617
+Linux thread avoid resource competition - semphore
+http://blog.csdn.net/ljianhui/article/details/10813469
+Linux process communication - sig
+http://blog.csdn.net/ljianhui/article/details/10128731

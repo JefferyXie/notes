@@ -5,7 +5,6 @@ https://www.cs.nmt.edu/~risk/TCP-UDP%20Pocket%20Guide.pdf
 TCP Connection Establishment and Termination
 http://www.masterraghu.com/subjects/np/introduction/unix_network_programming_v1.3/ch02lev1sec6.html
 
-
 TCP connection backlog
 http://tangentsoft.net/wskfaq/advanced.html#backlog
 http://alas.matf.bg.ac.rs/manuals/lspe/snode=68.html
@@ -23,6 +22,8 @@ Multicast
 http://tldp.org/HOWTO/Multicast-HOWTO-1.html
 http://ntrg.cs.tcd.ie/undergrad/4ba2/multicast/antony/example.html
 http://www.tack.ch/multicast/
+http://www.thegeekstuff.com/2013/05/ip-multicasting/
+http://slideplayer.com/slide/2874353/
 
 C and Linux Socket topics
 http://www.tenouk.com/cnlinuxsockettutorials.html
@@ -48,3 +49,7 @@ http://www.ulduzsoft.com/2014/01/select-poll-epoll-practical-difference-for-syst
 http://amsekharkernel.blogspot.com/2013/05/what-is-epoll-epoll-vs-select-call-and.html
 https://banu.com/blog/2/how-to-use-epoll-a-complete-example-in-c/
 
+IPC socket/UNIX domain socket
+https://lists.freebsd.org/pipermail/freebsd-performance/2005-February/001143.html
+http://www.tldp.org/LDP/tlk/ipc/ipc.html
+http://beej.us/guide/bgipc/output/html/singlepage/bgipc.html

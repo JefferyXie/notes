@@ -139,7 +139,6 @@ Plugin 'craigemery/vim-autotag' " automatically discover and properly update cta
 Plugin 'vim-scripts/BufOnly.vim' " Delete all the buffers except the current/named buffer
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'vim-scripts/a.vim' " switch between .h/.c
-"Plugin 'klen/python-mode' " python plugin bundle
 Plugin 'python-mode/python-mode' " python plugin bundle
 "Plugin 'davidhalter/jedi-vim' " python auto complete. No needed since YCM covers it
 Plugin 'ruediger/Boost-Pretty-Printer' " GDB Pretty Printers for Boost

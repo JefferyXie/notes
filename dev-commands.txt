@@ -146,60 +146,6 @@ tmux
 	http://www.hamvocke.com/blog/a-guide-to-customizing-your-tmux-conf/
 	https://gist.github.com/spicycode/1229612
 	
-	1) with .tmux.conf
-	
-	// split window vertically
-	Ctrl+b v
-	// split window horizontally
-	Ctrl+b s
-
-	// resize pane
-	Ctrl+b J/K/H/L
-
-	// switch/select pane
-	Alt J/K/H/L
-	Alt arrow
-
-	// switch/select window
-	Shift arrow
-
-	2) without .tmux.conf, tmux built-in default commands
-	
-	// split window into left-right panes
-	Ctrl+b %
-
-	// split window into top-bottom panes
-	Ctrl+b "
-
-	// navigate panes
-	Ctrl+b arrow
-
-	// create new window
-	Ctrl+b c
-
-	// go to previous window
-	Ctrl+b p
-
-	// go to next window
-	Ctrl+b n
-
-	// go to specific window
-	Ctrl+b '
-	then input the window's index
-
-	// detach a session
-	Ctrl+b d
-
-	// list sessions
-	Ctrl+b s (works within tmux window)
-	tmux ls
-
-	// attach to an existing session
-	tmux attach -t number
-
-	// kill a session
-	tmux kill-session -t number
-
 ------------------------------------------------------------------------------------
 GIT
 
@@ -282,6 +228,29 @@ GIT
 	$ git log --all -- /file/path
 	View the file's history visually
 	$ gitk -- /file/path
+
+	10) Rebase/Merge/Stash
+	Rebasing (Optional Prior To Merging) ---
+	
+	In some cases it makes sense to rebase your branch prior to merging.  Only rebase if your branch hasn’t been shared with other developers  (i.e., pushed).  A benefit to rebasing is that the history of master’s commits will be cleaner.
+	In some cases it’s beneficial to squash several commits into a single commit.  For example, to combine code changes and the final touches from a code review.  While checked out to your [branch_name], do git rebase -i COMMIT.  The COMMIT should be the parent of your first commit.  In place of COMMIT, you could substitute the HEAD tilde syntax.  If you had two commits to squash into one, use HEAD~2 since HEAD~2 is the current commit’s first parent’s first parent.  
+	Regardless of how you specify the commit, the command will open an editor with your commits.  A legend will instruct you to type squash (or just s) to squash the commit.  Once the editor is closed all the commits will be squashed into one.  This command can be used for many other uses, squashing is just one.
+	Prior to rebasing, it’s important to get your local repository up to date with the origin. See Fetching Latest Develop for the commands. While checked out to your [branch_name], do git rebase develop.  
+	When merging, you will receive an error indicating that your branch could not be pushed to the origin.  This is expected and benign since your branch’s history has changed.
+	
+	Merging to Develop ---
+	
+	Prior to merging, it’s important to get your local repository up to date with the origin. See Fetching Latest Develop for the commands. Origin/develop and your branch are involved, to see them both in the history do git glog origin/develop [branch_name] (note: the glog alias is shown above).  On the develop branch (git checkout develop), merge the branch into develop via git merge [branch_name].  
+	If there are conflicts in the merge, the merge command will fail and git will list all the files with conflicts and  place conflict markers in each file (git status will print each file).  You must resolve the conflicts to complete the merge.  This can be done by opening each file in your favorite editor and resolving conflicts.  Once completed, git add the_file to inform git the conflict has been resolved.  Conflicts can also be resolved with graphical tools.   Run git mergetool and git will open each file in the merge tool.  It’s not necessary to git add the_file if you use git mergetool, it’s done for you.  Do git commit to finish the conflict resolution.
+	Perform any necessary testing to ensure the newly merged branch does not conflict branches merged during the development.  Minimally recompile all.   Push the new develop to the origin/develop via git push (if a rebase was done, git push origin develop may be preferred to avoid the error that [branch_name] failed to push)..  
+	Now that the branch is no longer needed, it can be deleted.  To delete remotely do git push origin --delete [branch_name].  To delete the branch locally do git branch -d [branch_name].
+	
+	Stashing ---
+	
+	Stashing allows switching between branches without unnecessary commits.  Uncommitted files as well as changes to tracked files will be preserved.  The stash will be associated with the current branch.  To view the stash list, do git stash list.
+	To stash the changes of the repository, do git stash save [OPTIONAL MESSAGE]
+	After stashing, it’s safe to switch to some other branch and perform work.  Once that work is finished, the stashed worked can be retrieved.  Before restoring the stash, switch back to the branch associated with the stash via git checkout [branch_name].
+	Use the following command to restore and delete the stash: git stash pop stash@\{NUMBER\}.  The backslashes are to escape the curly braces to avoid shell interpretation.  If the stash reference is omitted, it will default to stash@{0} (the latest stash).
 
 ------------------------------------------------------------------------------------
 Valgrind
@@ -368,17 +337,18 @@ GDB commands:
 
 ------------------------------------------------------------------------------------
 Network commands
-    $ ss -s // sockets summary
-    $ ss -lp // view open network ports with process name (p)
-    $ ss -aplt // view all tcp (t) listening(l) sockets
-    $ ss -aplu // view all udp (u) listening(l) sockets
-    $ netstat -lnpt // view processes that are listening for tcp (t)
-    $ netstat -lnpu // view processes that are listening for udp (t)
-    $ ifconfig // can view if multicast is enabled or not
-    $ netstat -g // view multicast groups information
-	$ route -n // view gateway/routing table
-	$ netstat -rn // view gateway/routing table
-	$ netstat -ap --unix // list local unix sockets
+    $ ss -s						// sockets summary
+    $ ss -lp					// view open listening network ports with process name (p)
+    $ ss -aplt					// view all tcp (t) listening(l) sockets
+    $ ss -aplu					// view all udp (u) listening(l) sockets
+    $ netstat -lnpt				// view processes that are listening for tcp (t)
+    $ netstat -lnpu				// view processes that are listening for udp (t)
+    $ ifconfig					// can view if multicast is enabled or not
+    $ netstat -g				// view multicast groups information
+	$ route -n					// view gateway/routing table
+	$ netstat -rn				// view gateway/routing table
+	$ netstat -ap --unix		// list local unix sockets
+	$ netstat -g -n				// show multicast group memberships
 
 	tcpdump
 	Command sample one by one
@@ -389,6 +359,24 @@ Network commands
 	http://www.alexonlinux.com/tcpdump-for-dummies
 	man page, include details what tcp/ip header is composed of, should read!
 	http://www.tcpdump.org/tcpdump_man.html
+	> tcpdump -n -i any port 10000 -S -nn -X
+	-n: don't resolve host
+	-i any: any network interface
+	port 10000: specific port 10000
+	-S: output absolute sequence number than relative
+	-nn: don't resolve host or port name
+	-X: show packet's content
+	> tcpdump -aX -vvv -i vlan3148 ip host 10.192.51.144 and port 17601
+	
+	telnet
+	> telnet www.google.com 80 (by default using port 23)
+	> GET / HTTP/1.1
+	> HEAD / HTTP/1.1
+	> GET /search HTTP/1.1
+	
+	Assign multiple IP addresses to one network interface
+	> sudo ifconfig eth0:1 192.168.10.10 netmask 255.255.255.0 up
+	> sudo ifconfig eth0:2 192.168.10.15 netmask 255.255.255.0 up
 	
 ------------------------------------------------------------------------------------
 Analyze kernel crash
