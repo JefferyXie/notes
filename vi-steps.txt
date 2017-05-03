@@ -49,3 +49,18 @@ https://github.com/Valloric/YouCompleteMe/wiki/Building-Vim-from-source
 How to compile and install Ncurses?
 http://archive.linuxfromscratch.org/lfs-museum/3.3/LFS-BOOK-3.3-HTML/chapter06/ncurses.html
 
+------------------------------------------------------------------------------------
+Download ViSimulator for Notepad++
+https://web.archive.org/web/20150515145616/http://www.visimulator.com/download.html
+Copy the .dll file to the plugins folder of Notepad++:
+	C://Program(x86)/notepad++/plugins
+
+Notepad++ plugins:
+Explorer
+JSTool
+Compare
+Converter
+MIME Tools
+NppExport
+ViSimulator
+XML Tools

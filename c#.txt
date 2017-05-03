@@ -1,10 +1,4 @@
 ------------------------------------------------------------------------------------
-Download ViSimulator for Notepad++
-https://web.archive.org/web/20150515145616/http://www.visimulator.com/download.html
-Copy the .dll file to the plugins folder of Notepad++:
-	C://Program(x86)/notepad++/plugins
-
-------------------------------------------------------------------------------------
 async/await
 Async和Await异步编程的原理
 http://blog.csdn.net/dyllove98/article/details/9371839

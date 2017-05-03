@@ -1,0 +1,332 @@
+User id: 11954
+VM ip: 10.195.1.102, gld1vm102
+
+/////////////////////////////////////////////////////////////////////
+Useful customized alias
+	> ralgo
+	> palgo
+	> git unpushed
+	> git glog
+	> git myglog
+
+/////////////////////////////////////////////////////////////////////
+Get & update repository
+    git clone URL DIRECTORY
+    URL - Get this from github (typical debesys value is  git@github.com:tradingtechnologies/debesys.git)
+
+    > git clone git@github.com:tradingtechnologies/debesys.git debesys
+
+    These two commands will copy the submodule to the local repository.
+    > git submodule init
+    > git submodule update
+
+    Check in code
+    > git br
+    > git checkout -b feature/DEB-45028_Algo_flyout_param
+    > git add . -v
+    > git commit -m "DEB-45028 Algo Flying Parameters"
+    > git br
+    > git push origin feature/DEB-45028_Algo_flyout_param
+    > git log
+
+    Merge commits from feature/** branch to develop branch
+    > git checkout develop
+    > git br
+    > git checkout feature/DEB-45294_Algo_register_OCOBracket
+    > git rebase develop
+    > git checkout develop
+    > git merge feature/DEB-45294_Algo_register_OCOBracket
+
+    Cherry pick specific commit from feature/** branch to develop branch
+    > git checkout feature/DEB-45294_Algo_register_OCOBracket
+    > git checkout develop
+    > git cherry-pick 39781274ca46fb58c331f25fa6f1b0071f7dd4cd
+    > git push origin develop
+	
+	Use alias set in .gitconfig
+	> git glog
+	> git myglog
+
+/////////////////////////////////////////////////////////////////////
+Compile & debug algo
+    > dmake all_algo
+    > dmake all_algo config=release
+    > dmake clean_all_algo
+
+    // config files
+    ~/xml/cert, ~/xml/sim, and use 'algoconfig' to go to exe's folder
+    mapping: ~/xml/cert/ ---> 'algoconfig'
+    mapping: ~/xml/sim/ ---> 'algoconfig'
+    ./algoserver_debug.conf
+    ./algoserver_exec.conf
+    // 1) config the user id
+    // 2) config the instance id
+    <zookeeper_user_id></zookeeper_user_id>
+    <chef_environment>int-dev-sim</chef_environment>
+    <instance_identifier>glados-a.jexie.algoserver_exec</instance_identifier>
+	
+	./srl_config_algo.xml
+	1) copy the one from int-dev-cert (/etc/debesys)
+	2) at the top of the file, change below two lines -
+		<License file="/etc/debesys/smds.lic"/>
+		<Logger file="/var/log/debesys/md_client_pricefs.log" level="info" java-log="false" max-size-in-mb="50000" max-log-line="1000" />
+	   to - 
+		<License file="etc/algo_local/srl_license.lic"/>
+		<Logger file="var/log/algo_local/srl.log" level="info" java-log="false" max-size-in-mb="50000" max-log-line="1000" />
+		
+	   and remove line - 
+		<Resource type="AdminMgr" name="admin" port="9160" host="10.192.1.90" use-ialarm="true"/>
+	3) change all vlan3132 to vlan3432
+
+    // algo log files
+    ./debesys/build/x86-64/debug/var/log/algo_local 
+
+    > tail -f algoserver_exec.log
+    > tail -f algoserver_exec_ttlog.log
+
+    // show all alias, custom alias lie in ~/.bashrc
+    > alias
+
+    // launch local proxy server, 'hsm' is an alias
+    > hsm
+
+    // run PriceFS, OrderD
+    > drun pricefs
+    > drun orderd
+
+    // run algo server, at any folder
+    > drun algoserver_exec
+
+    ps aux | grep algo
+    algo/algojob/source/manager.cpp::ProcessAlgoServerMessage
+	
+	// debug your algo 
+	// http://www.cnblogs.com/zhenjing/archive/2011/06/01/gdb_fork.html
+	// 1) break at main entrance by using > break main
+	> gdb /path/to/algoserver_exec   (or > gdb attach pid)
+	> set follow-fork-mode child
+	> run
+	> break main
+	> c
+	....
+	> set follow-fork-mode parent  (after break at the spawned/child process)
+	> break /at/your/algo/code
+	> c
+	
+	// 2) break when fork happens by using > catch exec
+	> gdb /path/to/algoserver_exec   (or > gdb attach pid)
+	> set follow-fork-mode child
+	> catch exec
+	> run
+	.....
+	> set follow-fork-mode parent (after break at the spawned/child process)
+	> break /at/your/algo/code
+	> c
+	
+
+    // TTW: check which server the algo is sent to
+    Chrome -> Developer tool -> Console, search:
+    exch_order_assoc":"glados-a.jexie
+    // TTW: get personal algos json response
+    Chrome -> Developer tool -> Network, and refresh Algo Dashboard widget
+
+/////////////////////////////////////////////////////////////////////
+Deploy an algo
+    1) compile and get your algo so file, in my case it's libsample.so.
+	   Include libttsdk_version.a as static library and libttsdk.so as dynamic library during compilation.
+    2) create and edit metadata.xml with desired algo name, version, etc.
+    3) zip your algo so and metadata.xml into tt_sample.zip
+		> zip tt_sample.zip libsample.so metadata.xml
+    4) download ttsdk rpm https://s3.amazonaws.com/ttsdk-rpm-packages/ttsdk-latest-dev.x86_64.rpm
+    5) install rpm package
+        > rpm -ivh ttsdk-latest-dev.x86_64.rpm
+        To view what is included in this rpm?
+        > rpm -qlp *.rpm
+    6) change PDS settings to your desired environment from ./debesys/algo/tools/globals.py, by default it's ext-prod-sim
+        a) auth_url: get from algoserver_exec.xml -> //ttid_url
+        b) pds_url: get from algoserver_exec.xml -> //rds_server
+        c) token: get from ./debesys/algo/tools/set_env.py
+
+        # below settings are for int-dev-cert
+        auth_url = "https://id.ttstage.com/oauth/token"
+        pds_url = "https://api-int-dev-cert.trade.tt/pds/"
+        token = "b7b9974e8e2244e387ab64cadd0d667a:830b5b391b474a4780a8697d0396a27762aa40367e8549578ae71149df8c78c5"
+
+    7) go to ./debesys/algo/tools or /usr/local/bin
+        Command should follow 'deploy.py -f <algo.zip> [-u user] [-p password]'
+        > python deploy.py -f ../ttsdk/samples_jx/tt_sample.zip -u jeffery.xie@tradingtechnologies.com -p Welcome123
+
+    8) refresh TTW and will see your algo (in my case it's TT_Sample) avaialbe in Algo Dashboard
+
+    9) to undeploy the algo
+        Command should follow 'undeploy.py -a algo_name_or_instrument_id [-u user] [-p password]'
+        > python undeploy.py -a TT_Sample -u jeffery.xie@tradingtechnologies.com -p Welcome123
+
+/////////////////////////////////////////////////////////////////////
+Jenkins
+    $JENKINS_USER, $JENKINS_TOKEN in .bashrc
+
+    View Jenkins website - 
+    https://tradingtechnologies.ci.cloudbees.com/
+    Two projects listed - 
+    debesys
+        The build request will be sent here. You can even manually create a build request with parameters "Build With Parameters" tab.
+    tt_algo_deployment
+        The deployment request will be sent here.
+
+    1. Compile your debesys repo commit-# using the following command. (do git log to get your commit-#)
+
+     ./run python deploy/chef/scripts/request_build.py -t all_algo -r (commit-#) -a -v
+
+      Wait until your commit-# is built (email is sent as Failure or Success) before you deploy the SSE algos to PDS.
+
+    2. Use this commit-# to deploy the 'SSE' modifications to the PDS. 
+
+      ./run python deploy/chef/scripts/request_tt_algo_deploy.py -p dev_cert -b commit-#     -a
+
+      This script takes only 1 min. to deploy. 
+
+    3. Now u can launch your modified SSE algo from the MDTrader.
+
+      This will download the appropriate 'algo.so' to your VM (running algoserver_exec/algojob), where u can debug.
+
+
+Fix issue that cannot connect to wifi
+	ipconfig /renew
+TTW MDTrader
+	Ctrl-Shift x: open instrument details window
+
+// EmCombs client information
+vm internal/external ip: 10.192.2.218/208.184.159.218
+box internal/external ip: 10.192.0.180/208.184.159.219
+vm/box login: bfalloon  Tt16sdk123
+TTW login: emcombs@tradingtechnologies.com  Sunnyday1234!
+Brett's source IP (accessing vm/box): 50.134.137.202, 67.152.170.15
+
+/////////////////////////////////////////////////////////////////////
+Create generic VM in sparepool, and install algoserver_exec
+
+	0, Go to ~/.chef folder and there should have knife and chef pem files there. If no, go to environment setup guide https://docs.google.com/document/d/17ZCdKnADt7SwXyaWst2wQfKfL10wnbp_GPfeSLJNWsQ/edit#heading=h.la9vqmitkn26.
+
+		Open knife.rb and edit the comment by following the instuments shown on top. 
+		You should change the lines: node_name, client_key, validation_key, and cookbook_email.
+
+	1, In your personal dev VM, create a VM in the sparepool by running command under your debesys directory.
+
+		Old version:
+		./run python deploy/chef/scripts/vcloud_server.py -a -s s --bootstrap -o Dev_General 
+		New version:
+		./run python deploy/chef/scripts/temp_vm.py -a -r algoserver_exec -e int-dev-cert -o -v --email jeffery.xie@tradingtechnologies.com
+
+		list your vm -
+		./run python deploy/chef/scripts/temp_vm.py --list jexie
+
+		(this returns the VM name, let's say gla3vm999)
+
+	2, (Old version) Under the same debesys directory, edit the knife node file with desired environment. 
+		You need to have vim as default editor. Put below line into your .bashrc:
+		export EDITOR="$(which vim)"
+		
+		Then run command:
+		./ttknife node edit gla3vm999
+
+		Edit the 'int-dev-sparepool' to 'int-dev-cert' (or any desired environment).
+
+	3, (Old version) In the same file, also edit the 'run_list' for algoserver_exec
+
+		"run_list": [
+		 "recipe[base]",
+		 "recipe[algoserver_exec]"
+		]
+
+	4, Login to the VM and install algoserver_exec.
+
+		Remote to the VM in sparepool we just built
+		> ssh yourname@gla3vm999(or ip)
+
+		Install
+		> sudo chef-client
+
+	5, You should delete the VM in sparepool you created once it's no longer used.
+		> ./run python deploy/chef/scripts/vcloud_server.py -o Dev_General -d gla3vm999
+
+		> ./run python deploy/chef/scripts/temp_vm.py -d gla3vm999
+		
+		To create a clean VM that has none chef installed:
+		> ./run python deploy/chef/scripts/vcloud_server.py -a -s s -o Dev_General
+
+		The commands to run from your workstation to remove the node from Chef (replace gla1vm999 with your node):
+
+/////////////////////////////////////////////////////////////////////
+Remove chef environment from VM in sparepool
+	In your personal VM, run commands:
+	knife node delete --yes gla1vm999
+	knife client delete --yes gla1vm99
+
+	​On gla1vm999, run this command to remove Chef and its data:
+	sudo yum -y remove chef; sudo rm -rf /var/chef; sudo rm -rf /etc/chef; sudo rm -rf /opt/chef​
+
+/////////////////////////////////////////////////////////////////////
+Create instance on AWS
+	> ./run python deploy/chef/scripts/ec2_instance.py -a --bootstrap --ebs-size 30 --intad-ssh-key ~/.ssh/id_rsa
+	> df -h
+	> sudo file -s /dev/xvda
+	> sudo fdisk -l
+
+/////////////////////////////////////////////////////////////////////
+Create VM in sparepool with custom partition size
+
+	1, Create VM with custom partition size
+	> run python deploy/chef/scripts/swarm.py -p 30 -d gla --custom --cpu 2 --memory 4 --cluster Temp_Hive --verbose --lease 14
+	(look in the output for the machine that was created)
+	
+	2, Install the chef environment
+	> run python deploy/chef/scripts/request_bootstrap.py -s gla1vm150
+	
+	3, Change environment
+	> run python deploy/chef/scripts/change_environment.py -s gla1vm150 -e int-dev-cert --run-list algoserver_exec
+
+/////////////////////////////////////////////////////////////////////
+Make RPM package
+	> dmake clean_ttsdk_pkg
+	> dmake ttsdk_pkg
+	> mkdir -p ~/YOURPATH/rpmbuild/{BUILD,RPMS,SOURCES,SPECS,SRPMS}
+	> cp /algo-build/bin/ttsdk.spec ~/YOURPATH/SPECS
+	> cp /algo-build/bin/ttsdk.tar.gz ~/YOURPATH/SOURCES
+	> cd ~/YOURPATH
+	// SHOULD use abs path
+	> rpmbuild -v -bb --define "_topdir /home/jexie/temp/rpmbuild" SPECS/ttsdk.spec
+
+/////////////////////////////////////////////////////////////////////
+Deploy specific cookbook to int-stage-sim
+	./ttknife environment edit int-stage-sim
+		"algoserver_exec": "= 1301.8.0",
+
+
+/////////////////////////////////////////////////////////////////////
+AWS S3
+	1.  We have a new bucket in the Shared AWS account http://tt-algo-sdk.s3-website-us-east-1.amazonaws.com/
+	2.  There is a new role SHARED-ADFS-AlgoSDK that has the ability to upload to this bucket
+	3.  There is an explicit deny bucket policy that prevents anything other than this role or the Admin role from writing to this bucket.
+	4.  The new role has been added to http://go/awsrequest, so if you need it you can put in a request
+
+	Random file from my Desktop to prove it works...http://tt-algo-sdk.s3-website-us-east-1.amazonaws.com/CHANGES.txt
+
+	> python2.7 ./aws_authenticator.py --account shared --role algosdk --boto default > ~/.aws/credentials 
+
+	> aws s3 ls [--profile deb-dev]
+	> aws s3 ls tt-algo-sdk [--profile shared-algosdk]
+	> aws s3 ls s3://tt-algo-sdk
+	> aws s3 rm s3://ttsdk-rpm-packages/hist.txt 
+	> aws s3 cp ~/tt-algo-sdk-stage-4.4.ova s3://tt-algo-sdk
+
+	> aws s3api list-buckets
+	> aws s3api list-buckets --query 'Buckets[].Name'  
+
+	> aws s3 --profile shared-algosdk cp ~/tt-algo-sdk-stage-4.4.ova s3://tt-algo-sdk
+	> aws s3 cp myfolder s3://mybucket/myfolder --recursive
+	> aws s3 cp myDir s3://mybucket/ --recursive --exclude "*.jpg"
+	> aws s3 sync myfolder s3://mybucket/myfolder --exclude *.tmp
+
+	// download to local
+	> aws s3 cp s3://mybucket/test.txt test2.txt
