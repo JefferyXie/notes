@@ -66,6 +66,9 @@ Shell command
 	Find multi-type files, copy and keep origin directory hierachy
 	$ cd your/source/path && find . -type f \( -name *.cpp -o -name *.hpp -o -name *.txt \) -exec cp --parents {} ~/temp/abc/ \;
 
+	Find multi-type files, filter out those in specific multi-folders
+	$ find -type f -iname *.cpp -o -iname *.hpp -o -iname *.c -o -iname *.h | grep -v -e "./ext/" -e "./fixit/"
+
     2) check system memory, virtual memory usage and configuration
     $ free // Check system memory usage
     $ vmstat // Virtual memory statistics, can be used to see thread interruption & context switch times per second
@@ -138,6 +141,14 @@ Shell command
 
 	Get root partition's usage percentage, -P is to output in Posix format so no wrapped lines
 	> df -Ph | awk '$6=="/" {print $5}' | cut -d '%' -f 1
+	
+	13) sudo environment setup
+	http://stackoverflow.com/questions/257616/sudo-changes-path-why
+	sudo tries to be safe when executing external commands.
+	There are two distinct ways to deal with environment variables. By default, the env_reset sudoers
+	option is enabled. This causes commands to be executed with a minimal environment containing TERM, PATH,
+	HOME, SHELL, LOGNAME, USER and USERNAME in addition to variables from the invoking process permitted by
+	the env_check and env_keep sudoers options. There is effectively a whitelist for environment variables.
 
 ------------------------------------------------------------------------------------
 tmux
@@ -579,3 +590,9 @@ HowTo Remove Executable Flag from Files in Virtual Box Shared Folder on Linux Gu
 				  @sf_vm_share is the directory name created under /media
 	To auto mount when reboot, add below command to /etc/fstab
 		vm_share /media/sf_vm_share vboxsf rw,fmode=660,umask=007,uid=0,gid=1001, 0 0
+
+HowTo Config VirtualBox guest OS with static IP
+https://oracle-base.com/articles/linux/linux-network-configuration
+https://wiki.centos.org/FAQ/CentOS6
+http://unix.stackexchange.com/questions/269516/how-to-set-static-ip-for-guest-os-on-virtualbox
+

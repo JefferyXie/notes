@@ -18,6 +18,12 @@ gflags简明使用（解析配置命令行参数）
 http://dreamrunner.org/blog/2014/03/09/gflags-jian-ming-shi-yong/
 
 ------------------------------------------------------------------------------------
+gperftools (originally Google Performance Tools)
+The fastest malloc we’ve seen; works particularly well with threads and STL, plus pretty
+performance analysis tools: thread-friendly heap-checker, heap-profiler, and cpu-profiler.
+https://github.com/gperftools/gperftools
+
+------------------------------------------------------------------------------------
 ***The Boost C++ Libraries (book, articles, guidance)
 http://theboostcpplibraries.com/
 

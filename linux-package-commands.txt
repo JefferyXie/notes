@@ -125,6 +125,8 @@ How to solve "Protected multilib versions" issue when doing update?
 	$ rpm -ql packagename
 	Query a not-yet-installed package and list files included
 	$ rpm -qlp packagefilename
+	Check which package owns the file
+	$ rpm -qf /path/to/the/file
 
 ------------------------------------------------------------------------------------
 How to install Python 2.7 and Python 3.3 on CentOS 6?

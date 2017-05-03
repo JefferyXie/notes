@@ -53,3 +53,13 @@ IPC socket/UNIX domain socket
 https://lists.freebsd.org/pipermail/freebsd-performance/2005-February/001143.html
 http://www.tldp.org/LDP/tlk/ipc/ipc.html
 http://beej.us/guide/bgipc/output/html/singlepage/bgipc.html
+
+SSL/TLS
+http://simplestcodings.blogspot.com.br/2010/08/secure-server-client-using-openssl-in-c.html
+https://www.codeproject.com/Articles/1000189/A-Working-TCP-Client-and-Server-With-SSL
+https://www.codeproject.com/Articles/98355/SMTP-Client-with-SSL-TLS
+http://stackoverflow.com/questions/7698488/turn-a-simple-socket-into-an-ssl-socket
+https://www.cs.utah.edu/~swalton/listings/articles/
+https://wiki.openssl.org/index.php/SSL/TLS_Client
+
+

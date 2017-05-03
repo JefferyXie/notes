@@ -1,4 +1,46 @@
 ------------------------------------------------------------------------------------
+Latency Numbers Every Programmer Should Know
+
+https://gist.github.com/jboner/2841832
+Latency Comparison Numbers
+--------------------------
+L1 cache reference                           0.5 ns
+Branch mispredict                            5   ns
+L2 cache reference                           7   ns                      14x L1 cache
+Mutex lock/unlock                           25   ns
+Main memory reference                      100   ns                      20x L2 cache, 200x L1 cache
+Compress 1K bytes with Zippy             3,000   ns        3 us
+Send 1K bytes over 1 Gbps network       10,000   ns       10 us
+Read 4K randomly from SSD*             150,000   ns      150 us          ~1GB/sec SSD
+Read 1 MB sequentially from memory     250,000   ns      250 us
+Round trip within same datacenter      500,000   ns      500 us
+Read 1 MB sequentially from SSD*     1,000,000   ns    1,000 us    1 ms  ~1GB/sec SSD, 4X memory
+Disk seek                           10,000,000   ns   10,000 us   10 ms  20x datacenter roundtrip
+Read 1 MB sequentially from disk    20,000,000   ns   20,000 us   20 ms  80x memory, 20X SSD
+Send packet CA->Netherlands->CA    150,000,000   ns  150,000 us  150 ms
+
+Notes
+-----
+1 ns = 10^-9 seconds
+1 us = 10^-6 seconds = 1,000 ns
+1 ms = 10^-3 seconds = 1,000 us = 1,000,000 ns
+
+Credit
+------
+By Jeff Dean:               http://research.google.com/people/jeff/
+Originally by Peter Norvig: http://norvig.com/21-days.html#answers
+
+Contributions
+-------------
+Some updates from:       https://gist.github.com/2843375
+'Humanized' comparison:  https://gist.github.com/2843375
+Visual comparison chart: http://i.imgur.com/k0t1e.png
+Animated presentation:   http://prezi.com/pdkvgys-r0y6/latency-numbers-for-programmers-web-development/latency.txt
+
+TODO: many great summaries about hardware cost!!
+http://stackoverflow.com/questions/4087280/approximate-cost-to-access-various-caches-and-main-memory
+
+------------------------------------------------------------------------------------
 C++
 http://programmers.stackexchange.com/questions/183723/low-latency-unix-linux
 http://cppcon.org/using-c-for-low-latency-systems/
@@ -7,6 +49,11 @@ https://github.com/Richard-Rose/SubMicroTrading
 http://www.aristeia.com/FastwareForC++.html
 
 https://www.reddit.com/r/cpp/comments/2klcb6/what_to_expect_for_a_c_interview/
+
+
+------------------------------------------------------------------------------------
+Software optimization resources
+http://agner.org/optimize/
 
 ------------------------------------------------------------------------------------
 Java
@@ -23,6 +70,15 @@ Why memory alignment impacts performance?
 http://www.songho.ca/misc/alignment/dataalign.html
 http://stackoverflow.com/questions/2006216/why-is-data-structure-alignment-important-for-performance
 
+The CPU fetches data from memory in groups of 4 bytes (depend on the hardware, maybe 8/16/32, but lets stick with 4
+to keep it simple), all is well if the data begins in an address which is dividable by 4, the CPU goes to the memory
+address and loads the data.
+Now suppose the data begins in an address not dividable by 4 say for the sake of simplicity at address 1, the CPU
+must take data from address 0 and then apply some algorithm to dump the byte at the 0 address , to gain access to
+the actual data at byte 1. this takes time and therefore lowers preformance. So it is much more efficient to have all
+data addresses aligned.
+It can be even worse if the data structure spawns a boundary that requires an additional bus transaction, then the
+performance goes out the window.
 
 ------------------------------------------------------------------------------------
 CPU, memory cache
@@ -38,7 +94,28 @@ CPU Cache and Why you care?
 http://www.aristeia.com/TalkNotes/ACCU2011_CPUCaches.pdf
 Why is one loop so much slower than two loops?
 http://stackoverflow.com/questions/8547778/why-is-one-loop-so-much-slower-than-two-loops
+How do cache lines work?
+http://stackoverflow.com/questions/3928995/how-do-cache-lines-work
 
+Dirty data, dirty bit, and how to keep memory coherent works?
+https://www.quora.com/What-does-dirty-mean-in-the-context-of-caching
+https://www.quora.com/How-is-the-dirty-bit-of-caches-in-microprocessors-related-to-cache-coherence-or-cache-consistency
+Cache coherence in shared-memory architectures
+http://www.cs.utexas.edu/~pingali/CS377P/2017sp/lectures/mesi.pdf
+
+Dirty data: the data in the cache is called dirty data, if it's modified within cache but not modified in main memory.
+Dirty/Modified bit: is a cache line condition(status) identifier, showing whether contents of a particular cache line are
+different to what is stored in operating memory.
+1) CPU writes to variable in a cache line, this cache line will have dirty bit set
+2) CPU informs all CPUs about the change so same cache line across CPUs have state as Invalid 
+   (cache coherency states including Shared, Modified, Exclusive and Invalid)
+3) CPU (any) accesses same variable, and finds the cache line Invalid or dirty bit set
+4) CPU inquery all CPUS so the one holdings dirty bit will write data back to main memory, and
+   change the line status to Exclusive; the same cache line in other CPUs will be marked as Invalid
+5) CPU that has Invalid cache line needs to read data from main memory again
+
+Eliminate False Sharing
+http://www.drdobbs.com/parallel/eliminate-false-sharing/217500206?pgno=1
 
 ------------------------------------------------------------------------------------
 Lock free
@@ -51,3 +128,7 @@ https://github.com/natsys/blog/blob/master/lockfree_rb_q.cc
 http://www.codeproject.com/Articles/153898/Yet-another-implementation-of-a-lock-free-circular
 
 
+------------------------------------------------------------------------------------
+futex vs. mutex (sample codes included)
+https://www.quora.com/How-different-is-a-futex-from-mutex-conceptually-and-also-implementation-wise
+http://www.kernel.org/pub/linux/kernel/people/rusty/futex-2.2.tar.gz
