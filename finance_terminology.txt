@@ -1,0 +1,111 @@
+---
+The 10-year Treasury Rate
+
+The 10-year treasury rate is the yield to maturity of the most recently auctioned 10-year Treasury bond. This is not to be mistaken for the fixed interest rate that is paid. The Yield to maturity or YTM is determined by the market price of the bond and the coupon's interest rate.
+
+---
+Interest rate future
+
+An interest rate future is a financial derivative (a futures contract) with an interest-bearing instrument as the underlying asset.[1] It is a particular type of interest rate derivative.
+
+Examples include Treasury-bill futures, Treasury-bond futures and Eurodollar futures.
+
+---
+STIRS
+A short-term interest rate (STIR) future is a futures contract that derives its value from the interest rate at maturation. Common short-term interest rate futures are Eurodollar, Euribor, Euroyen, Short Sterling and Euroswiss, which are calculated on LIBOR at settlement, with the exception of Euribor which is based on Euribor. This value is calculated as 100 minus the interest rate. Contracts vary, but are often defined on an interest rate index such as 3-month sterling or US dollar LIBOR.
+
+---
+IMM: International Monetary Market, spin-off from CME, prevalent contracts traded are currency futures and interest rate futures, specifically, 3-month Eurodollar time deposits and 90-day U.S. Treasury bills.
+CME: including IMM, NYMEX, COMEX, CBOT
+
+CBOE Holdings: CBOE, CFE, C2, BATS
+CFE: CBOE Futures Exchange (CFE®) is the home of volatility futures, featuring futures on the CBOE® Volatility Index (VIX®).
+C2: options exchange, an all-electronic exchange, is a wholly-owned subsidiary of CBOE Holdings, Inc.
+
+ICE: Intercontinental Exchange 
+
+TOCOM: Tokyo Commodity Exchange, Inc. TOCOM operates electronic markets for precious metals, oil, rubber and soft commodities.
+TSE: Tokyo Stock Exchange
+
+---
+Clearing house vs. Exchange
+An exchange is a marketplace for trades, one that provides the match making engine and players that bring liquidity. When trades are executed and matched off, there needs to be a bank or other financial institution that will do the net settlement of funds, this is a clearing house.
+
+A better way to understand is that exchanges usually require a clearing house to settle the funds associated with the trades. An exchange does not handle the clearing (or settlement) of funds by itself.
+
+Any settlement bank that handles funds or net-off settlement on behalf of a client is essentially a clearing house.
+
+---
+Brokers vs. Traders
+http://www.investopedia.com/articles/financialcareers/07/broker_trader.asp
+While both brokers and traders purchase and sell securities, brokers are also sales agents, either on their own behalf or for a securities or brokerage firm. Traders, on the other hand, tend to work for a large investment management firm, and they buy and sell - or trade - securities on behalf of the assets managed by that firm.
+
+Brokers tend to have direct contact with clients, either individual or institutional, and buy and sell securities based on those clients' wishes. Traders, on the other hand, tend to buy or sell securities based on the wishes of a portfolio manager (or managers) at an investment firm.
+
+Finally, a broker is also a sales agent and is responsible for obtaining and maintaining a client roster.
+
+---
+Dealer vs. Market Maker vs. Broker
+https://www.quora.com/What-is-the-difference-between-a-market-maker-broker-and-a-dealer
+1. Broker is the middleman between investor and the market. It's necessary mainly due to clearing purpose. For example, if you claim you are going to buy 1000 shares of AAPL at $114.50, how does the exchange know you are going to honor your trade? And how does the exchange know you actually have the money to pay for the shares? Your broker makes sure to only execute trades that you can afford. And in case of derivatives, it makes sure you have enough margin, so that when you need to pay the counterparty you're actually going to honor the contract. Of course, broker can provide other value-added service to their clients, like data/research service, margin service, execution consulting and so on.
+
+2. We usually refer market maker to one who stands in an exchange, and dealer to one who operates in OTC market. I'll explain the difference between exchange and OTC market and you can perhaps see more clearly the difference between market maker and dealer.
+
+(1) Exchange is a place where everyone trades against everyone. Most of the exchanges employs the double auction as the way to establish prices. That is, buyers post bid price, which is the price they are willing to pay to buy the asset; sellers post ask price, the price they are willing to accept to sell the asset. The bid and ask prices posted are anonymous, giving more protection to the one who posts. In an exchange, the price is known before a trade by everyone (called pre-trade transparency), and when a trade occurs everyone sees the transaction price (post-trade transparency). Stocks, options and some bond and FX trades on exchanges.
+
+MM (market maker) is referred to someone who stands in the market as a bridge between buyers and sellers. They are indispensable because buyers and sellers generally don't arrive at the same time in the market. Without them, trades might not even be feasible, or price could vary too much depending on the demand and supply at the time. 
+
+One other thing I want to point out that MM nowadays doesn't work as Doyle Olson described in his answer. He probably was thinking about NYSE "specialist", who is sort of not-for-profit and mainly serve to maintain market order. Today high frequency traders dominate the MM business. They indeed make money from spreads, but more importantly they actively manage their inventory positions and engage in predictive trading. What it means is that if they see a lot of buys and very little sell orders coming in, they are not going to passively sit there and fulfill all buy orders and hope later someone will want to sell. If they could forecast more buy orders, they would rather buy ahead of real buyers and then sell to them at a higher price. The tradition MM cannot survive nowadays given the regulation and technology change.
+
+(2) Over-the-counter (OTC) market is characterized by lack of transparency. Here you can only see the price the dealer quotes you, and you can usually compares quotes at different dealers, but there's no centralized place that displace all quotes (thus dealers might give you different quotes depending on who you are, like if you're a noob a car dealer might highball you). And often after a trade occurs, there's no system that disseminates the trade price. If you have a hard time imagining what it is like, just think about car dealers.
+
+You might wonder why we need this kind of market. It exists mainly for two reasons. One is that for products that are not standardized, like used car, you have to value each traded object individually, so it is not efficient to post bid and ask for each object, nor is it feasible. Another reason is that in exchange, you don't know who you are trading against, but you do in OTC market. That could be important if the identity of trader has information content, especially on the price of the product being traded. Again using the car dealer example. If you are a dealer and a car mechanics comes to buy one of your used cars. Then you know that this particular used car might be particularly good, and you want to charge a higher price. If an exporter comes and he wants to buy a 1000 cars and sell to Africa, then you know that these 1000 cars chosen doesn't have another special, so you can charge a lower price. The flexibility in pricing is a great plus for dealer in OTC market. For some types of products, there's simply no one who is willing to be a MM if the product were traded on an exchange, but an OTC market can be organized and thrive.
+
+So here comes the difference between MM and dealer:
+
+A dealer usually operates with tons of capital, because he has to hold a little bit of everything to be the middleman and sell you whatever you demand, or buy whatever you want to get rid of. A car dealership usually has thousands of cars in inventory. Similarly, a bond dealer usually have billions dollars worth of bonds, as bonds are all different just liked used cars (coz they have different maturity, different yield, etc.). Dealer often create inter-dealer network so they can supply products to you that they don't currently own, or unload excessive inventory to other dealers. 
+
+On the other hand, market maker doesn't need much capital to operate. For example, the biggest electronic market maker in US equity and option market, Citadel, probably accounts for 30% of trading volume in this 2 trillion dollar market, but it only has 26billion dollar under management.
+
+Finally, the success of a dealer mainly depends on good (personal) relation between clients and other dealers, whereas that of a MM depends on its technology and research team.
+
+
+---
+Spot price, future price, and forward price
+
+delivery price == contract price == F(t=0)
+
+Spot Market/Price vs. Futures Market/Price
+Spot market: contracts bought and sold on the spot markets are effective immediately. Money is exchanged, and the purchaser accepts delivery of the good. The spot price or spot rate is the settlement price of a spot contract.
+Futures market: is an agreement to buy or sell a set amount of goods at a predetermined price, on a predetermined date. The future price or future rate is the settlement price of a future contract.
+
+Backwardation vs. Contango
+"Backwardation" and "contango" are two terms used to describe the relationship between expected future spot prices and actual futures prices. When a market is in contango, the futures price is above the expected spot price. When a market is in normal backwardation, the futures price is below the expected future spot price.
+However, the terms "backwardation" and "contango" are also often used to describe whether the futures price is below or above the spot price than expected future spot price.
+
+Price difference: Forward vs. Futures Prices
+1) When the maturity and asset price are the same, forward and futures prices are usually assumed to be equal. (Eurodollar futures are an exception, we will see this later).
+2) When interest rates are uncertain, futures and forward prices are, in theory, slightly different:
+	a) A strong positive correlation between interest rates and the asset price implies the futures price is slightly higher than the forward price.
+	b) A strong negative correlation implies the reverse.
+
+---
+Codes
+Most Futures contracts codes are five characters. The first two characters identify the contract type, the third character identifies the month and the last two characters identify the year.
+
+Third (month) futures contract codes are -
+
+January = F
+February = G
+March = H
+April = J
+May = K
+June = M
+July = N
+August = Q
+September = U
+October = V
+November = X
+December = Z
+
+Example: CLX14 is a Crude Oil (CL), November (X) 2014 (14) contract.[12]
