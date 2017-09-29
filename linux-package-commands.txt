@@ -161,3 +161,6 @@ https://www.vultr.com/docs/how-to-install-llvm-and-clang-on-centos-6
 
 How to add GNOME to a CentOS Minimal Install?
 http://www.idevelopment.info/data/Unix/Linux/LINUX_AddGNOMEToCentOSMinimalInstall.shtml
+
+How to install postgresql with source?
+http://blog.endpoint.com/2013/06/installing-postgresql-without-root.html
