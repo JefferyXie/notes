@@ -46,6 +46,9 @@ How to compile and install VI?
 https://gist.github.com/holguinj/11064609
 https://github.com/Valloric/YouCompleteMe/wiki/Building-Vim-from-source
 
+$ ./configure --prefix=/home/jxie/.local --with-features=huge --enable-multibyte --enable-rubyinterp=yes --enable-pythoninterp=yes --with-python-config-dir=/usr/lib64/python2.7/config --enable-python3interp=yes --with-python3-config-dir=/home/jxie/.local/lib/python3.6/config-3.6m-x86_64-linux-gnu --enable-perlinterp=yes --enable-luainterp=yes --enable-gui=gtk2 --enable-cscope
+$ make && make install
+
 How to compile and install Ncurses?
 http://archive.linuxfromscratch.org/lfs-museum/3.3/LFS-BOOK-3.3-HTML/chapter06/ncurses.html
 
