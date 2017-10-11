@@ -180,19 +180,12 @@ GIT
 	$ git add .		// stages new and modified, without deleted
 	$ git add -u	// stages modified and deleted, without new
 	
-	3) undo git reset
-	http://stackoverflow.com/questions/2510276/undoing-git-reset
-	$ git reflog	// list log of all ref updates (e.g., checkout, reset, commit, merge)
-	$ git reset 'HEAD@{1}'	// reset to specific commit
-	Or,
-	$ git reset sha1-hash	// sha1-hash is from ref update list
-	
-	4) compare file difference 
+	3) compare file difference 
 	$ git diff origin/master -- [local-path]
 	Or,
 	$ git diff origin/branch-name:remote/path/file.txt  local/path/file.txt
 	
-	5) view remote branches
+	4) view remote branches
 	$ git branch -r
 	view both local and remote branches
 	$ git branch -a
@@ -205,15 +198,30 @@ GIT
 	delete local branch
 	$ git branch -d <branch-name>
 	
+	5) merge
+	Case 1: merge master branch into current branch {dmgr2}, no conflict
+	> git checkout dmgr2      # gets you "on branch dmgr2"
+	> git fetch origin        # gets you up to date with origin
+	> git merge origin/master # git will launch a vi window for you to input comments, save and quit, the merge is automatically done
+	
+	Case 2: merge master branch into current branch {dmgr2}, THERE HAS conflict
+	> git checkout dmgr2      # gets you "on branch dmgr2"
+	> git fetch origin        # gets you up to date with origin
+	> git merge origin/master # will receive "Auto-merging .. CONFLICT failure"
+	> git mergetool			  # suppose using vimdiff as default tool
+	Manually merge codes in vi, save and quit vi
+	> git commit -m "comments for merge"
+	> git push				  # commit & push changes
+	
+	> git reset --merge		  # give up failed auto merge
+	
+	Case 3: merge a specific file from branch B into current branch A
+	> git checkout A
+	> git checkout --patch B file-name	# patch file {file-name} of HEAD of B, you can specify any commit, not have to be HEAD
+	For new file from B:
+	> git checkout B file-name
+	
 	6) [TODO, needs verification!] What if there is merge conflict when push a commit, you want to overwrite local changes with remote?
-
-	// abort the failed automatic merge
-	$ git reset --merge.
-	// $ git merge --abort is equivalent to $ git reset --merge when MERGE_HEAD is present. MERGE_HEAD is present when a merge is in progress.
-
-	// launch merge tool to merge conflicts. As always, make sure you have no uncommitted changes before you start a merge.
-	$ git mergetool
-	...
 
 	----
 	// Since your pull was unsuccessful then just HEAD is the last "valid" commit on your branch (not HEAD^):
@@ -222,33 +230,41 @@ GIT
 	$ git fetch origin
 	$ git reset --hard origin
 	
-	7) Revert changes made to your working copy, do this:
-	$ git checkout .
+	7) Reset/revert changes
+	// rollback local committed changes, use reset
+	http://stackoverflow.com/questions/2510276/undoing-git-reset
+	$ git reflog	// list log of all ref updates (e.g., checkout, reset, commit, merge)
+	$ git reset 'HEAD@{1}'	// reset to specific commit
+	Or,
+	$ git reset sha1-hash	// sha1-hash is from ref update list
 	
-	Revert changes made to the index (i.e., that you have added), do this. Warning this will reset all of your unpushed commits to master!:
+	// rollback pushed commits, use revert
+	$ git revert commit-hash-code
+	
+	// rollback changes made to the index (i.e., that you have added). Warning this will reset all of your unpushed commits to master!
 	$ git reset
 
-	If you want to revert a change that you have committed, do this:
-	$ git revert commit-hash-code
-
+	$ git checkout .
+	
+	8) Remove untracked file/directory
 	If you want to remove untracked files (e.g., new files, generated files):
 	$ git clean -f
 
 	Or untracked directories (e.g., new or automatically generated directories):
 	$ git clean -fd
 	
-	8) Merge specific file(s) from other branch
+	9) Merge specific file(s) from other branch
 	Checkout latest version from other branch and overwrite existing ones in current branch
 	$ git checkout source_branch <paths>...
 
-	9) Get a list of deleted files and output the full path
+	10) Get a list of deleted files and output the full path
 	$ git log --diff-filter=D --summary | grep delete
 	Get the commit id associated with the file
 	$ git log --all -- /file/path
 	View the file's history visually
 	$ gitk -- /file/path
 
-	10) Rebase/Merge/Stash
+	11) Rebase/Merge/Stash
 	Rebasing (Optional Prior To Merging) ---
 	
 	In some cases it makes sense to rebase your branch prior to merging.  Only rebase if your branch hasn’t been shared with other developers  (i.e., pushed).  A benefit to rebasing is that the history of master’s commits will be cleaner.
@@ -613,3 +629,77 @@ https://oracle-base.com/articles/linux/linux-network-configuration
 https://wiki.centos.org/FAQ/CentOS6
 http://unix.stackexchange.com/questions/269516/how-to-set-static-ip-for-guest-os-on-virtualbox
 
+------------------------------------------------------------------------------------
+PUDB
+	> python -m pudb your_python.py
+	> python -m pudb.run your_python.py
+	> pudb your_python.py
+	
+	Easy way to uninstall all pip packages
+	> pip list | awk '{print $1}' | xargs pip uninstall -y
+	
+	Shortcut Keys
+
+	n: Execute next command
+	s: Step into a function
+	c: Continue execution
+	b: Set a breakpoint on the current line
+	e: Show the traceback from a thrown exception
+	q: Opens dialog to either quit or to restart the running program
+	o: Show the original console / standard output screen
+	m: Open a module in a different file
+	L: Go to line
+	!: Go to the Python command line subwindow at the bottom of the screen
+	?: Display the help dialog which includes a complete listing of shortcut commands
+	<SHIFT+V>: Switch context to the variables subwindow on the right of the screen
+	<SHIFT+B>: Switch context to the breakpoints subwindow on the right of the screen
+	<CTRL+X>: Toggle contexts between the lines of code and the Python command line
+
+	Configure the Variables list to always display string representations, as well as set other subwindow
+	sizing properties, using the example ~/.config/pudb/pudb.cfg file given below:
+
+     [pudb]
+     breakpoints_weight = 0.5
+     current_stack_frame = top
+     custom_stringifier = 
+     custom_theme = 
+     display = auto
+     line_numbers = True
+     prompt_on_quit = True
+     seen_welcome = e027
+     shell = internal
+     sidebar_width = 0.75
+     stack_weight = 0.5
+     stringifier = str
+     theme = classic
+     variables_weight = 1.5
+     wrap_variables = True
+
+------------------------------------------------------------------------------------
+psql
+	Initialize database cluster (one time run)
+	> initdb -D path/to/db/cluster/folder
+	Launch the local postgre database server
+	> postgres -D  path/to/db/cluster/folder
+	> postgres -D /windump/public/jxie/database/
+	
+	Show all schemas
+	> \dn
+	List functions
+	> \df
+	List views
+	> \dv
+	Show function SQL code
+	> \df+ __function__
+	Pretty-format query results
+	> \x
+	Show tables under a schema
+	> \dt {schema}.*
+	Or, 
+	> select * from pg_tables where schemaname='public';
+	Or, 
+	> SELECT * FROM information_schema.tables WHERE table_schema = 'public';
+
+	Describe a table (column info, type, etc.)
+	> \d {table_name}
+	> \d {schema}.{table_name}
