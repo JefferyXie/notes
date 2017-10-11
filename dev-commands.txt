@@ -221,6 +221,15 @@ GIT
 	For new file from B:
 	> git checkout B file-name
 	
+	Case 4: remote change and local change happen to same file(s), you cannot pull or merge directly
+	Solution a): commit local changes and then pull/merge
+	Solution b): stash it, staching acts as a stack, where you push changes, you pop them in reverse order
+	> git stash
+	> git pull	and > git mergetool if necessary
+	> git stash pop
+	Solution c): discard local changes if this is the case
+	> git reset --hard
+	
 	6) [TODO, needs verification!] What if there is merge conflict when push a commit, you want to overwrite local changes with remote?
 
 	----
