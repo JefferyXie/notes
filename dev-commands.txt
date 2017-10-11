@@ -74,25 +74,33 @@ Shell command
     $ vmstat // Virtual memory statistics, can be used to see thread interruption & context switch times per second
     $ vmstat -s
     $ swapon -s // Display swap usage by device
-
-    3) display file or file system status
+	
+	3) collect/check system IO statistics/device performance
+	$ iostat
+	
+    4) display file or file system status
     $ stat
 
-    4) check CPU infromation
+    5) check CPU infromation
     $ lscpu
     $ cat /proc/cpuinfo
 
-    5) key combinations in bash
-    Ctrl+A	move cursor to beginning of line
-    Ctrl+D	log out of current shell session, equal to 'exit'
-    Ctrl+E	move cursor to the end of line
-    Ctrl+L	clear this terminal
-    Ctrl+U  clear from current pos until beginning of line
-    Ctrl+K  clear from current pos to the end of line
+	6) lsof: find out which files (pipe/socket/dir/device etc.) are open by which process
+	Display all opened files for specific user
+	$ lsof -u {user_name}
+	
+	List all running process on port 22
+	$ lsof -i TCP:22
 
-    6) show all executable programs with the name
-    $ which -a myprogram
+	List all running process of open files of TCP Port ranges from 1-1024
+	$ lsof -i TCP:1-1024
+	
+	List all Network Connections: option ‘-i’ shows the list of all network connections ‘LISTENING & ESTABLISHED’
+	$ lsof -i
 
+	Search by PID
+	$ lsof -p {pid}
+	
     7) check which shell you are using
     $ echo $SHELL
     or
@@ -262,6 +270,10 @@ GIT
 	To stash the changes of the repository, do git stash save [OPTIONAL MESSAGE]
 	After stashing, it’s safe to switch to some other branch and perform work.  Once that work is finished, the stashed worked can be retrieved.  Before restoring the stash, switch back to the branch associated with the stash via git checkout [branch_name].
 	Use the following command to restore and delete the stash: git stash pop stash@\{NUMBER\}.  The backslashes are to escape the curly braces to avoid shell interpretation.  If the stash reference is omitted, it will default to stash@{0} (the latest stash).
+	
+	11) give up all local changes and download everything from repo
+	$ git reset --hard HEAD
+	$ git pull
 
 ------------------------------------------------------------------------------------
 Valgrind
@@ -352,14 +364,19 @@ Network commands
     $ ss -lp					// view open listening network ports with process name (p)
     $ ss -aplt					// view all tcp (t) listening(l) sockets
     $ ss -aplu					// view all udp (u) listening(l) sockets
+	$ netstat -lt				// view all tcp listening ports
+	$ netstat -lu				// view all udp listening ports
+	$ netstat -lx				// view all unix listening ports
     $ netstat -lnpt				// view processes that are listening for tcp (t)
     $ netstat -lnpu				// view processes that are listening for udp (t)
-    $ ifconfig					// can view if multicast is enabled or not
     $ netstat -g				// view multicast groups information
 	$ route -n					// view gateway/routing table
 	$ netstat -rn				// view gateway/routing table
 	$ netstat -ap --unix		// list local unix sockets
-	$ netstat -g -n				// show multicast group memberships
+	$ netstat -s				// view statistics by protocol (TCP/UDP/ICMP/IP protocols)
+	$ netstat -c 				// get netstat information every few second
+	$ netstat --statistics --raw // view RAW Network Statistics
+    $ ifconfig					// can view if multicast is enabled or not
 
 	tcpdump
 	Command sample one by one
