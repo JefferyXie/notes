@@ -62,4 +62,9 @@ http://stackoverflow.com/questions/7698488/turn-a-simple-socket-into-an-ssl-sock
 https://www.cs.utah.edu/~swalton/listings/articles/
 https://wiki.openssl.org/index.php/SSL/TLS_Client
 
-
+Modem vs. Router vs. Switch vs. Hub
+http://whirlpool.net.au/wiki/dsl_modems03_01
+https://computer.howstuffworks.com/router.htm/printable
+https://computer.howstuffworks.com/lan-switch.htm/printable
+http://www.diffen.com/difference/Router_vs_Switch
+https://www.ccontrols.com/pdf/Essentials0411.pdf
