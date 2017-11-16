@@ -8,11 +8,13 @@ if [ -f /etc/bashrc ]; then
 fi
 
 THEIP=$(hostname --all-ip-addresses | awk '{print $1;}')
+REALUSER=$(who am i | awk '{print $1;}')
 GIT_PS1_SHOWDIRTYSTATE=true
-# don't need to source since these 2 files are in /etc/profile.d
-#source git-prompt.sh
-#source git-completion.sh
-export PS1="\[\033[01;32m\]\u\[\033[00m\]@\h [$THEIP]\[\033[1;30m\]\$(__git_ps1) \[\033[0;0m\]\w \n>" 
+# source these 2 files if you don't wanna put them in /etc/profile.d
+source ~/.git-prompt.sh
+source ~/.git-completion.sh
+export PS1="\[\033[01;32m\]$REALUSER\[\033[00m\]@\h [$THEIP]\[\033[1;30m\]\$(__git_ps1) \[\033[0;0m\]\w \n>" 
+#export PS1="\[\033[01;32m\]\u\[\033[00m\]@\h [$THEIP]\[\033[1;30m\]\$(__git_ps1) \[\033[0;0m\]\w \n>" 
 #              \[\033[1;34m\] Start color dark grey.
 #                                          \[\033[0;0m\] Stop color.
 
@@ -21,11 +23,12 @@ alias ll='ls -lh --color=auto'
 alias cdycm='cd ~/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm'
 
 # jeffery: enable scl repository
-source /opt/rh/devtoolset-3/enable
-#source /opt/rh/python27/enable
+#source /opt/rh/devtoolset-3/enable
 
 # jeffery: use vimx which has clipboard enabled
 if [ -e /usr/bin/vimx ]; then alias vim='/usr/bin/vimx' vi='/usr/bin/vimx'; fi
+# Or, use compiled vim in my home directory
+#alias vim='/home/jxie/.local/bin/vim' vi='/home/jxie/.local/bin/vim'
 
 # jeffery: history command's timestamp
 export HISTTIMEFORMAT="%F %T "

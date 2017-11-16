@@ -42,21 +42,6 @@ flags = [
 '-Wno-variadic-macros',
 '-fexceptions',
 '-DNDEBUG',
-# '-Wc++98-compat', 
-# 5/18/2015 Jeffery: change below line to enable c++11 
-# https://groups.google.com/forum/#!topic/vim-syntastic/x8f7XSTFxw8
-'-Wno-c++98-compat',
-# https://github.com/yangyangwithgnu/use_vim_as_ide
-#'-Weverything',
-#'-Wno-deprecated-declarations',
-#'-Wno-disabled-macro-expansion',
-#'-Wno-float-equal',
-#'-Wno-c++98-compat-pedantic',
-#'-Wno-global-constructors',
-#'-Wno-exit-time-destructors',
-#'-Wno-missing-prototypes',
-#'-Wno-padded',
-#'-Wno-old-style-cast',
 # You 100% do NOT need -DUSE_CLANG_COMPLETER in your flags; only the YCM
 # source code needs it.
 '-DUSE_CLANG_COMPLETER',
@@ -102,8 +87,8 @@ flags = [
 '/usr/include',
 '-isystem',
 '/usr/include/c++/',
-'-isystem',
-'/usr/include/i386-linux-gnu/c++',
+#'-isystem',
+#'/usr/include/i386-linux-gnu/c++',
 ]
 
 
@@ -197,7 +182,7 @@ def FlagsForFile( filename, **kwargs ):
     # NOTE: This is just for YouCompleteMe; it's highly likely that your project
     # does NOT need to remove the stdlib flag. DO NOT USE THIS IN YOUR
     # ycm_extra_conf IF YOU'RE NOT 100% SURE YOU NEED IT.
-# 5/18/2015 jeffery: comment below codes to enable c++     
+# 5/18/2015 jeffery: comment below codes to enable c++
 #    try:
 #      final_flags.remove( '-stdlib=libc++' )
 #    except ValueError:
@@ -210,3 +195,4 @@ def FlagsForFile( filename, **kwargs ):
     'flags': final_flags,
     'do_cache': True
   }
+#  return { 'flags': final_flags }

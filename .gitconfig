@@ -1,13 +1,15 @@
 [user]
 	email = jeffery.xie@gmail.com
 	name = JefferyXie
+[includeif "gitdir:/windump/public/jxie/space/"]
+    path = /windump/public/jxie/space/.gitconfig
 [core]
 	editor = vi
 	filemode = false
 [diff]
-	tool = meld
+	tool = vimdiff
 [merge]
-	tool = meld
+	tool = vimdiff
 [color]
     diff = auto
     status = auto
@@ -17,7 +19,7 @@
     pager = true
 [alias]
 	glog = log --graph --date-order --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
-	myglog = log --graph --date-order --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative --author=\"JefferyXie\"
+	myglog = log --graph --date-order --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative --author='jxie\\|jeffery\\|jexie'
 	st = status
 	co = checkout
 	br = branch

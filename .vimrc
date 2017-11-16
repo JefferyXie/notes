@@ -84,7 +84,7 @@ highlight CursorLineNr cterm=bold ctermfg=Yellow ctermbg=DarkGrey gui=bold guifg
 " Disable highlight when <leader><cr> is pressed, <silent> tells vi to show no message
 noremap <silent> <leader><cr> :noh<cr> 
 " Remove the Windows ^M when encodings get messed up
-noremap <leader>m mmHmt:%s/<C-V><cr>//ge<cr>'tzt'm
+noremap <leader>rm mmHmt:%s/<C-V><cr>//ge<cr>'tzt'm
 " Search all files in current folder/project and show the occurrences
 noremap <leader>vv :grep -ir <cword> --exclude='tags' --exclude='*.o' --exclude='*.so' --exclude='*.a' --exclude='*.swp' */** <cr>:cwindow<cr>
 " Search all inherited classes
@@ -116,31 +116,22 @@ Plugin 'Valloric/YouCompleteMe' " cannot use YCM since it requires glibc2.14+
 Plugin 'scrooloose/syntastic'
 Plugin 'bling/vim-airline' " lean & mean status/tabline for vim that is light as air
 Plugin 'SirVer/ultisnips' " ultimate solution for snippet
-"Plugin 'edsono/vim-matchit'
 Plugin 'elzr/vim-json' " distinct highlighting of keywords vs values, json
-"Plugin 'ludovicchabant/vim-lawrencium'
 Plugin 'majutsushi/tagbar' " browse tags of current file and create a sidebar that displays the ctags-generated tags of current file
-"Plugin 'mhinz/vim-signify'
-"Plugin 'plasticboy/vim-markdown'
-"Plugin 'tpope/vim-fugitive'
 Plugin 'flazz/vim-colorschemes'
 Plugin 'scrooloose/nerdtree' " explore filesystem and open file and directory
 Plugin 'Xuyuanp/nerdtree-git-plugin' " plugin of NERDTree showing git status flags
 Plugin 'Valloric/ListToggle' " toggle the display of quickfix list and location-list
-"Plugin 'vim-scripts/taglist.vim' " source code browser
 Plugin 'octol/vim-cpp-enhanced-highlight' " highlighting for c++11/14
 "Plugin 'Mizuchi/STL-Syntax' " improved c++11/14 STL highlighting
 Plugin 'Yggdroot/indentLine' " display the indention levels with thin vertical line
 Plugin 'sukima/xmledit' " auto add tag when editing xml
 Plugin 'kien/ctrlp.vim' " CtrlP to search files
-"Plugin 'vim-scripts/mru.vim' " manage Most Recently Used files, command :MRU 
-"Plugin 'vim-scripts/cscope.vim' "create cscope database and connect to existing proper database automatically
 Plugin 'craigemery/vim-autotag' " automatically discover and properly update ctags files on save
 Plugin 'vim-scripts/BufOnly.vim' " Delete all the buffers except the current/named buffer
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'vim-scripts/a.vim' " switch between .h/.c
 Plugin 'python-mode/python-mode' " python plugin bundle
-"Plugin 'davidhalter/jedi-vim' " python auto complete. No needed since YCM covers it
 Plugin 'ruediger/Boost-Pretty-Printer' " GDB Pretty Printers for Boost
 Plugin 'kshenoy/vim-signature' " toggle, display and navigate marks
 Plugin 'vim-scripts/BOOKMARKS--Mark-and-Highlight-Full-Lines' " Easily Highlight Lines with Marks, and Add/Remove Marks 
@@ -190,7 +181,7 @@ noremap <leader>jc :YcmCompleter GoTo<CR>
 " Goto definition, supported in filetypes: 'c, cpp, objc, objcpp, cs, go, javascript, python, rust, typescript'
 noremap <leader>jd :YcmCompleter GoToDefinition<CR>
 " specify python version
-let g:ycm_python_binary_path = '/usr/local/bin/python3.3'
+let g:ycm_python_binary_path = '/usr/local/bin/python3'
 
 " To avoid YCM conflict with UltiSnips with tab key
 " http://www.alexeyshmalko.com/2014/youcompleteme-ultimate-autocomplete-plugin-for-vim/
@@ -230,7 +221,7 @@ let g:tagbar_indent=1
 "let g:tagbar_autoshowtag=1
 
 " NERDTree config
-autocmd vimenter * NERDTree " open NERDTree automatically
+"autocmd vimenter * NERDTree " open NERDTree automatically
 autocmd StdinReadPre * let s:std_in=1 " open NERDTree if no file is specified
 autocmd VimEnter * if argc()==0&&!exists("s:std_in") | NERDTree | endif
 " close vi if only window left open is NERDTree
@@ -284,6 +275,8 @@ au FileType javascript setlocal foldmethod=syntax
 " direct ancestor of the dir of the current line
 let g:ctrlp_working_path_mode='ra' 
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*.o,*.a
+let g:ctrlp_max_files=0
+let g:ctrlp_max_depth=40
 " :CtrlP to invoke CtrlP in find file mode
 " :CtrlPBuffer/:CtrlPMRU to start CtrlP in find buffer or MRU file mode
 " :CtrlPMixed to search in files, buffers, and MRU files at the same time

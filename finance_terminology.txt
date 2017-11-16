@@ -109,3 +109,12 @@ November = X
 December = Z
 
 Example: CLX14 is a Crude Oil (CL), November (X) 2014 (14) contract.[12]
+
+
+---
+gamma vs. vega
+gamma: sensitivity of delta (which is sensitivity of option price to asset price) at different underlying asset prices. It measures how quickly delta will change when the underlying asset price moves further away from where it is now. It's much like acceleration is the 2nd derivative of speed.
+vega: sensitivity of option price to volatility of underlying asset price.
+An option with high vega may not necessarily have high gamma, and vice versa. E.g. if market goes down 10% and then comes back, changes due to delta and gamma should be zero. But because of higher volatility the option prices can change. This is the vega component.
+
+
