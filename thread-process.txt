@@ -120,8 +120,35 @@ To show command line arguments (-a), highlight current process and its ancestors
 pstree -pah PID
 
 ------------------------------------------------------------------------------------------------
-在系统中通过top等命令可以看到每个进程的优先级PR，NICE值，nice%；它们都是和进程的优先级有关；
+https://www.zhihu.com/question/38975681
+https://superuser.com/questions/286752/unix-ps-l-priority
+http://honglus.blogspot.com/2011/03/understanding-cpu-scheduling-priority.html
 
-其中PR是进程的优先级，值越小进程的优先级越高。NICE值表示优先级的修正值,值大小位于[-20,+19]值，正值表示低优先级，负值表示高优先级，值为零则表示不调整该进程PR，即PR(new)=PR(old)+nice，系统默认PR=20，那么最终的PR位于[0,39]之间，进程切换时候根据进程之间的PR值来调度CPU的资源。但是注意：PR值只会影响用户态的CPU时间片，内核态不受PR值影响
+1) scheduling classes 
+- SCHED_FIFO: A First-In, First-Out real-time process 
+- SCHED_RR: A Round Robin real-time process 
+- SCHED_NORMAL: A conventional, time-shared process 
+- SCHED_BATCH
+- SCHED_IDLE
+Most  processes are SCHED_NORMAL 
+
+2) Scheduling priorities
+- Real-time process (SCHED_FIFO/SCHED_RR) real-time priority , ranging from 1 (lowest priority) to 99 (higest priority). 
+- Conventional process static priority(SCHED_NORMAL), ranging from 100 (highest priority) to 139 (lowest priority).
+
+3) Nice value and static priority
+Conventional process's  static priority = (120 + Nice value)
+So user can use nice/renice command to change nice value in order to change conventional process's priority.
+By default, conventional process starts with nice value of 0 which equals static priority 120
+
+总结来说，priority 在[0,99]，则属于realtime process,由rt_priority决定, [100, 139] 属于 normal process 由 nice + DEFAULT_PRIO (i.e., 120) 决定。而 ps 打印出的 PRI 值是在以上的基础上根据不同的计算方法算出来的。进程切换时候根据进程之间的PR值来调度CPU的资源。但是注意：PR值只会影响用户态的CPU时间片，内核态不受PR值影响
 
 假设一次调度中，有2个runnable的进程A和B，假设nice都为0时，内核会依次给每个进程分配1k个CPU时间片用于计算用户态指令。如果此时nice_A=0,nice_B=-10，此时CPU可能分别给A和B分配1k和1.5k的时间片用于计算用户态指令，即本次调度过程中，因为改变过优先级的进程多占用了0.5k个时间片。
+
+对于kernel每个进程有个Linux kernel priority，其数值在[1, 139]；其中[1, 99]是RT process，[100, 139]是normal process。也就是2)中的介绍。
+
+使用ps命令来查进程信息，kernel给出了多个优先级的数值，比如rtprio,ni,pri,priority,opri等，通常关注priority就够了。
+> ps -eo user,state,uid,pid,ppid,rtprio,ni,pri,priority,opri,class,time,comm --sort=rtprio,ni
+> ps -elf
+top命令显示的PR等价于ps中的priority参数，对normal process，其值=20+NI
+> top

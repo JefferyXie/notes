@@ -58,7 +58,7 @@ case ${TERM} in
         TMUX_PANE_TITLE=$(ps -o comm $$ | tail -1)
 
         # Reset title to the default before displaying the command prompt
-        PROMPT_COMMAND=${PROMPT_COMMAND:+$PROMPT_COMMAND; }'update_title'   
+        PROMPT_COMMAND=${PROMPT_COMMAND:+$PROMPT_COMMAND; }'update_title'
 
         # Update title before executing a command: set it to the command
         trap 'update_title "$BASH_COMMAND"' DEBUG

@@ -143,14 +143,17 @@ Shell command
 	
 	12) use {cut} to distill specific field from output
 	List sub-directories, get the directory name (last second field), and remove the directories
-	> ls -d /your/target/dir | rev | cut -d '/' -f 2 | rev | xargs -r rm -rf
+	> ls -d /your/target/dir/*/ | rev | cut -d '/' -f 2 | rev | xargs -r rm -rf
 	The command equals to:
 	> rm -r /your/target/dir/*/
 
 	Get root partition's usage percentage, -P is to output in Posix format so no wrapped lines
 	> df -Ph | awk '$6=="/" {print $5}' | cut -d '%' -f 1
 	
-	13) sudo environment setup
+	13) Differences among grep, pgrep, egrep, and fgrep
+	https://superuser.com/questions/508881/what-is-the-difference-between-grep-pgrep-egrep-fgrep
+	
+	14) sudo environment setup
 	http://stackoverflow.com/questions/257616/sudo-changes-path-why
 	sudo tries to be safe when executing external commands.
 	There are two distinct ways to deal with environment variables. By default, the env_reset sudoers
@@ -402,6 +405,14 @@ Network commands
 	$ netstat -c 				// get netstat information every few second
 	$ netstat --statistics --raw // view RAW Network Statistics
     $ ifconfig					// can view if multicast is enabled or not
+
+	traceroute
+	Prints the route that packets take to a network host.
+	https://www.computerhope.com/unix/utracero.htm
+	https://www.thegeekstuff.com/2012/05/traceroute-examples
+	Trace the route that packets take between your system and the host named www.google.com,
+	using the default method (udp datagram, 16 simultaneous probes). 
+	> traceroute google.com
 
 	tcpdump
 	Command sample one by one
