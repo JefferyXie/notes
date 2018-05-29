@@ -8,7 +8,7 @@ http://blog.csdn.net/maimang1001/article/details/9206167
 
 1, switch from user space to OS/kernel space
 2, OS/kernel sends interrupt signal to process/thread
-3, save the pointer of state information into process/thread's stack, state information includes all stuff on the CPU registers (program pointer, variables, etc.)
+3, save the state information into process/thread's stack, including program counter (points to next instruction to execute), CPU registers (variables), etc.
 4, for process switch, switch the memory space; also including CPU cache flush
 5, OS/kernel determines the next process/thread from waiting list
 6, restore the state of waiting process/thread's
