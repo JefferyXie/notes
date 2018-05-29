@@ -127,8 +127,15 @@ http://www.linuxjournal.com/content/lock-free-multi-producer-multi-consumer-queu
 https://github.com/natsys/blog/blob/master/lockfree_rb_q.cc
 http://www.codeproject.com/Articles/153898/Yet-another-implementation-of-a-lock-free-circular
 
-
 ------------------------------------------------------------------------------------
 futex vs. mutex (sample codes included)
 https://www.quora.com/How-different-is-a-futex-from-mutex-conceptually-and-also-implementation-wise
 http://www.kernel.org/pub/linux/kernel/people/rusty/futex-2.2.tar.gz
+
+------------------------------------------------------------------------------------
+mmap
+https://www.ibm.com/developerworks/cn/linux/l-ipc/part5/index1.html
+http://www.cnblogs.com/huxiao-tee/p/4660352.html
+https://felixzhang00.github.io/2017/02/25/%E7%90%86%E8%A7%A3mmap/
+https://stackoverflow.com/questions/45972/mmap-vs-reading-blocks
+https://marc.info/?l=linux-kernel&m=95496636207616&w=2
