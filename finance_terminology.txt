@@ -93,7 +93,7 @@ Price difference: Forward vs. Futures Prices
 Codes
 Most Futures contracts codes are five characters. The first two characters identify the contract type, the third character identifies the month and the last two characters identify the year.
 
-Third (month) futures contract codes are -
+Third character (month), futures contract codes are -
 
 January = F
 February = G
@@ -108,7 +108,7 @@ October = V
 November = X
 December = Z
 
-Example: CLX14 is a Crude Oil (CL), November (X) 2014 (14) contract.[12]
+Example: CLX14 is a Crude Oil (CL), November (X) 2014 (14) contract.
 
 
 ---
