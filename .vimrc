@@ -80,13 +80,12 @@ highlight Comment ctermfg=LightBlue
 highlight LineNr cterm=NONE ctermfg=DarkGrey ctermbg=NONE gui=NONE guifg=DarkGrey guibg=NONE 
 highlight CursorLineNr cterm=bold ctermfg=Yellow ctermbg=DarkGrey gui=bold guifg=Yellow guibg=DarkGrey
 
-
 " Disable highlight when <leader><cr> is pressed, <silent> tells vi to show no message
 noremap <silent> <leader><cr> :noh<cr> 
 " Remove the Windows ^M when encodings get messed up
 noremap <leader>rm mmHmt:%s/<C-V><cr>//ge<cr>'tzt'm
 " Search all files in current folder/project and show the occurrences
-noremap <leader>vv :grep -ir <cword> --exclude='tags' --exclude='*.o' --exclude='*.so' --exclude='*.a' --exclude='*.swp' */** <cr>:cwindow<cr>
+noremap <leader>vv :grep -ir -F <cword> --exclude='tags' --exclude='*.o' --exclude='*.so' --exclude='*.a' --exclude='*.swp' */** <cr>:cwindow<cr>
 " Search all inherited classes
 noremap <leader>cc :grep -r :.*<cword> --exclude='tags' --exclude='*.o' --exclude='*.so' --exclude='*.cpp' --exclude='*.a' */** <cr>:cwindow<cr>
 
@@ -200,7 +199,6 @@ let g:syntastic_check_on_open=1
 let g:syntastic_check_on_wq=0
 " disable python check since python-mode does better job than Syntastic
 let g:syntastic_mode_map = { 'passive_filetypes': ['python'] }
-
 
 " search first in current directory then file directory for tag file
 set tags+=tags,./tags

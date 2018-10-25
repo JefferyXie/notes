@@ -15,14 +15,16 @@ STIRS
 A short-term interest rate (STIR) future is a futures contract that derives its value from the interest rate at maturation. Common short-term interest rate futures are Eurodollar, Euribor, Euroyen, Short Sterling and Euroswiss, which are calculated on LIBOR at settlement, with the exception of Euribor which is based on Euribor. This value is calculated as 100 minus the interest rate. Contracts vary, but are often defined on an interest rate index such as 3-month sterling or US dollar LIBOR.
 
 ---
-IMM: International Monetary Market, spin-off from CME, prevalent contracts traded are currency futures and interest rate futures, specifically, 3-month Eurodollar time deposits and 90-day U.S. Treasury bills.
 CME: including IMM, NYMEX, COMEX, CBOT
+IMM: International Monetary Market, spin-off from CME, prevalent contracts traded are currency futures and interest rate futures, specifically, 3-month Eurodollar time deposits and 90-day U.S. Treasury bills.
+CBOT: Chicago Board of Trade, originally traded on agricultural commodities, now expand to gold, silver, energy, and treasuries.
 
 CBOE Holdings: CBOE, CFE, C2, BATS
+CBOE: Chicago Board Options Exchange, world's largest options market with contracts focusing on individual equities, ETFs, indexes, and interest rates.
 CFE: CBOE Futures Exchange (CFE®) is the home of volatility futures, featuring futures on the CBOE® Volatility Index (VIX®).
 C2: options exchange, an all-electronic exchange, is a wholly-owned subsidiary of CBOE Holdings, Inc.
 
-ICE: Intercontinental Exchange 
+ICE: Intercontinental Exchange, including NYSE, LIFFE, IPE, etc.
 
 TOCOM: Tokyo Commodity Exchange, Inc. TOCOM operates electronic markets for precious metals, oil, rubber and soft commodities.
 TSE: Tokyo Stock Exchange
