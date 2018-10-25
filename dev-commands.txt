@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 ------------------------------------------------------------------------------------
 Some links of tech resource
 
@@ -82,7 +81,7 @@ Shell command
 	https://www.centos.org/docs/5/html/5.2/Deployment_Guide/s2-proc-meminfo.html
 	https://wiki.debian.org/Hugepages
 	> cat /proc/meminfo
-	
+
 	3) collect/check system IO statistics/device performance
 	$ iostat
 	
@@ -91,12 +90,12 @@ Shell command
 
     5) check CPU infromation
     $ lscpu
-	$ lscpu -a --extended
+    $ lscpu -a --extended
     $ cat /proc/cpuinfo
 	
 	Node (NUMA node) -> book -> socket (physical CPU) -> core -> CPU (logical CPU, hyper threading, threads per core)
 	http://www.daniloaz.com/en/differences-between-physical-cpu-vs-logical-cpu-vs-core-vs-thread-vs-socket/
-	
+
 	6) lsof: find out which files (pipe/socket/dir/device etc.) are open by which process
 	Display all opened files for specific user
 	$ lsof -u {user_name}
@@ -155,14 +154,17 @@ Shell command
 	
 	12) use {cut} to distill specific field from output
 	List sub-directories, get the directory name (last second field), and remove the directories
-	> ls -d /your/target/dir | rev | cut -d '/' -f 2 | rev | xargs -r rm -rf
+	> ls -d /your/target/dir/*/ | rev | cut -d '/' -f 2 | rev | xargs -r rm -rf
 	The command equals to:
 	> rm -r /your/target/dir/*/
 
 	Get root partition's usage percentage, -P is to output in Posix format so no wrapped lines
 	> df -Ph | awk '$6=="/" {print $5}' | cut -d '%' -f 1
 	
-	13) sudo environment setup
+	13) Differences among grep, pgrep, egrep, and fgrep
+	https://superuser.com/questions/508881/what-is-the-difference-between-grep-pgrep-egrep-fgrep
+	
+	14) sudo environment setup
 	http://stackoverflow.com/questions/257616/sudo-changes-path-why
 	sudo tries to be safe when executing external commands.
 	There are two distinct ways to deal with environment variables. By default, the env_reset sudoers
@@ -170,9 +172,9 @@ Shell command
 	HOME, SHELL, LOGNAME, USER and USERNAME in addition to variables from the invoking process permitted by
 	the env_check and env_keep sudoers options. There is effectively a whitelist for environment variables.
 
-	14) periodically run a command
+	15) periodically run a command
 	> watch -n1 'ethtool -S ens1f0 | grep drop'
-	
+
 ------------------------------------------------------------------------------------
 tmux
 
@@ -221,7 +223,7 @@ GIT
 	$ git push origin :old-name new-name
 	reset the upstream branch for new-name local branch
 	$ git push origin -u new-name
-	
+
 	5) merge
 	Case 1: merge master branch into current branch {dmgr2}, no conflict
 	> git checkout dmgr2      # gets you "on branch dmgr2"
@@ -247,7 +249,7 @@ GIT
 	
 	Case 4: remote change and local change happen to same file(s), you cannot pull or merge directly
 	Solution a): commit local changes and then pull/merge
-	Solution b): stash it, stashing acts as a stack, where you push changes, you pop them in reverse order
+	Solution b): stash it, staching acts as a stack, where you push changes, you pop them in reverse order
 	> git stash
 	> git pull	and > git mergetool if necessary
 	> git stash pop
@@ -326,7 +328,7 @@ GIT
 	11) give up all local changes and download everything from repo
 	$ git reset --hard HEAD
 	$ git pull
-	
+
 	12) usecase for rebase
 	- I created a branch (dev_bran) and did code changes, pushed to remote for a few times.
 	- During this period, remote master branch has changed a lot.
@@ -475,6 +477,14 @@ Network commands
 	$ netstat --statistics --raw // view RAW Network Statistics
     $ ifconfig					// can view if multicast is enabled or not
 
+	traceroute
+	Prints the route that packets take to a network host.
+	https://www.computerhope.com/unix/utracero.htm
+	https://www.thegeekstuff.com/2012/05/traceroute-examples
+	Trace the route that packets take between your system and the host named www.google.com,
+	using the default method (udp datagram, 16 simultaneous probes). 
+	> traceroute google.com
+
 	tcpdump
 	Command sample one by one
 	http://www.tecmint.com/12-tcpdump-commands-a-network-sniffer-tool/
@@ -499,7 +509,7 @@ Network commands
 	-X print the packet data (minus its link level header) in hex and ASCII
 	-XX print the packet data of each packet, including its link level header, in hex and ASCII
 	> tcpdump -aX -vvv -i vlan3148 ip host 10.192.51.144 and port 17601
-	
+
 	telnet
 	> telnet www.google.com 80 (by default using port 23)
 	> GET / HTTP/1.1
@@ -515,7 +525,7 @@ Network commands
 	$ ethtool -S ens1f0 | grep drop // show the dropped of packets
 	> netstat -ng  ( will give groups subscribe to the interface)
 	> netstat -t (will give you unicast sessions attached to the interface)
-	
+
 ------------------------------------------------------------------------------------
 Analyze kernel crash
 http://www.dedoimedo.com/computers/crash-analyze.html
@@ -591,14 +601,14 @@ Debug core file
 
     3) Reload the settings in /etc/sysctl.conf by running the following command:
     $ sysctl -p
-	
+
 	4) Print stack trace of a core file without entering gdb interactively
 	> gdb -q -n -ex bt -batch ${exe} ${corefile}
 	e.g.
 	> gdb -q -n -ex bt -batch /tmp/example.exe /tmp/core-example-2017-02
 	Use alias in .bashrc
 	> alias gdbbt="gdb -q -n -ex bt -batch"
-	
+
 ------------------------------------------------------------------------------------
 /etc/profile vs. /etc/bashrc, Login vs. non-Login shell, Interactive vs. non-Interactive shell
     http://bencane.com/2013/09/16/understanding-a-little-more-about-etcprofile-and-etcbashrc/
@@ -608,7 +618,7 @@ VirtualBox: enable symbol links
 	VBoxManage setextradata [VM_NAME] VBoxInternal2/SharedFoldersEnableSymlinksCreate/[SHARE_NAME] 1
 	http://askubuntu.com/questions/446317/how-to-make-guest-os-follow-symlinks-from-shared-folder
 
-	
+
 ------------------------------------------------------------------------------------
 Uninstall software that were installed by '$ make install'
 	http://stackoverflow.com/questions/1439950/whats-the-opposite-of-make-install-ie-how-do-you-uninstall-a-library-in-lin
@@ -814,6 +824,7 @@ psql
 
 	Describe a table (column info, type, etc.)
 	> \d {table_name}
+
 	> \d {schema}.{table_name}
 
 ------------------------------------------------------------------------------------
@@ -866,730 +877,4 @@ iperf
 	We can use iperf, we just need to tell it to use a smaller packet size. You can do this with the "-l" flag
 
 	iperf -c 224.0.55.55 -u -T 32 -t 20 -l 1k -i 1
-=======
-------------------------------------------------------------------------------------
-Some links of tech resource
 
-    1) C++/Python/Java/Design Patterns
-    http://www.bogotobogo.com/index.php
-    2) Socket programming
-    https://www.ibm.com/support/knowledgecenter/ssw_i5_54/rzab6/rzab6soxoverview.htm
-    3) Using multicast
-    https://www.ibm.com/support/knowledgecenter/ssw_i5_54/rzab6/xmulticast.htm
-    4) QuickFix - open source lib for FIX protocol
-    http://www.quickfixengine.org/
-    5) UNIX ar Examples: How To Create, View, Extract, Modify C Archive Files (*.a)
-    http://www.thegeekstuff.com/2010/08/ar-command-examples/?utm_source=feedburner&utm_medium=feed&utm_campaign=Feed%3A+TheGeekStuff+(The+Geek+Stuff)
-	6) Backup and restore X system
-	http://tamxuanla.blogspot.com/2015/10/how-to-backup-full-centos-server_22.html
-	http://www.centoscn.com/image-text/2013/0418/318.html
-	7) scp command examples: copy file/folder between remote/local, remote/remote
-	http://www.hypexr.org/linux_scp_help.php/
-
-------------------------------------------------------------------------------------
-VI Commands
-
-    1) remove all white space in a file and replace with a comma
-    First delete the blank lines:
-    :g/^\s*$/d
-    Then use a substitution (:s///) over each line (%) to replace all (g) continuous whitespace (\s\+) with a comma (,)
-    :%s/\s\+/,/g
-
-    2) replace character/word in a file
-    replace 'foo' with 'bar' in a file
-    :%s/foo/bar/g
-    replace only whole words exactly match
-    :%s/\<foo\>/bar/g
-	
-
-    3) search word and list line number in a file
-    :g/word/#
-
-    4) search word in all files under current folder and list them
-    :cw | grep -ir word .
-	
-	5) compare difference between files, this uses vimdiff application
-	> vi -d file1 file2 file3
-	   you can also use melt which is gui tool
-	> meld
-	
-	6) open/reload .vimrc without leaving current vi
-	:split $MYVIMRC
-	:source $MYVIMRC
-
-------------------------------------------------------------------------------------
-Shell command
-
-    1) Find specific file type under directory and count lines in the file
-    $ find . -type f -iname *.cpp | xargs wc -l
-    $ find . -type f -iname *.cpp -or -iname *.h | xargs wc -l
-
-	Search words within specific depth
-	$ find . -maxdepth 2 -type f -exec grep 'word' {} \;
-	
-	Find file/folder and delete
-	$ find . -type f -iname filename | xargs -0 rm -f
-	$ find . -type d -iname foldername | xargs -0 rm -r
-	$ find . -type f -iname filename -exec rm -rf {} \;
-
-	Find multi-type files, copy and keep origin directory hierachy
-	$ cd your/source/path && find . -type f \( -name *.cpp -o -name *.hpp -o -name *.txt \) -exec cp --parents {} ~/temp/abc/ \;
-
-	Find multi-type files, filter out those in specific multi-folders
-	$ find -type f -iname *.cpp -o -iname *.hpp -o -iname *.c -o -iname *.h | grep -v -e "./ext/" -e "./fixit/"
-
-    2) check system memory, virtual memory usage and configuration
-    $ free // Check system memory usage
-    $ vmstat // Virtual memory statistics, can be used to see thread interruption & context switch times per second
-    $ vmstat -s
-    $ swapon -s // Display swap usage by device
-	
-	3) collect/check system IO statistics/device performance
-	$ iostat
-	
-    4) display file or file system status
-    $ stat
-
-    5) check CPU infromation
-    $ lscpu
-    $ cat /proc/cpuinfo
-
-	6) lsof: find out which files (pipe/socket/dir/device etc.) are open by which process
-	Display all opened files for specific user
-	$ lsof -u {user_name}
-	
-	List all running process on port 22
-	$ lsof -i TCP:22
-
-	List all running process of open files of TCP Port ranges from 1-1024
-	$ lsof -i TCP:1-1024
-	
-	List all Network Connections: option ‘-i’ shows the list of all network connections ‘LISTENING & ESTABLISHED’
-	$ lsof -i
-
-	Search by PID
-	$ lsof -p {pid}
-	
-    7) check which shell you are using
-    $ echo $SHELL
-    or
-    $ cat /etc/passwd // find your user name line
-	
-	8) Print the lists of directories and candidate libraries stored in the current cache
-	$ ldconfig -p
-	$ ldconfig -p | grep /usr/local
-	
-	9) 3 ways to view contents of zip file
-	$ unzip -l name.zip
-	$ less name.zip
-	$ vi name.zip
-	
-	10) enable ssh service
-	$ yum install openssh-server openssh-clients  // install packages
-	$ chkconfig sshd on   // ssh service will start automatically goingforward after boot
-	$ service sshd start  // manually start the service
-	
-	// different ways to check if ssh service is on
-	$ service sshd status
-	$ /etc/init.d/sshd status
-	$ netstat -tulpn | grep :22  // check if port 22 is opened
-	$ ps aux | grep sshd
-
-	11) search word and replace in multiple files
-	http://stackoverflow.com/questions/11392478/how-to-replace-a-string-in-multiple-files-in-linux-command-line
-	
-	Use grep + xargs + sed:
-	> grep -rl string1 somedir/ | xargs sed -i 's/string1/string2/g'
-	Examples:
-	> grep -rl 'windows' ./ | xargs sed -i 's/windows/linux/g'
-
-	Use find + sed
-	> find ./ -type f -exec sed -i 's/string1/string2/g' {} \;
-	
-	Separate steps:
-	> cd /your/folder
-	> sed -i 's/string1/string2/g' *
-	
-	12) use {cut} to distill specific field from output
-	List sub-directories, get the directory name (last second field), and remove the directories
-	> ls -d /your/target/dir/*/ | rev | cut -d '/' -f 2 | rev | xargs -r rm -rf
-	The command equals to:
-	> rm -r /your/target/dir/*/
-
-	Get root partition's usage percentage, -P is to output in Posix format so no wrapped lines
-	> df -Ph | awk '$6=="/" {print $5}' | cut -d '%' -f 1
-	
-	13) Differences among grep, pgrep, egrep, and fgrep
-	https://superuser.com/questions/508881/what-is-the-difference-between-grep-pgrep-egrep-fgrep
-	
-	14) sudo environment setup
-	http://stackoverflow.com/questions/257616/sudo-changes-path-why
-	sudo tries to be safe when executing external commands.
-	There are two distinct ways to deal with environment variables. By default, the env_reset sudoers
-	option is enabled. This causes commands to be executed with a minimal environment containing TERM, PATH,
-	HOME, SHELL, LOGNAME, USER and USERNAME in addition to variables from the invoking process permitted by
-	the env_check and env_keep sudoers options. There is effectively a whitelist for environment variables.
-
-------------------------------------------------------------------------------------
-tmux
-
-	https://danielmiessler.com/study/tmux/
-	http://www.hamvocke.com/blog/a-guide-to-customizing-your-tmux-conf/
-	https://gist.github.com/spicycode/1229612
-	
-------------------------------------------------------------------------------------
-GIT
-
-	1) To view which commit(s) have not yet been pushed
-	$ git log origin/(branch-name)..
-	Or,
-	$ git log origin/(branch-name).. --name_status
-	Or, add alias to 
-	git log origin/$(git name-rev --name-only HEAD).. --name_status
-	
-	2) add files to commit
-	$ git add -A	// stages All
-	$ git add .		// stages new and modified, without deleted
-	$ git add -u	// stages modified and deleted, without new
-	
-	3) compare file difference 
-	$ git diff origin/master -- [local-path]
-	Or,
-	$ git diff origin/branch-name:remote/path/file.txt  local/path/file.txt
-	
-	4) view remote branches
-	$ git branch -r
-	view both local and remote branches
-	$ git branch -a
-	
-	display remote information in general and how it relates to local repository
-	$ git remote show origin
-	
-	delete remote branch
-	$ git push origin --delete <branch-name>
-	delete local branch
-	$ git branch -d <branch-name>
-	
-	5) merge
-	Case 1: merge master branch into current branch {dmgr2}, no conflict
-	> git checkout dmgr2      # gets you "on branch dmgr2"
-	> git fetch origin        # gets you up to date with origin
-	> git merge origin/master # git will launch a vi window for you to input comments, save and quit, the merge is automatically done
-	
-	Case 2: merge master branch into current branch {dmgr2}, THERE HAS conflict
-	> git checkout dmgr2      # gets you "on branch dmgr2"
-	> git fetch origin        # gets you up to date with origin
-	> git merge origin/master # will receive "Auto-merging .. CONFLICT failure"
-	> git mergetool			  # suppose using vimdiff as default tool
-	Manually merge codes in vi, save and quit vi
-	> git commit -m "comments for merge"
-	> git push				  # commit & push changes
-	
-	> git reset --merge		  # give up failed auto merge
-	
-	Case 3: merge a specific file from branch B into current branch A
-	> git checkout A
-	> git checkout --patch B file-name	# patch file {file-name} of HEAD of B, you can specify any commit, not have to be HEAD
-	For new file from B:
-	> git checkout B file-name
-	
-	Case 4: remote change and local change happen to same file(s), you cannot pull or merge directly
-	Solution a): commit local changes and then pull/merge
-	Solution b): stash it, staching acts as a stack, where you push changes, you pop them in reverse order
-	> git stash
-	> git pull	and > git mergetool if necessary
-	> git stash pop
-	Solution c): discard local changes if this is the case
-	> git reset --hard
-	
-	6) [TODO, needs verification!] What if there is merge conflict when push a commit, you want to overwrite local changes with remote?
-
-	----
-	// Since your pull was unsuccessful then just HEAD is the last "valid" commit on your branch (not HEAD^):
-	$ git reset --hard HEAD
-	// The other piece you want is to let their changes over-ride your changes.
-	$ git fetch origin
-	$ git reset --hard origin
-	
-	7) Reset/revert changes
-	// rollback local committed changes, use reset
-	http://stackoverflow.com/questions/2510276/undoing-git-reset
-	$ git reflog	// list log of all ref updates (e.g., checkout, reset, commit, merge)
-	$ git reset 'HEAD@{1}'	// reset to specific commit
-	Or,
-	$ git reset sha1-hash	// sha1-hash is from ref update list
-	
-	// rollback pushed commits, use revert
-	$ git revert commit-hash-code
-	
-	// rollback changes made to the index (i.e., that you have added). Warning this will reset all of your unpushed commits to master!
-	$ git reset
-
-	$ git checkout .
-	
-	8) Remove untracked file/directory
-	If you want to remove untracked files (e.g., new files, generated files):
-	$ git clean -f
-
-	Or untracked directories (e.g., new or automatically generated directories):
-	$ git clean -fd
-	
-	9) Merge specific file(s) from other branch
-	Checkout latest version from other branch and overwrite existing ones in current branch
-	$ git checkout source_branch <paths>...
-
-	10) Get a list of deleted files and output the full path
-	$ git log --diff-filter=D --summary | grep delete
-	Get the commit id associated with the file
-	$ git log --all -- /file/path
-	View the file's history visually
-	$ gitk -- /file/path
-
-	11) Rebase/Merge/Stash
-	Rebasing (Optional Prior To Merging) ---
-	
-	In some cases it makes sense to rebase your branch prior to merging.  Only rebase if your branch hasn’t been shared with other developers  (i.e., pushed).  A benefit to rebasing is that the history of master’s commits will be cleaner.
-	In some cases it’s beneficial to squash several commits into a single commit.  For example, to combine code changes and the final touches from a code review.  While checked out to your [branch_name], do git rebase -i COMMIT.  The COMMIT should be the parent of your first commit.  In place of COMMIT, you could substitute the HEAD tilde syntax.  If you had two commits to squash into one, use HEAD~2 since HEAD~2 is the current commit’s first parent’s first parent.  
-	Regardless of how you specify the commit, the command will open an editor with your commits.  A legend will instruct you to type squash (or just s) to squash the commit.  Once the editor is closed all the commits will be squashed into one.  This command can be used for many other uses, squashing is just one.
-	Prior to rebasing, it’s important to get your local repository up to date with the origin. See Fetching Latest Develop for the commands. While checked out to your [branch_name], do git rebase develop.  
-	When merging, you will receive an error indicating that your branch could not be pushed to the origin.  This is expected and benign since your branch’s history has changed.
-	
-	Merging to Develop ---
-	
-	Prior to merging, it’s important to get your local repository up to date with the origin. See Fetching Latest Develop for the commands. Origin/develop and your branch are involved, to see them both in the history do git glog origin/develop [branch_name] (note: the glog alias is shown above).  On the develop branch (git checkout develop), merge the branch into develop via git merge [branch_name].  
-	If there are conflicts in the merge, the merge command will fail and git will list all the files with conflicts and  place conflict markers in each file (git status will print each file).  You must resolve the conflicts to complete the merge.  This can be done by opening each file in your favorite editor and resolving conflicts.  Once completed, git add the_file to inform git the conflict has been resolved.  Conflicts can also be resolved with graphical tools.   Run git mergetool and git will open each file in the merge tool.  It’s not necessary to git add the_file if you use git mergetool, it’s done for you.  Do git commit to finish the conflict resolution.
-	Perform any necessary testing to ensure the newly merged branch does not conflict branches merged during the development.  Minimally recompile all.   Push the new develop to the origin/develop via git push (if a rebase was done, git push origin develop may be preferred to avoid the error that [branch_name] failed to push)..  
-	Now that the branch is no longer needed, it can be deleted.  To delete remotely do git push origin --delete [branch_name].  To delete the branch locally do git branch -d [branch_name].
-	
-	Stashing ---
-	
-	Stashing allows switching between branches without unnecessary commits.  Uncommitted files as well as changes to tracked files will be preserved.  The stash will be associated with the current branch.  To view the stash list, do git stash list.
-	To stash the changes of the repository, do git stash save [OPTIONAL MESSAGE]
-	After stashing, it’s safe to switch to some other branch and perform work.  Once that work is finished, the stashed worked can be retrieved.  Before restoring the stash, switch back to the branch associated with the stash via git checkout [branch_name].
-	Use the following command to restore and delete the stash: git stash pop stash@\{NUMBER\}.  The backslashes are to escape the curly braces to avoid shell interpretation.  If the stash reference is omitted, it will default to stash@{0} (the latest stash).
-	
-	11) give up all local changes and download everything from repo
-	$ git reset --hard HEAD
-	$ git pull
-
-------------------------------------------------------------------------------------
-Valgrind
-
-    // profile tool, performance analysis
-    valgrind --tool=callgrind program arg1 arg2
-    kcachegrind callgrind.out.$pid
-    http://baptiste-wicht.com/posts/2011/09/profile-c-application-with-callgrind-kcachegrind.html
-
-    // detect memory-related errors
-    valgrind --leak-check=yes myprog arg1 arg2
-    http://valgrind.org/docs/manual/quick-start.html
-
-    // detect multi-thread errors
-    valgrind --tool=helgrind myapplication
-    http://valgrind.org/docs/manual/hg-manual.html
-
-------------------------------------------------------------------------------------
-GDB commands:
-    $ set variable i=20
-    $ set var i=20
-    $ set (i=20)
-
-    $ display i
-    $ disp i
-
-	// hardware watchpoints, triggered when the variable changes
-    $ watch i 
-
-    $ delete breakpoint
-
-    $ info break
-    $ info watch
-	
-	// to print char array/pointer, use /s (treat variable as string if possible) 
-	// char* chArr = "abcd";
-	// void* p = chArr;
-	$ p /s chArr
-	$ p /s (char*)p
-
-
-    // break when condition is met
-    // http://stackoverflow.com/questions/1354637/how-do-i-set-persistent-and-conditional-watchpoints-on-locally-scoped-variables
-    $ watch my_var if my_var > 3
-    $ break main.c:123 if (var1 == 0)
-
-    // remotely debug with DDD
-    http://www.codeproject.com/Articles/14983/Remote-Debugging-using-GDB
-	
-	// STL support - GDB pretty-printers
-	https://www.rethinkdb.com/blog/make-debugging-easier-with-custom-pretty-printers/
-	https://sourceware.org/gdb/wiki/STLSupport
-	// to print in the old style, use /r (raw)
-	$ print /r variable
-	
-	// Print a description of the type of expression expr. ptype differs from whatis by printing a detailed description, instead of just the name of the type.
-	$ ptype expr
-	// Show information about the current source file--that is, the source file for the function containing the current point of execution
-	$ info source
-
-	// set breakpoint, variable, custom command inside a file and load it either in .gdbinit or on the fly
-	https://sourceware.org/gdb/onlinedocs/gdb/Command-Files.html
-	
-	// Ctrl-C as program is running
-	What if the program is running but you forgot to set breakpoints? You can hit CTRL-C and that'll stop the program wherever it happens to be and return you to a "(gdb)" prompt. At that point, you could set up a proper breakpoint somewhere and continue to that breakpoint.
-	
-	// info
-	$ info win  // list opened windows in the layout
-	$ focus next // activate next window, or use shortcut Ctrl+x o
-	$ fs n
-	$ fs SRC	// activate the window SRC
-	$ fs CMD	// activate the window CMD
-	
-	Tui short keys -
-	Ctrl+x o // activate next window
-	Ctrl+x a // switch between TUI and terminal
-	Ctrl+l   // refresh screen
-	
-	If current activate window is not CMD, use short keys -
-	Ctrl+p // show previous command
-	Ctrl+n // show next command
-	Ctrl+b // move cursor backwards among the command
-	Ctrl+f // move cursor forwards among the command
-
-------------------------------------------------------------------------------------
-Network commands
-    $ ss -s						// sockets summary
-    $ ss -lp					// view open listening network ports with process name (p)
-    $ ss -aplt					// view all tcp (t) listening(l) sockets
-    $ ss -aplu					// view all udp (u) listening(l) sockets
-	$ netstat -lt				// view all tcp listening ports
-	$ netstat -lu				// view all udp listening ports
-	$ netstat -lx				// view all unix listening ports
-    $ netstat -lnpt				// view processes that are listening for tcp (t)
-    $ netstat -lnpu				// view processes that are listening for udp (t)
-    $ netstat -g				// view multicast groups information
-	$ route -n					// view gateway/routing table
-	$ netstat -rn				// view gateway/routing table
-	$ netstat -ap --unix		// list local unix sockets
-	$ netstat -s				// view statistics by protocol (TCP/UDP/ICMP/IP protocols)
-	$ netstat -c 				// get netstat information every few second
-	$ netstat --statistics --raw // view RAW Network Statistics
-    $ ifconfig					// can view if multicast is enabled or not
-
-	traceroute
-	Prints the route that packets take to a network host.
-	https://www.computerhope.com/unix/utracero.htm
-	https://www.thegeekstuff.com/2012/05/traceroute-examples
-	Trace the route that packets take between your system and the host named www.google.com,
-	using the default method (udp datagram, 16 simultaneous probes). 
-	> traceroute google.com
-
-	tcpdump
-	Command sample one by one
-	http://www.tecmint.com/12-tcpdump-commands-a-network-sniffer-tool/
-	http://rationallyparanoid.com/articles/tcpdump.html
-	Tutorial
-	https://danielmiessler.com/study/tcpdump/#gs.ez4xqXk
-	http://www.alexonlinux.com/tcpdump-for-dummies
-	man page, include details what tcp/ip header is composed of, should read!
-	http://www.tcpdump.org/tcpdump_man.html
-	> tcpdump -n -i any port 10000 -S -nn -X
-	-n: don't resolve host
-	-i any: any network interface
-	port 10000: specific port 10000
-	-S: output absolute sequence number than relative
-	-nn: don't resolve host or port name
-	-X: show packet's content
-	> tcpdump -aX -vvv -i vlan3148 ip host 10.192.51.144 and port 17601
-	
-	telnet
-	> telnet www.google.com 80 (by default using port 23)
-	> GET / HTTP/1.1
-	> HEAD / HTTP/1.1
-	> GET /search HTTP/1.1
-	
-	Assign multiple IP addresses to one network interface
-	> sudo ifconfig eth0:1 192.168.10.10 netmask 255.255.255.0 up
-	> sudo ifconfig eth0:2 192.168.10.15 netmask 255.255.255.0 up
-	
-------------------------------------------------------------------------------------
-Analyze kernel crash
-http://www.dedoimedo.com/computers/crash-analyze.html
-
-------------------------------------------------------------------------------------
-Trace system calls with strace
-    http://linoxide.com/linux-command/linux-strace-command-examples/
-    1) trace all system calls
-    $ strace ls
-    $ strace myprogam arg1 arg2
-    2) trace specific system call
-    // trace only 'open' system call
-    $ strace -e open myprogram arg1 arg2 
-    3) trace a process
-    $ strace -p processid
-    4) summary of system calls, time of execution, errors, etc.
-    $ strace -c ls
-    $ strace -c myprogram arg1 arg2
-    5) this will show you all syscalls the program is doing if your process ID is 12345. 
-    // http://unix.stackexchange.com/questions/166541/how-to-know-where-a-program-is-stuck-in-linux
-    strace -s 99 -ffp 12345
-    6) see calls stack with gdb, bt
-    // ftp://ftp.gnu.org/old-gnu/Manuals/gdb/html_node/gdb_42.html
-    $ sleep 3600 &
-      [2] 2621
-    $ gdb
-    (gdb) attach 2621
-    (gdb) bt
-    #0  0x00007feda374e6b0 in __nanosleep_nocancel () from /lib64/libc.so.6
-    #1  0x0000000000403ee7 in ?? ()
-    #2  0x0000000000403d70 in ?? ()
-    #3  0x000000000040185d in ?? ()
-    #4  0x00007feda36b8b05 in __libc_start_main () from /lib64/libc.so.6
-    #5  0x0000000000401969 in ?? ()
-    (gdb)
-
-------------------------------------------------------------------------------------
-Debug core file
-    http://yusufonlinux.blogspot.com/2010/11/debugging-core-using-gdb.html
-    Enable core file dump
-    http://www.cyberciti.biz/tips/linux-core-dumps.html
-    1) Go to /etc/profile.d folder and create a *.sh file such as coredump.sh
-    ulimit -c unlimited >/dev/null 2>&1
-    2) Edit /etc/sysctl.conf, append the following lines:
-
-    kernel.core_uses_pid = 1
-    kernel.core_pattern = /tmp/core-%e-%s-%u-%g-%p-%t
-    fs.suid_dumpable = 2
-
-    Where:
-    kernel.core_uses_pid = 1 – Appends the coring processes PID to the core file name.
-    fs.suid_dumpable = 2 – Make sure you get core dumps for setuid programs.
-    kernel.core_pattern = /tmp/core-%e-%s-%u-%g-%p-%t – When the application terminates abnormally, a core file should appear in the /tmp. The kernel.core_pattern sysctl controls exact location of core file. You can define the core file name with the following template whih can contain % specifiers which are substituted by the following values when a core file is created:
-    %% – A single % character
-    %p – PID of dumped process
-    %u – real UID of dumped process
-    %g – real GID of dumped process
-    %s – number of signal causing dump
-    %t – time of dump (seconds since 0:00h, 1 Jan 1970)
-    %h – hostname (same as ’nodename’ returned by uname(2))
-    %e – executable filename
-
-    3) Reload the settings in /etc/sysctl.conf by running the following command:
-    $ sysctl -p
-
-------------------------------------------------------------------------------------
-/etc/profile vs. /etc/bashrc, Login vs. non-Login shell, Interactive vs. non-Interactive shell
-    http://bencane.com/2013/09/16/understanding-a-little-more-about-etcprofile-and-etcbashrc/
-    http://askubuntu.com/questions/247738/why-is-etc-profile-not-invoked-for-non-login-shells
-
-VirtualBox: enable symbol links
-	VBoxManage setextradata [VM_NAME] VBoxInternal2/SharedFoldersEnableSymlinksCreate/[SHARE_NAME] 1
-	http://askubuntu.com/questions/446317/how-to-make-guest-os-follow-symlinks-from-shared-folder
-
-	
-------------------------------------------------------------------------------------
-Uninstall software that were installed by '$ make install'
-	http://stackoverflow.com/questions/1439950/whats-the-opposite-of-make-install-ie-how-do-you-uninstall-a-library-in-lin
-	1) firstly try $ make uninstall and see if it works
-	$ make uninstall
-	2) if no, running $ make -n install can be helpful, since it will show the steps that the software would take to install itself but won't actually do anything. You can then manually reverse those steps.
-	$ make -n install
-	3) if no, see if there is a manifest file which lists all the files that were installed with $ make install. (I used this for CodeLite under CentOS6.7.)
-	You can run this command:
-	$ cat install_manifest.txt | xargs echo sudo rm | sh
-
-------------------------------------------------------------------------------------
-Fuzzy Finder - FZF
-	1) 3 main search modes:
-	CTRL-T - file search
-	CTRL-R - command line history search
-	ALT-C - directory search
-
-	2) Search pattern
-	Token	Description						Match type
-	^music	Items that start with music		prefix-exact-match
-	.mp3$	Items that end with .mp3		suffix-exact-match
-	sbtrkt	Items that match sbtrkt			fuzzy-match
-	!rmx	Items that do not match rmx		inverse-fuzzy-match
-	'wild	Items that include wild			exact-match (quoted)
-	!'fire	Items that do not include fire	inverse-exact-match
-
-	3) Usage
-	You can select multiple items with TAB key
-	$ vim **<TAB>
-	Files under parent directory
-	$ vim ../**<TAB>
-	Files under parent directory that match `fzf`
-	$ vim ../fzf**<TAB>
-	Files under your home directory
-	$ vim ~/**<TAB>
-	Directories under current directory (single-selection)
-	$ cd **<TAB>
-	Directories under ~/github that match `fzf`
-	$ cd ~/github/fzf**<TAB>
-	Select single/multiple processes with <TAB> or <shift-TAB> keys
-	$ kill -9 <TAB>
-	Select from ssh/export history
-	$ ssh **<TAB>
-	$ export **<TAB>
-
-------------------------------------------------------------------------------------
-Backup whole system or partition, create image file, and used by VirtualBox
-	http://unix.stackexchange.com/questions/132797/how-to-dd-a-remote-disk-using-ssh-on-local-machine-and-save-to-a-local-disk
-	http://serverfault.com/questions/439128/dd-on-entire-disk-but-do-not-want-empty-portion
-
-	1) Backup
-	Run from remote computer
-	$ dd if=/dev/sda | gzip -1 - | ssh user@local dd of=image.gz	// gzip -1, means fastest/lowest compression
-	Run from local computer
-	$ ssh user@remote "dd if=/dev/sda | gzip -1 -" | dd of=image.gz
-
-	Or 
-	$ dd if=/dev/sda | gzip > backup.img.gz							// output image file to the local
-
-	One note: if you had a lot of files which were recently deleted, image size may be still large (deleting file does not necessarily zeroes underlying sectors). You can wipe free space by creating and immediately deleting large file containing zeros:
-	$ dd if=/dev/zero of=bigfile bs=1M     # let it run and quit by disk full error
-	$ rm bigfile
-	
-	2) Restore
-	Restore
-	$ cat backup.img.gz | gunzip | dd of=/dev/sda
-	$ gunzip backup.img.gz | dd of=/dev/sda
-
-	3) Check running status
-	$ pkill -USR1 dd
-	Or
-	$ kill -SIGUSR1 26431(pid)
-
-	Live example:
-	$ ssh skinner "dd if=/dev/sda5 | gzip -1 -" | dd of=image.gz
-	$ ll | grep image.gz
-	-rw-rw-r--.   1 saml saml  59775805 May 31 01:03 image.gz
-
-	4) Use with VirtualBox
-	https://blog.sleeplessbeastie.eu/2012/04/29/virtualbox-convert-raw-image-to-vdi-and-otherwise/
-	Let's assume that we have raw image of the sdb device:
-	$ sudo dd if=/dev/sdb of=./sdb.raw
-	
-	To use it with VirtualBox we need to convert it to the VDI format:
-	$ VBoxManage convertdd sdb.raw sdb.vdi --format VDI
-	
-	To use it with VMware we need to convert it to the VMDK format:
-	$ VBoxManage convertdd sdb.raw sdb.vmdk --format VMDK
-	
-	Convert between VDI/VMDK formats:
-	$ VBoxManage clonehd sdb.vdi sdb.vmdk --format VMDK
-	$ VBoxManage clonehd sdb.vmdk sdb.vdi --format VDI
-	
-	Convert to the RAW image:
-	$ VBoxManage clonehd sdb.vdi sdb.raw --format RAW
-	
-	Alternative solution to get back raw image after applying modifications is to use qemu-img command from qemu package:
-	$ qemu-img convert -f vmdk sdb.vmdk -O raw sdb.raw
-	
-	Now we can write image to the device:
-	$ sudo dd if=./sdb.raw of=/dev/sdb
-		
-------------------------------------------------------------------------------------
-Run program automatically
-	Place to make app automatically run on boot
-	http://stackoverflow.com/questions/7221757/run-automatically-program-on-startup-under-linux-ubuntu
-	/etc/init.d
-	/etc/init	// algoserver, hsm scrip files are here to make them auto run, there're environment and parameter inside scripts
-
-	Re-start the program if program fails
-	http://askubuntu.com/questions/251577/how-to-supervise-and-automatically-restart-a-process
-	http://superuser.com/questions/507576/how-to-automatically-restart-a-linux-background-process-if-it-fails
-
-SSH public/private key authentication
-	https://kb.iu.edu/d/aews
-
-HowTo Remove Executable Flag from Files in Virtual Box Shared Folder on Linux Guest
-	https://polach.me/howto-remove-executable-flag-from-files-in-virtual-box-shared-folder-on-linux-guest/
-	Manually mount the shared folder
-		> sudo mount -t vboxsf -o uid=0,gid=1001,umask=007,fmode=660 vm_share /media/sf_vm_share
-			where @gid is groupid of vboxsf (> grep vboxsf /etc/group)
-				  @vm_share is the shared folder's name, see from VirtualBox
-				  @sf_vm_share is the directory name created under /media
-	To auto mount when reboot, add below command to /etc/fstab
-		vm_share /media/sf_vm_share vboxsf rw,fmode=660,umask=007,uid=0,gid=1001, 0 0
-
-HowTo Config VirtualBox guest OS with static IP
-https://oracle-base.com/articles/linux/linux-network-configuration
-https://wiki.centos.org/FAQ/CentOS6
-http://unix.stackexchange.com/questions/269516/how-to-set-static-ip-for-guest-os-on-virtualbox
-
-------------------------------------------------------------------------------------
-PUDB
-	> python -m pudb your_python.py
-	> python -m pudb.run your_python.py
-	> pudb your_python.py
-	
-	Easy way to uninstall all pip packages
-	> pip list | awk '{print $1}' | xargs pip uninstall -y
-	
-	Shortcut Keys
-
-	n: Execute next command
-	s: Step into a function
-	c: Continue execution
-	b: Set a breakpoint on the current line
-	e: Show the traceback from a thrown exception
-	q: Opens dialog to either quit or to restart the running program
-	o: Show the original console / standard output screen
-	m: Open a module in a different file
-	L: Go to line
-	!: Go to the Python command line subwindow at the bottom of the screen
-	?: Display the help dialog which includes a complete listing of shortcut commands
-	<SHIFT+V>: Switch context to the variables subwindow on the right of the screen
-	<SHIFT+B>: Switch context to the breakpoints subwindow on the right of the screen
-	<CTRL+X>: Toggle contexts between the lines of code and the Python command line
-
-	Configure the Variables list to always display string representations, as well as set other subwindow
-	sizing properties, using the example ~/.config/pudb/pudb.cfg file given below:
-
-     [pudb]
-     breakpoints_weight = 0.5
-     current_stack_frame = top
-     custom_stringifier = 
-     custom_theme = 
-     display = auto
-     line_numbers = True
-     prompt_on_quit = True
-     seen_welcome = e027
-     shell = internal
-     sidebar_width = 0.75
-     stack_weight = 0.5
-     stringifier = str
-     theme = classic
-     variables_weight = 1.5
-     wrap_variables = True
-
-------------------------------------------------------------------------------------
-psql
-	Initialize database cluster (one time run)
-	> initdb -D path/to/db/cluster/folder
-	Launch the local postgre database server
-	> postgres -D  path/to/db/cluster/folder
-	> postgres -D /windump/public/jxie/database/
-	
-	Show all schemas
-	> \dn
-	List functions
-	> \df
-	List views
-	> \dv
-	Show function SQL code
-	> \df+ __function__
-	Pretty-format query results
-	> \x
-	Show tables under a schema
-	> \dt {schema}.*
-	Or, 
-	> select * from pg_tables where schemaname='public';
-	Or, 
-	> SELECT * FROM information_schema.tables WHERE table_schema = 'public';
-
-	Describe a table (column info, type, etc.)
-	> \d {table_name}
-	> \d {schema}.{table_name}
->>>>>>> 6fbb3830dcb508a39d565f72340ba2a2507c55bf
