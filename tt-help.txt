@@ -19,6 +19,8 @@ Get & update repository
     These two commands will copy the submodule to the local repository.
     > git submodule init
     > git submodule update
+	Or, below command is better
+	> git clone --recursive your/link/to/git/repo
 
     Check in code
     > git br
@@ -28,6 +30,11 @@ Get & update repository
     > git br
     > git push origin feature/DEB-45028_Algo_flyout_param
     > git log
+
+	Create a branch at specific commit point
+	> git checkout -b {branchname} {sha1-of-commit}
+	Or,
+	> git branch {branchname} {sha1-of-commit}
 
     Merge commits from feature/** branch to develop branch
     > git checkout develop

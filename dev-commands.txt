@@ -32,7 +32,9 @@ VI Commands
     replace only whole words exactly match
     :%s/\<foo\>/bar/g
 	
-
+	search and count occurrences
+	:%s/pattern//gn
+	
     3) search word and list line number in a file
     :g/word/#
 
@@ -75,6 +77,11 @@ Shell command
     $ vmstat -s
     $ swapon -s // Display swap usage by device
 	
+	check system RAM usage, including hugepage limit
+	https://www.centos.org/docs/5/html/5.2/Deployment_Guide/s2-proc-meminfo.html
+	https://wiki.debian.org/Hugepages
+	> cat /proc/meminfo
+
 	3) collect/check system IO statistics/device performance
 	$ iostat
 	
@@ -83,7 +90,11 @@ Shell command
 
     5) check CPU infromation
     $ lscpu
+    $ lscpu -a --extended
     $ cat /proc/cpuinfo
+	
+	Node (NUMA node) -> book -> socket (physical CPU) -> core -> CPU (logical CPU, hyper threading, threads per core)
+	http://www.daniloaz.com/en/differences-between-physical-cpu-vs-logical-cpu-vs-core-vs-thread-vs-socket/
 
 	6) lsof: find out which files (pipe/socket/dir/device etc.) are open by which process
 	Display all opened files for specific user
@@ -161,6 +172,9 @@ Shell command
 	HOME, SHELL, LOGNAME, USER and USERNAME in addition to variables from the invoking process permitted by
 	the env_check and env_keep sudoers options. There is effectively a whitelist for environment variables.
 
+	15) periodically run a command
+	> watch -n1 'ethtool -S ens1f0 | grep drop'
+
 ------------------------------------------------------------------------------------
 tmux
 
@@ -201,6 +215,15 @@ GIT
 	delete local branch
 	$ git branch -d <branch-name>
 	
+	rename local branch
+	$ git branch -m new-name
+	rename local branch if you're on different branch
+	$ git branch -m old-name new-name
+	rename remote branch (delete old-name and push new-name local branch)
+	$ git push origin :old-name new-name
+	reset the upstream branch for new-name local branch
+	$ git push origin -u new-name
+
 	5) merge
 	Case 1: merge master branch into current branch {dmgr2}, no conflict
 	> git checkout dmgr2      # gets you "on branch dmgr2"
@@ -253,6 +276,9 @@ GIT
 	// rollback pushed commits, use revert
 	$ git revert commit-hash-code
 	
+	// remove all local commits, go back to remote branch
+	$ git reset --hard origin/{branch-name}
+	
 	// rollback changes made to the index (i.e., that you have added). Warning this will reset all of your unpushed commits to master!
 	$ git reset
 
@@ -302,6 +328,51 @@ GIT
 	11) give up all local changes and download everything from repo
 	$ git reset --hard HEAD
 	$ git pull
+
+	12) usecase for rebase
+	- I created a branch (dev_bran) and did code changes, pushed to remote for a few times.
+	- During this period, remote master branch has changed a lot.
+	- I decided to create a new branch (new_bran) and merge dev_bran into new_bran.
+	Error: after creating new_bran in local, I merged dev_bran into new_bran - ok. But was rejected when pushing to remote.
+	Solution ref link: https://stackoverflow.com/questions/13783023/cant-push-to-git-repository-after-merged-branch
+	> git checkout -b new_bran
+	> git branch --set-upstream-to=master	// this results in current branch new_bran tracking remote master branch
+	> git pull --rebase origin master
+	> git merge dev_bran
+	> git push origin new_bran
+	
+	REMIND: to not track remote master branch, use -
+	> git branch --unset-upstream
+	
+	To view tracked branches information -
+	> git branch -vv
+	To view all tracked information -
+	> git remote show origin
+	
+	13) setup ssh key
+	For gitbucket:
+	https://confluence.atlassian.com/bitbucket/set-up-an-ssh-key-728138079.html
+	For github:
+	https://git-scm.com/book/en/v2/Git-on-the-Server-Generating-Your-SSH-Public-Key
+	
+	14) rename tag
+	make alias
+	> git tag new_name old_name
+	delete tag's old name from local
+	> git tag -d old_name
+	remove tag's old name from remote repo
+	> git push origin :refs/tags/old_name  OR  > git push origin :old_name
+	commit tag's new name
+	> git push origin refs/tags/new_name   OR  > git push --tags
+	
+	if other users have pull the old_name tag, let them run below command
+	> git pull --prune --tags
+	
+	15) delete tag
+	# delete local tag '12345'
+	git tag -d 12345
+	# delete remote tag '12345' (eg, GitHub version too)
+	git push origin :refs/tags/12345
 
 ------------------------------------------------------------------------------------
 Valgrind
@@ -417,6 +488,8 @@ Network commands
 	tcpdump
 	Command sample one by one
 	http://www.tecmint.com/12-tcpdump-commands-a-network-sniffer-tool/
+	https://forum.ivorde.com/tcpdump-xx-xx-dump-packet-header-and-data-in-hex-and-ascii-format-t19790.html
+	http://bencane.com/2014/10/13/quick-and-practical-reference-for-tcpdump/
 	http://rationallyparanoid.com/articles/tcpdump.html
 	Tutorial
 	https://danielmiessler.com/study/tcpdump/#gs.ez4xqXk
@@ -429,9 +502,14 @@ Network commands
 	port 10000: specific port 10000
 	-S: output absolute sequence number than relative
 	-nn: don't resolve host or port name
-	-X: show packet's content
+	-x print the packet data (minus its link level header) in hex. Note that this is the entire link-layer packet,
+	so for link layers that pad (e.g. Ethernet), the padding bytes will also be printed when the higher layer packet
+	is shorter than the required padding.
+	-xx print the packet data including its link level header, in hex.
+	-X print the packet data (minus its link level header) in hex and ASCII
+	-XX print the packet data of each packet, including its link level header, in hex and ASCII
 	> tcpdump -aX -vvv -i vlan3148 ip host 10.192.51.144 and port 17601
-	
+
 	telnet
 	> telnet www.google.com 80 (by default using port 23)
 	> GET / HTTP/1.1
@@ -442,6 +520,12 @@ Network commands
 	> sudo ifconfig eth0:1 192.168.10.10 netmask 255.255.255.0 up
 	> sudo ifconfig eth0:2 192.168.10.15 netmask 255.255.255.0 up
 	
+	ethtool: query or control network dirver and hardware settings
+	$ ethtool -S ens1f0				// list summary of an interface
+	$ ethtool -S ens1f0 | grep drop // show the dropped of packets
+	> netstat -ng  ( will give groups subscribe to the interface)
+	> netstat -t (will give you unicast sessions attached to the interface)
+
 ------------------------------------------------------------------------------------
 Analyze kernel crash
 http://www.dedoimedo.com/computers/crash-analyze.html
@@ -481,6 +565,17 @@ Trace system calls with strace
 ------------------------------------------------------------------------------------
 Debug core file
     http://yusufonlinux.blogspot.com/2010/11/debugging-core-using-gdb.html
+	
+	Check where the core file goes to
+	> cat /proc/sys/kernel/core_pattern
+	Debug with core file
+	> gdb <exe> <core-file>
+	Or,
+	> gdb <exe> -c <core-file>
+	Or,
+	> gdb <exe>
+	(gdb) core <core-file>
+
     Enable core file dump
     http://www.cyberciti.biz/tips/linux-core-dumps.html
     1) Go to /etc/profile.d folder and create a *.sh file such as coredump.sh
@@ -507,6 +602,13 @@ Debug core file
     3) Reload the settings in /etc/sysctl.conf by running the following command:
     $ sysctl -p
 
+	4) Print stack trace of a core file without entering gdb interactively
+	> gdb -q -n -ex bt -batch ${exe} ${corefile}
+	e.g.
+	> gdb -q -n -ex bt -batch /tmp/example.exe /tmp/core-example-2017-02
+	Use alias in .bashrc
+	> alias gdbbt="gdb -q -n -ex bt -batch"
+
 ------------------------------------------------------------------------------------
 /etc/profile vs. /etc/bashrc, Login vs. non-Login shell, Interactive vs. non-Interactive shell
     http://bencane.com/2013/09/16/understanding-a-little-more-about-etcprofile-and-etcbashrc/
@@ -516,7 +618,7 @@ VirtualBox: enable symbol links
 	VBoxManage setextradata [VM_NAME] VBoxInternal2/SharedFoldersEnableSymlinksCreate/[SHARE_NAME] 1
 	http://askubuntu.com/questions/446317/how-to-make-guest-os-follow-symlinks-from-shared-folder
 
-	
+
 ------------------------------------------------------------------------------------
 Uninstall software that were installed by '$ make install'
 	http://stackoverflow.com/questions/1439950/whats-the-opposite-of-make-install-ie-how-do-you-uninstall-a-library-in-lin
@@ -722,4 +824,57 @@ psql
 
 	Describe a table (column info, type, etc.)
 	> \d {table_name}
+
 	> \d {schema}.{table_name}
+
+------------------------------------------------------------------------------------
+iperf
+	iperf is a IP traffic client / server traffic testing tool.  We have typically used it to test multicast traffic on our network
+	https://iperf.fr/
+	http://taosecurity.blogspot.com/2006/09/generating-multicast-traffic.html
+	
+	Usage
+	Multicast Listener
+	> iperf -s -u -B 224.0.55.55 -i 1 
+	Flags:
+
+	-s:   Server
+	-u:   Unicast
+	-B:   Bind to address
+	-i:   interval 
+
+	Multicast Publisher
+	> iperf -c 224.0.55.55 -u -T 32 -t 20 -l 1k -i 1
+	Flags:
+
+	-c:  client
+	-u:  unicast
+	-T:  TTL
+	-l:  buffer length
+	-t:  time of test
+
+	Note:  We use the "-l 1k" parameter to limit the published packets to a smaller size so PIM encapsulation does not exceed the MTU of the upstream links (to the RP). 
+
+	Issues
+	As you know, IPerf stopped working once we switched over to Arista switches for our LAN / WAN infrastructure. The mystery of why it would not work is no more.
+
+	Lets take a look at IPerf traffic. IPerf starts by immediately puking out multicast packet close to the full interface MTU of 1500
+
+	Initial IPerf Packet
+	Full Frame Size: 1512 bytes
+	| Ethernet: 14 | IP: 20 | UDP: 8 | Data: 1470 |
+
+	This size packet is fine. The interface MTU limit is 1500 and the IP, UDP and data add up to 1498 bytes. This packet should pass thru our network without problem. The the problem is that this is multicast traffic and it needs to be encapsulated into a PIM register packet and sent to the RP.
+
+	The PIM packet header size is 64 bytes. If you add this to IPerf's initial packet, it become too big for the upstream link to handle. A ICMP "Fragmentation Needed" message is sent back to the host. IPerf ignores this and continues to send out the oversized packets. All of them get dropped, the RP never sees them and the mcast flow is never set up.
+
+	A back of the hand calculation show the max packet size for the initial mcast packet required to encapsulate a PIM register message to our RP. The max size is 1436 bytes.
+
+	Max packet size of 1514 bytes = | Ethernet: 14 | PIM: 64 | Data: 1436 |
+
+	Most multicast applications do a slow start knowing that the PIM messages will need to use smaller than MTU packets to establish flow.
+
+	We can use iperf, we just need to tell it to use a smaller packet size. You can do this with the "-l" flag
+
+	iperf -c 224.0.55.55 -u -T 32 -t 20 -l 1k -i 1
+
