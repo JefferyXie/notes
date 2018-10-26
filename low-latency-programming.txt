@@ -40,6 +40,45 @@ Animated presentation:   http://prezi.com/pdkvgys-r0y6/latency-numbers-for-progr
 TODO: many great summaries about hardware cost!!
 http://stackoverflow.com/questions/4087280/approximate-cost-to-access-various-caches-and-main-memory
 
+
+------------------------------------------------------------------------------------
+https://www.quora.com/What-is-clock-cycle-machine-cycle-and-instruction-cycle-in-a-microprocessor
+Clock cycle vs. Machine cycle vs. Instruction Cycle
+
+Clock cycle:
+
+The speed of a computer processor, or CPU, is determined by the clock cycle, which is the amount of time between two pulses of an oscillator. Generally speaking, the higher number of pulses per second, the faster the computer processor will be able to process information. The clock speed is measured in Hz, typically either megahertz (MHz) or gigahertz (GHz). For example, a 4GHz processor performs 4,000,000,000 clock cycles per second.
+Computer processors can execute one or more instructions per clock cycle, depending on the type of processor. Early computer processors and slower processors can only execute one instruction per clock cycle, but faster, more advanced processors can execute multiple instructions per clock cycle, processing data more efficiently.
+
+Machine cycle:
+
+The steps performed by the computer processor for each machine language instruction received. The machine cycle is a 4 process cycle that includes reading and interpreting the machine language, executing the code and then storing that code.
+​
+Four steps of Machine cycle
+
+Fetch - Retrieve an instruction from the memory.
+Decode - Translate the retrieved instruction into a series of computer commands.
+Execute - Execute the computer commands.
+Store - Send and write the results back in memory.
+
+Instruction cycle:
+
+The sequence of operations that the cpu has to carry out while execution is called instruction cycle.
+1:- Read an Instruction
+2:- Decode the instruction
+3:- Find the address of operand
+4:- retrieve an operand
+5:- perform desired operation
+6:- find the address of destination
+7:- store the result into the destination
+
+-------------
+The clock cycle is the smallest unit of time. Like a metronome, it just keeps time, and everybody marches to that sequential beat.
+
+A machine cycle, is how long it takes something to happen on the machine (ie… the BUS). If your front side bus, has a multiplier of 5, and your system clock is 2.5Ghz, then your front side bus is running at 500Mhz, and a bus operation like write data to a port takes one machine cycle, and 5 clocks.
+
+An instruction cycle, is a single operation that is either a clock cycle, or a machine cycle, needed to execute a machine language opcode and it’s parameters. How many instruction cycles are required to execute a single machine language opcode depends upon the instruction. An instruction that increments a register will usually take just 1 or 2 instruction cycles. To make matters more complicated modern processors have an instruction pipeline that allows another instruction to start executing before the last one finished. And in some instances, one instruction can even pass another instruction in that pipeline, while the previous instruction was stalled, waiting for a machine cycle (like a memory read) to finish.
+
 ------------------------------------------------------------------------------------
 C++
 http://programmers.stackexchange.com/questions/183723/low-latency-unix-linux
