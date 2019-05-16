@@ -1,49 +1,59 @@
-------------------------------------------------------------------------------------
-实际的内存模型中会引入锁机制（Locking Protocol）。通常内存模型会遵循以下三个规则：
+-------------------------------------------------------------------------------
+实际的内存模型中会引入锁机制（Locking Protocol）。通常内存模型会遵循三个规则：
 
 Rule 1：当线程在隔离状态运行时，其行为不会改变；
 Rule 2：读操作不能被移动到获取锁操作之前；		// load (acquire), 获取锁
 Rule 3：写操作不能被移动到释放锁操作之后；		// store (release), 释放锁
 
-Rule 3 保证了在释放锁之前，所有写入操作已经完成。Rule 2 保证要读取内存就必须先获取锁，不会再有其他线程
-修改内存。Rule 1 则保证了获得锁之后的操作行为是顺序的。在体现锁机制（Locking Protocol）的价值的同时，
-我们也会意识到它所带来的限制，也就是限制了编译器和 CPU 对程序做优化的自由。
+Rule 3 保证了在释放锁之前，所有写入操作已经完成。Rule 2 保证要读取内存就必须先
+获取锁，不会再有其他线程修改内存。Rule 1 则保证了获得锁之后的操作行为是顺序的。
+在体现锁机制（Locking Protocol）的价值的同时，我们也会意识到它所带来的限制，也
+就是限制了编译器和 CPU 对程序做优化的自由。
 
 Although there are six ordering options, they represent three models: 
 
 sequentially-consistent ordering 
-	memory_order_seq_cst	// 此操作要求所有的acq_rel操作有一个全局（所有CPU）符合某个统一的操作顺序
-							//（a single global order of events），包括暗示的操作，任何线程在任何CPU上
-							// 都符合这个顺序；所以线程看到的都是这一个操作顺序，所以这样的程序有额外开
-							// 销来保证这个统一操作
+	memory_order_seq_cst	// 此操作要求所有的acq_rel操作有一个全局（所有CPU）
+							// 符合某个统一的操作顺序（a single global order of
+							// events），包括暗示的操作，任何线程在任何CPU上都
+							// 符合这个顺序；所以线程看到的都是这一个操作顺序，
+							// 所以这样的程序有额外开销来保证这个统一操作
 acquire-release ordering 
-	memory_order_acquire	// load, acquire lock; guarantees that subsequent instruments are not
-							// moved before the current load
-	memory_order_release	// store, release lock; preceding instruments are not moved after the
-							// current store.
-	memory_order_acq_rel	// read-modify-write operation; combines the two previous guarantees
-	memory_order_consume	// potentially weaker form of memory_order_acquire that enforces ordering
-							// of the current load before other operations that are data-dependent on
-							// it (for instance, when a load of a pointer is marked memory_order_consume,
-							// subsequent operations that dereference this pointer won’t be moved before
-							// it (yes, even that is not guaranteed on all platforms!).
+	memory_order_acquire	// load, acquire lock; guarantees that subsequent
+							// instruments aren't moved before the current load
+	memory_order_release	// store, release lock; preceding instruments are
+							// not moved after the current store.
+	memory_order_acq_rel	// read-modify-write operation; combines the two
+							// previous guarantees
+	memory_order_consume	// potentially weaker form of memory_order_acquire
+							// that enforces ordering of the current load before
+							// other operations that are data-dependent on it
+							// (for instance, when a load of a pointer is marked
+							// memory_order_consume, subsequent operations that
+							// dereference this pointer won’t be moved before it
+							// (yes, even that's not guaranteed on all platforms)
 relaxed ordering 
 	memory_order_relaxed	// all reorderings are okay;
 	
 acquire-release
-	Under this ordering model, atomic loads are acquire operations (memory_order_acquire), atomic stores
-	are release operations (memory_order_release), and atomic read-modify-write operations (such as
-	fetch_add() or exchange()) are either acquire, release, or both (memory_order_acq_rel). Synchronization
-	is pairwise, between the thread that does the release and the thread that does the acquire. 
+	Under this ordering model, atomic loads are acquire operations
+	(memory_order_acquire), atomic stores are release operations
+	(memory_order_release), and atomic read-modify-write operations (such as
+	fetch_add() or exchange()) are either acquire, release, or both
+	(memory_order_acq_rel). Synchronization is pairwise, between the thread that
+	does the release and the thread that does the acquire. 
 
 read-modify-write
-	If you use read-modify-write operations, it’s important to pick the semantics you desire. In this case,
-	you want both acquire and release semantics, so memory_order_acq_rel is appropriate, but you can use
-	other orderings too. A fetch_sub operation with memory_order_acquire semantics doesn’t synchronize-with
-	anything, even though it stores a value, because it isn’t a release operation. Likewise, a store can’t
-	synchronize-with a fetch_or with memory_order_release semantics because the read part of the fetch_or
-	isn’t an acquire operation. Read-modify-write operations with memory_order_acq_rel semantics behave as
-	both an acquire and a release, so a prior store can synchronize-with such an operation, and it can
+	If you use read-modify-write operations, it’s important to pick the
+	semantics you desire. In this case, you want both acquire and release
+	semantics, so memory_order_acq_rel is appropriate, but you can use other
+	orderings too. A fetch_sub operation with memory_order_acquire semantics
+	doesn’t synchronize-with anything, even though it stores a value, because
+	it isn’t a release operation. Likewise, a store can’t synchronize-with a
+	fetch_or with memory_order_release semantics because the read part of the
+	fetch_or isn’t an acquire operation. Read-modify-write operations with
+	memory_order_acq_rel semantics behave as both an acquire and a release, so
+	a prior store can synchronize-with such an operation, and it can
 	synchronize-with a subsequent load, as is the case in this example.
 
 http://www.developerfusion.com/article/138018/memory-ordering-for-atomic-operations-in
@@ -59,20 +69,25 @@ C++ 多线程与内存模型资料汇
 https://github.com/forhappy/Cplusplus-Concurrency-In-Practice/blob/master/zh/chapter8-Memory-Model/web-resources.md
 
 
-------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
 atomic's acquire/release operations vs. memory fence
 
-A memory fence is neither a load nor a store, so obviously, it can’t be an acquire or release operation. 
+A memory fence is neither a load nor a store, so obviously, it can’t be an
+acquire or release operation. 
 
-Acquire and release fences, as you might imagine, are standalone memory fences, which means that they aren’t
-coupled with any particular memory operation. So, how do they work?
-	1) An acquire fence prevents the memory reordering of any read which precedes it in program order with
-	   any read or write which follows it in program order.
-	2) A release fence prevents the memory reordering of any read or write which precedes it in program order
-	   with any write which follows it in program order.
-	A release operation (such as the one on the left) only needs to prevent preceding memory operations from
-	being reordered past itself, but a release fence (such as the one on the right) must prevent preceding
-	memory operations from being reordered past all subsequent writes. 
+Acquire and release fences, as you might imagine, are standalone memory fences,
+which means that they aren’t coupled with any particular memory operation. So,
+how do they work?
+	1) An acquire fence prevents the memory reordering of any read which
+	   precedes it in program order with any read or write which follows it in
+	   program order.
+	2) A release fence prevents the memory reordering of any read or write
+	   which precedes it in program order with any write which follows it in
+	   program order.
+	A release operation (such as the one on the left) only needs to prevent
+	preceding memory operations from being reordered past itself, but a release
+	fence (such as the one on the right) must prevent preceding memory
+	operations from being reordered past all subsequent writes. 
 
 Acquire and Release Fences
 http://preshing.com/20130922/acquire-and-release-fences/

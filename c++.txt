@@ -5,6 +5,7 @@ http://stackoverflow.com/questions/6855686/what-is-the-difference-between-static
 C++11 rvalues and move semantics confusion (return statement)
 http://stackoverflow.com/questions/4986673/c11-rvalues-and-move-semantics-confusion-return-statement?rq=1
 
+	https://stackoverflow.com/questions/8526598/how-does-stdforward-work
 	http://stackoverflow.com/questions/27501400/the-implementation-of-stdforward
 	// lvalue version
 	template <class T>
@@ -26,7 +27,11 @@ http://stackoverflow.com/questions/4986673/c11-rvalues-and-move-semantics-confus
 	{
 	  return static_cast<typename remove_reference<T>::type&&>(arg);
 	}
-
+	// implementation of remove_reference
+	template<class T> struct remove_reference      {typedef T type;};
+	template<class T> struct remove_reference<T&>  {typedef T type;};
+	template<class T> struct remove_reference<T&&> {typedef T type;};
+	
 shared_ptr, week_ptr
 http://stackoverflow.com/questions/9200664/how-is-the-stdtr1shared-ptr-implemented
 http://programmers.stackexchange.com/questions/274801/raw-weak-ptr-unique-ptr-shared-ptr-etc-how-to-choose-them-wisely
@@ -34,12 +39,16 @@ http://www.drdobbs.com/weak-pointers/184402026
 
 How much does exception handling impact performance?
 http://stackoverflow.com/questions/13835817/are-exceptions-in-c-really-slow
+https://mortoray.com/2013/09/12/the-true-cost-of-zero-cost-exceptions/
 
 Stack unwinding and how it works?
 http://stackoverflow.com/questions/2331316/what-is-stack-unwinding
 
 Template Q/A
 https://isocpp.org/wiki/faq/templates
+
+Good examplte telling how std::bind is implemented?
+https://gist.github.com/Redchards/c5be14c2998f1ca1d757
 
 Hans-J. Boehm: multi-threads, memory model
 http://www.hboehm.info/
@@ -54,7 +63,3 @@ Linux thread avoid resource competition - semphore
 http://blog.csdn.net/ljianhui/article/details/10813469
 Linux process communication - sig
 http://blog.csdn.net/ljianhui/article/details/10128731
-
-// test only
-
-my change during merge

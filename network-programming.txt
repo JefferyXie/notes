@@ -26,8 +26,10 @@ http://www.thegeekstuff.com/2013/05/ip-multicasting/
 http://slideplayer.com/slide/2874353/
 
 What is IGMP Querying and IGMP Snooping and why would I need it on my network?
-IGMP is between host and router so that rourter can receive specific multicast traffic.
-IGMP snooping is more about swith thing so switch won't flood the multicast traffic to all ports.
+- IGMP is between host and router so that rourter can receive specific multicast
+  traffic.
+- IGMP snooping is more about swith thing so switch won't flood the multicast
+  traffic to all ports.
 http://www.vsicam.com/_faq/what-is-igmp-querying-and-igmp-snooping-and-why-would-i-need-it-on-my-network/
 
 C and Linux Socket topics

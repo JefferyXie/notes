@@ -1,4 +1,4 @@
-------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
 Some links of tech resource
 
     1) C++/Python/Java/Design Patterns
@@ -17,7 +17,7 @@ Some links of tech resource
 	7) scp command examples: copy file/folder between remote/local, remote/remote
 	http://www.hypexr.org/linux_scp_help.php/
 
-------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
 VI Commands
 
     1) remove all white space in a file and replace with a comma
@@ -50,7 +50,7 @@ VI Commands
 	:split $MYVIMRC
 	:source $MYVIMRC
 
-------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
 Shell command
 
     1) Find specific file type under directory and count lines in the file
@@ -72,8 +72,9 @@ Shell command
 	$ find -type f -iname *.cpp -o -iname *.hpp -o -iname *.c -o -iname *.h | grep -v -e "./ext/" -e "./fixit/"
 
     2) check system memory, virtual memory usage and configuration
-    $ free // Check system memory usage
-    $ vmstat // Virtual memory statistics, can be used to see thread interruption & context switch times per second
+    $ free		// Check system memory usage
+    $ vmstat	// Virtual memory statistics, can be used to see thread
+				// interruption & context switch times per second
     $ vmstat -s
     $ swapon -s // Display swap usage by device
 	
@@ -96,7 +97,7 @@ Shell command
 	Node (NUMA node) -> book -> socket (physical CPU) -> core -> CPU (logical CPU, hyper threading, threads per core)
 	http://www.daniloaz.com/en/differences-between-physical-cpu-vs-logical-cpu-vs-core-vs-thread-vs-socket/
 
-	6) lsof: find out which files (pipe/socket/dir/device etc.) are open by which process
+	6) find which files (pipe/socket/dir/device etc.) are open and the process
 	Display all opened files for specific user
 	$ lsof -u {user_name}
 	
@@ -106,7 +107,8 @@ Shell command
 	List all running process of open files of TCP Port ranges from 1-1024
 	$ lsof -i TCP:1-1024
 	
-	List all Network Connections: option ‘-i’ shows the list of all network connections ‘LISTENING & ESTABLISHED’
+	List all Network Connections: option ‘-i’ shows the list of all network
+	connections ‘LISTENING & ESTABLISHED’
 	$ lsof -i
 
 	Search by PID
@@ -117,7 +119,7 @@ Shell command
     or
     $ cat /etc/passwd // find your user name line
 	
-	8) Print the lists of directories and candidate libraries stored in the current cache
+	8) Print the lists of dirs and candidate libs stored in the current cache
 	$ ldconfig -p
 	$ ldconfig -p | grep /usr/local
 	
@@ -128,7 +130,7 @@ Shell command
 	
 	10) enable ssh service
 	$ yum install openssh-server openssh-clients  // install packages
-	$ chkconfig sshd on   // ssh service will start automatically goingforward after boot
+	$ chkconfig sshd on   // ssh service will start automatically after boot
 	$ service sshd start  // manually start the service
 	
 	// different ways to check if ssh service is on
@@ -153,12 +155,13 @@ Shell command
 	> sed -i 's/string1/string2/g' *
 	
 	12) use {cut} to distill specific field from output
-	List sub-directories, get the directory name (last second field), and remove the directories
+	List sub-directories, get the dir name (last second field), and remove them
 	> ls -d /your/target/dir/*/ | rev | cut -d '/' -f 2 | rev | xargs -r rm -rf
 	The command equals to:
 	> rm -r /your/target/dir/*/
 
-	Get root partition's usage percentage, -P is to output in Posix format so no wrapped lines
+	Get root partition's usage percentage, -P is to output in Posix format so no
+	wrapped lines
 	> df -Ph | awk '$6=="/" {print $5}' | cut -d '%' -f 1
 	
 	13) Differences among grep, pgrep, egrep, and fgrep
@@ -167,22 +170,24 @@ Shell command
 	14) sudo environment setup
 	http://stackoverflow.com/questions/257616/sudo-changes-path-why
 	sudo tries to be safe when executing external commands.
-	There are two distinct ways to deal with environment variables. By default, the env_reset sudoers
-	option is enabled. This causes commands to be executed with a minimal environment containing TERM, PATH,
-	HOME, SHELL, LOGNAME, USER and USERNAME in addition to variables from the invoking process permitted by
-	the env_check and env_keep sudoers options. There is effectively a whitelist for environment variables.
+	There are two distinct ways to deal with environment variables. By default,
+	the env_reset sudoers option is enabled. This causes commands to be executed
+	with a minimal environment containing TERM, PATH, HOME, SHELL, LOGNAME, USER
+	and USERNAME in addition to variables from the invoking process permitted by
+	the env_check and env_keep sudoers options. There is effectively a whitelist
+	for environment variables.
 
 	15) periodically run a command
 	> watch -n1 'ethtool -S ens1f0 | grep drop'
 
-------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
 tmux
 
 	https://danielmiessler.com/study/tmux/
 	http://www.hamvocke.com/blog/a-guide-to-customizing-your-tmux-conf/
 	https://gist.github.com/spicycode/1229612
 	
-------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
 GIT
 
 	1) To view which commit(s) have not yet been pushed
@@ -207,7 +212,7 @@ GIT
 	view both local and remote branches
 	$ git branch -a
 	
-	display remote information in general and how it relates to local repository
+	display remote info in general and how it relates to local repository
 	$ git remote show origin
 	
 	delete remote branch
@@ -228,7 +233,8 @@ GIT
 	Case 1: merge master branch into current branch {dmgr2}, no conflict
 	> git checkout dmgr2      # gets you "on branch dmgr2"
 	> git fetch origin        # gets you up to date with origin
-	> git merge origin/master # git will launch a vi window for you to input comments, save and quit, the merge is automatically done
+	> git merge origin/master # git will launch a vi window for you to input
+							  # comments, save and quit, the merge is done
 	
 	Case 2: merge master branch into current branch {dmgr2}, THERE HAS conflict
 	> git checkout dmgr2      # gets you "on branch dmgr2"
@@ -243,23 +249,29 @@ GIT
 	
 	Case 3: merge a specific file from branch B into current branch A
 	> git checkout A
-	> git checkout --patch B file-name	# patch file {file-name} of HEAD of B, you can specify any commit, not have to be HEAD
+	> git checkout --patch B file-name	# patch file {file-name} of HEAD of B,
+										# you can specify any commit, not have
+										# to be HEAD
 	For new file from B:
 	> git checkout B file-name
 	
-	Case 4: remote change and local change happen to same file(s), you cannot pull or merge directly
+	Case 4: remote change and local change happen to same file(s), you cannot
+			pull or merge directly
 	Solution a): commit local changes and then pull/merge
-	Solution b): stash it, staching acts as a stack, where you push changes, you pop them in reverse order
+	Solution b): stash it, staching acts as a stack, where you push changes,
+				 you pop them in reverse order
 	> git stash
 	> git pull	and > git mergetool if necessary
 	> git stash pop
 	Solution c): discard local changes if this is the case
 	> git reset --hard
 	
-	6) [TODO, needs verification!] What if there is merge conflict when push a commit, you want to overwrite local changes with remote?
+	6) [TODO, needs verification!] What if there is merge conflict when push a
+	   commit, you want to overwrite local changes with remote?
 
 	----
-	// Since your pull was unsuccessful then just HEAD is the last "valid" commit on your branch (not HEAD^):
+	// Since your pull was unsuccessful then just HEAD is the last "valid"
+	// commit on your branch (not HEAD^):
 	$ git reset --hard HEAD
 	// The other piece you want is to let their changes over-ride your changes.
 	$ git fetch origin
@@ -268,7 +280,7 @@ GIT
 	7) Reset/revert changes
 	// rollback local committed changes, use reset
 	http://stackoverflow.com/questions/2510276/undoing-git-reset
-	$ git reflog	// list log of all ref updates (e.g., checkout, reset, commit, merge)
+	$ git reflog // list all ref updates log(e.g. checkout,reset,commit,merge)
 	$ git reset 'HEAD@{1}'	// reset to specific commit
 	Or,
 	$ git reset sha1-hash	// sha1-hash is from ref update list
@@ -279,7 +291,8 @@ GIT
 	// remove all local commits, go back to remote branch
 	$ git reset --hard origin/{branch-name}
 	
-	// rollback changes made to the index (i.e., that you have added). Warning this will reset all of your unpushed commits to master!
+	// rollback changes made to the index (i.e., that you have added). Warning
+	// this will reset all of your unpushed commits to master!
 	$ git reset
 
 	$ git checkout .
@@ -292,7 +305,7 @@ GIT
 	$ git clean -fd
 	
 	9) Merge specific file(s) from other branch
-	Checkout latest version from other branch and overwrite existing ones in current branch
+	Checkout latest from other branch and overwrite those in current branch
 	$ git checkout source_branch <paths>...
 
 	10) Get a list of deleted files and output the full path
@@ -305,38 +318,85 @@ GIT
 	11) Rebase/Merge/Stash
 	Rebasing (Optional Prior To Merging) ---
 	
-	In some cases it makes sense to rebase your branch prior to merging.  Only rebase if your branch hasn’t been shared with other developers  (i.e., pushed).  A benefit to rebasing is that the history of master’s commits will be cleaner.
-	In some cases it’s beneficial to squash several commits into a single commit.  For example, to combine code changes and the final touches from a code review.  While checked out to your [branch_name], do git rebase -i COMMIT.  The COMMIT should be the parent of your first commit.  In place of COMMIT, you could substitute the HEAD tilde syntax.  If you had two commits to squash into one, use HEAD~2 since HEAD~2 is the current commit’s first parent’s first parent.  
-	Regardless of how you specify the commit, the command will open an editor with your commits.  A legend will instruct you to type squash (or just s) to squash the commit.  Once the editor is closed all the commits will be squashed into one.  This command can be used for many other uses, squashing is just one.
-	Prior to rebasing, it’s important to get your local repository up to date with the origin. See Fetching Latest Develop for the commands. While checked out to your [branch_name], do git rebase develop.  
-	When merging, you will receive an error indicating that your branch could not be pushed to the origin.  This is expected and benign since your branch’s history has changed.
+	In some cases it makes sense to rebase your branch prior to merging. Only
+	rebase if your branch hasn’t been shared with other devs(i.e. pushed). A
+	benefit to rebasing is the history of master’s commits will be cleaner.
+	In some case it’s beneficial to squash several commits into a single commit.
+	For example, combine code changes and the final touches from a code review.
+	While checked out to your [branch_name], do git rebase -i COMMIT. The COMMIT
+	should be the parent of your first commit. In place of COMMIT, you could
+	substitute the HEAD tilde syntax.  If you had two commits to squash into
+	one, use HEAD~2 since HEAD~2 is the current commit’s first parent’s first
+	parent.  
+	Regardless of how you specify the commit, the command will open an editor
+	with your commits. A legend will instruct you to type squash (or just s) to
+	squash the commit. Once the editor is closed all commits will be squashed
+	into one. This command can be used for many other uses, squashing is just
+	one. Prior to rebasing, it’s important to get your local repository up to
+	date with the origin. See Fetching Latest Develop for the commands. While
+	checked out to your [branch_name], do git rebase develop. When merging, you
+	will receive an error indicating that your branch could not be pushed to the
+	origin. This is expected and benign since your branch’s history has changed.
 	
 	Merging to Develop ---
 	
-	Prior to merging, it’s important to get your local repository up to date with the origin. See Fetching Latest Develop for the commands. Origin/develop and your branch are involved, to see them both in the history do git glog origin/develop [branch_name] (note: the glog alias is shown above).  On the develop branch (git checkout develop), merge the branch into develop via git merge [branch_name].  
-	If there are conflicts in the merge, the merge command will fail and git will list all the files with conflicts and  place conflict markers in each file (git status will print each file).  You must resolve the conflicts to complete the merge.  This can be done by opening each file in your favorite editor and resolving conflicts.  Once completed, git add the_file to inform git the conflict has been resolved.  Conflicts can also be resolved with graphical tools.   Run git mergetool and git will open each file in the merge tool.  It’s not necessary to git add the_file if you use git mergetool, it’s done for you.  Do git commit to finish the conflict resolution.
-	Perform any necessary testing to ensure the newly merged branch does not conflict branches merged during the development.  Minimally recompile all.   Push the new develop to the origin/develop via git push (if a rebase was done, git push origin develop may be preferred to avoid the error that [branch_name] failed to push)..  
-	Now that the branch is no longer needed, it can be deleted.  To delete remotely do git push origin --delete [branch_name].  To delete the branch locally do git branch -d [branch_name].
+	Prior to merging, it’s important to get your local repository up to date
+	with the origin. Origin/develop and your branch are involved, to see them
+	both in the history do git glog origin/develop [branch_name] (note: glog
+	alias is shown above). On the develop branch (git checkout develop), merge
+	the branch into develop via git merge [branch_name].  
+	If there are conflicts in the merge, the merge command will fail and git
+	will list all the files with conflicts and  place conflict markers in each
+	file (git status will print each file).  You must resolve the conflicts to
+	complete the merge. This can be done by opening each file in your favorite
+	editor and resolving conflicts. Once completed, git add the_file to inform
+	git the conflict has been resolved. Conflicts can also be resolved with
+	graphical tools. Run git mergetool and git will open each file in the merge
+	tool. It’s not necessary to git add the_file if you use git mergetool, it’s
+	done for you.  Do git commit to finish the conflict resolution.
+	Perform any necessary testing to ensure the newly merged branch does not
+	conflict branches merged during the development. Minimally recompile all.
+	Push the new develop to the origin/develop via git push (if a rebase was
+	done, git push origin develop may be preferred to avoid the error that
+	[branch_name] failed to push)..  
+	Now that the branch is no longer needed, it can be deleted. To delete
+	remotely do git push origin --delete [branch_name]. To delete the branch
+	locally do git branch -d [branch_name].
 	
 	Stashing ---
 	
-	Stashing allows switching between branches without unnecessary commits.  Uncommitted files as well as changes to tracked files will be preserved.  The stash will be associated with the current branch.  To view the stash list, do git stash list.
-	To stash the changes of the repository, do git stash save [OPTIONAL MESSAGE]
-	After stashing, it’s safe to switch to some other branch and perform work.  Once that work is finished, the stashed worked can be retrieved.  Before restoring the stash, switch back to the branch associated with the stash via git checkout [branch_name].
-	Use the following command to restore and delete the stash: git stash pop stash@\{NUMBER\}.  The backslashes are to escape the curly braces to avoid shell interpretation.  If the stash reference is omitted, it will default to stash@{0} (the latest stash).
+	Stashing allows switching between branches without unnecessary commits.
+	Uncommitted files as well as changes to tracked files will be preserved.
+	The stash will be associated with the current branch. To view the stash
+	list, do git stash list. To stash the changes of the repository, do git
+	stash save [OPTIONAL MESSAGE]
+	After stashing, it’s safe to switch to some other branch and perform work.
+	Once that work is finished, the stashed worked can be retrieved. Before
+	restoring the stash, switch back to the branch associated with the stash via
+	git checkout [branch_name].
+	Use the following command to restore and delete the stash:
+	git stash pop stash@\{NUMBER\}.
+	The backslashes are to escape the curly braces to avoid shell interpretation.
+	If the stash reference is omitted, it will default to stash@{0} (the latest
+	stash).
 	
 	11) give up all local changes and download everything from repo
 	$ git reset --hard HEAD
 	$ git pull
 
 	12) usecase for rebase
-	- I created a branch (dev_bran) and did code changes, pushed to remote for a few times.
+	- I created a branch (dev_bran) and did code changes, pushed to remote for
+	  a few times.
 	- During this period, remote master branch has changed a lot.
-	- I decided to create a new branch (new_bran) and merge dev_bran into new_bran.
-	Error: after creating new_bran in local, I merged dev_bran into new_bran - ok. But was rejected when pushing to remote.
-	Solution ref link: https://stackoverflow.com/questions/13783023/cant-push-to-git-repository-after-merged-branch
+	- I created a new branch (new_bran) and merge dev_bran into new_bran.
+	Error: after creating new_bran in local, I merged dev_bran into new_bran -
+		   ok. But was rejected when pushing to remote.
+	Solution ref link:
+	https://stackoverflow.com/questions/13783023/cant-push-to-git-repository-after-merged-branch
 	> git checkout -b new_bran
-	> git branch --set-upstream-to=master	// this results in current branch new_bran tracking remote master branch
+	> git branch --set-upstream-to=master	// this results in current branch
+											// new_bran tracking remote master
+											// branch
 	> git pull --rebase origin master
 	> git merge dev_bran
 	> git push origin new_bran
@@ -378,19 +438,20 @@ GIT
 Valgrind
 
     // profile tool, performance analysis
-    valgrind --tool=callgrind program arg1 arg2
-    kcachegrind callgrind.out.$pid
+    > valgrind --tool=callgrind program arg1 arg2
+    > kcachegrind callgrind.out.$pid
     http://baptiste-wicht.com/posts/2011/09/profile-c-application-with-callgrind-kcachegrind.html
 
     // detect memory-related errors
-    valgrind --leak-check=yes myprog arg1 arg2
+    > valgrind --leak-check=yes myprog arg1 arg2
+	> valgrid --tool=memcheck myprog arg1 arg2
     http://valgrind.org/docs/manual/quick-start.html
 
     // detect multi-thread errors
-    valgrind --tool=helgrind myapplication
+    > valgrind --tool=helgrind myapplication
     http://valgrind.org/docs/manual/hg-manual.html
 
-------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
 GDB commands:
     $ set variable i=20
     $ set var i=20
@@ -407,7 +468,7 @@ GDB commands:
     $ info break
     $ info watch
 	
-	// to print char array/pointer, use /s (treat variable as string if possible) 
+	// print char array/pointer, use /s (treat variable as string if possible) 
 	// char* chArr = "abcd";
 	// void* p = chArr;
 	$ p /s chArr
@@ -428,16 +489,23 @@ GDB commands:
 	// to print in the old style, use /r (raw)
 	$ print /r variable
 	
-	// Print a description of the type of expression expr. ptype differs from whatis by printing a detailed description, instead of just the name of the type.
+	// Print a description of the type of expression expr. ptype differs from
+	// whatis by printing a detailed description, instead of just the name of
+	// the type.
 	$ ptype expr
-	// Show information about the current source file--that is, the source file for the function containing the current point of execution
+	// Show information about the current source file--that is, the source file
+	// for the function containing the current point of execution
 	$ info source
 
-	// set breakpoint, variable, custom command inside a file and load it either in .gdbinit or on the fly
+	// set breakpoint, variable, custom command inside a file and load it either
+	// in .gdbinit or on the fly
 	https://sourceware.org/gdb/onlinedocs/gdb/Command-Files.html
 	
 	// Ctrl-C as program is running
-	What if the program is running but you forgot to set breakpoints? You can hit CTRL-C and that'll stop the program wherever it happens to be and return you to a "(gdb)" prompt. At that point, you could set up a proper breakpoint somewhere and continue to that breakpoint.
+	What if the program is running but you forgot to set breakpoints? You can
+	hit CTRL-C and that'll stop the program wherever it happens to be and return
+	you to a "(gdb)" prompt. At that point, you could set up a proper breakpoint
+	somewhere and continue to that breakpoint.
 	
 	// info
 	$ info win  // list opened windows in the layout
@@ -457,31 +525,31 @@ GDB commands:
 	Ctrl+b // move cursor backwards among the command
 	Ctrl+f // move cursor forwards among the command
 
-------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
 Network commands
-    $ ss -s						// sockets summary
-    $ ss -lp					// view open listening network ports with process name (p)
-    $ ss -aplt					// view all tcp (t) listening(l) sockets
-    $ ss -aplu					// view all udp (u) listening(l) sockets
-	$ netstat -lt				// view all tcp listening ports
-	$ netstat -lu				// view all udp listening ports
-	$ netstat -lx				// view all unix listening ports
-    $ netstat -lnpt				// view processes that are listening for tcp (t)
-    $ netstat -lnpu				// view processes that are listening for udp (t)
-    $ netstat -g				// view multicast groups information
-	$ route -n					// view gateway/routing table
-	$ netstat -rn				// view gateway/routing table
-	$ netstat -ap --unix		// list local unix sockets
-	$ netstat -s				// view statistics by protocol (TCP/UDP/ICMP/IP protocols)
-	$ netstat -c 				// get netstat information every few second
-	$ netstat --statistics --raw // view RAW Network Statistics
-    $ ifconfig					// can view if multicast is enabled or not
+    $ ss -s			// sockets summary
+	$ ss -lp		// view open listening network ports with process name (p)
+    $ ss -aplt		// view all tcp (t) listening(l) sockets
+    $ ss -aplu		// view all udp (u) listening(l) sockets
+	$ netstat -lt	// view all tcp listening ports
+	$ netstat -lu	// view all udp listening ports
+	$ netstat -lx	// view all unix listening ports
+    $ netstat -lnpt	// view processes that are listening for tcp (t)
+    $ netstat -lnpu	// view processes that are listening for udp (t)
+    $ netstat -g	// view multicast groups information
+	$ route -n		// view gateway/routing table
+	$ netstat -rn	// view gateway/routing table
+	$ netstat -s	// view statistics by protocol (TCP/UDP/ICMP/IP protocols)
+	$ netstat -c 	// get netstat information every few second
+	$ netstat -ap --unix			// list local unix sockets
+	$ netstat --statistics --raw	// view RAW Network Statistics
+    $ ifconfig		// can view if multicast is enabled or not
 
 	traceroute
 	Prints the route that packets take to a network host.
 	https://www.computerhope.com/unix/utracero.htm
 	https://www.thegeekstuff.com/2012/05/traceroute-examples
-	Trace the route that packets take between your system and the host named www.google.com,
+	Trace the route packets take from your host to the host named google.com,
 	using the default method (udp datagram, 16 simultaneous probes). 
 	> traceroute google.com
 
@@ -502,12 +570,14 @@ Network commands
 	port 10000: specific port 10000
 	-S: output absolute sequence number than relative
 	-nn: don't resolve host or port name
-	-x print the packet data (minus its link level header) in hex. Note that this is the entire link-layer packet,
-	so for link layers that pad (e.g. Ethernet), the padding bytes will also be printed when the higher layer packet
-	is shorter than the required padding.
-	-xx print the packet data including its link level header, in hex.
-	-X print the packet data (minus its link level header) in hex and ASCII
-	-XX print the packet data of each packet, including its link level header, in hex and ASCII
+	-x: print the packet data (minus its link level header) in hex. Note that
+	    this is the entire link-layer packet, so for link layers that pad (e.g.
+	    Ethernet), the padding bytes will also be printed when the higher layer
+	    packet is shorter than the required padding.
+	-xx: print the packet data including its link level header, in hex.
+	-X: print the packet data (minus its link level header) in hex and ASCII
+	-XX: print the packet data of each packet, including its link level header,
+	     in hex and ASCII
 	> tcpdump -aX -vvv -i vlan3148 ip host 10.192.51.144 and port 17601
 
 	telnet
@@ -526,11 +596,11 @@ Network commands
 	> netstat -ng  ( will give groups subscribe to the interface)
 	> netstat -t (will give you unicast sessions attached to the interface)
 
-------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
 Analyze kernel crash
 http://www.dedoimedo.com/computers/crash-analyze.html
 
-------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
 Trace system calls with strace
     http://linoxide.com/linux-command/linux-strace-command-examples/
     1) trace all system calls
@@ -544,7 +614,7 @@ Trace system calls with strace
     4) summary of system calls, time of execution, errors, etc.
     $ strace -c ls
     $ strace -c myprogram arg1 arg2
-    5) this will show you all syscalls the program is doing if your process ID is 12345. 
+    5) this shows all syscalls the program is doing if process ID is 12345
     // http://unix.stackexchange.com/questions/166541/how-to-know-where-a-program-is-stuck-in-linux
     strace -s 99 -ffp 12345
     6) see calls stack with gdb, bt
@@ -562,7 +632,7 @@ Trace system calls with strace
     #5  0x0000000000401969 in ?? ()
     (gdb)
 
-------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
 Debug core file
     http://yusufonlinux.blogspot.com/2010/11/debugging-core-using-gdb.html
 	
@@ -609,7 +679,7 @@ Debug core file
 	Use alias in .bashrc
 	> alias gdbbt="gdb -q -n -ex bt -batch"
 
-------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
 /etc/profile vs. /etc/bashrc, Login vs. non-Login shell, Interactive vs. non-Interactive shell
     http://bencane.com/2013/09/16/understanding-a-little-more-about-etcprofile-and-etcbashrc/
     http://askubuntu.com/questions/247738/why-is-etc-profile-not-invoked-for-non-login-shells
@@ -619,18 +689,22 @@ VirtualBox: enable symbol links
 	http://askubuntu.com/questions/446317/how-to-make-guest-os-follow-symlinks-from-shared-folder
 
 
-------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
 Uninstall software that were installed by '$ make install'
 	http://stackoverflow.com/questions/1439950/whats-the-opposite-of-make-install-ie-how-do-you-uninstall-a-library-in-lin
 	1) firstly try $ make uninstall and see if it works
 	$ make uninstall
-	2) if no, running $ make -n install can be helpful, since it will show the steps that the software would take to install itself but won't actually do anything. You can then manually reverse those steps.
+	2) if no, running $ make -n install can be helpful, since it will show the
+	   steps that the software would take to install itself but won't actually
+	   do anything. You can then manually reverse those steps.
 	$ make -n install
-	3) if no, see if there is a manifest file which lists all the files that were installed with $ make install. (I used this for CodeLite under CentOS6.7.)
+	3) if no, see if there is a manifest file which lists all the files that
+	   were installed with $ make install. (I used this for CodeLite under
+	   CentOS 6.7)
 	You can run this command:
 	$ cat install_manifest.txt | xargs echo sudo rm | sh
 
-------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
 Fuzzy Finder - FZF
 	1) 3 main search modes:
 	CTRL-T - file search
@@ -665,22 +739,25 @@ Fuzzy Finder - FZF
 	$ ssh **<TAB>
 	$ export **<TAB>
 
-------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
 Backup whole system or partition, create image file, and used by VirtualBox
 	http://unix.stackexchange.com/questions/132797/how-to-dd-a-remote-disk-using-ssh-on-local-machine-and-save-to-a-local-disk
 	http://serverfault.com/questions/439128/dd-on-entire-disk-but-do-not-want-empty-portion
 
 	1) Backup
-	Run from remote computer
-	$ dd if=/dev/sda | gzip -1 - | ssh user@local dd of=image.gz	// gzip -1, means fastest/lowest compression
+	Run from remote computer (gzip -1, means fastest/lowest compression)
+	$ dd if=/dev/sda | gzip -1 - | ssh user@local dd of=image.gz
 	Run from local computer
 	$ ssh user@remote "dd if=/dev/sda | gzip -1 -" | dd of=image.gz
 
-	Or 
-	$ dd if=/dev/sda | gzip > backup.img.gz							// output image file to the local
+	Or (output image file to the local)
+	$ dd if=/dev/sda | gzip > backup.img.gz
 
-	One note: if you had a lot of files which were recently deleted, image size may be still large (deleting file does not necessarily zeroes underlying sectors). You can wipe free space by creating and immediately deleting large file containing zeros:
-	$ dd if=/dev/zero of=bigfile bs=1M     # let it run and quit by disk full error
+	Note: if you had a lot of files which were recently deleted, image size
+	may be still large (deleting file does not necessarily zeroes underlying
+	sectors). You can wipe free space by creating and immediately deleting
+	large file containing zeros:
+	$ dd if=/dev/zero of=bigfile bs=1M # let it run and quit by disk full error
 	$ rm bigfile
 	
 	2) Restore
@@ -716,13 +793,14 @@ Backup whole system or partition, create image file, and used by VirtualBox
 	Convert to the RAW image:
 	$ VBoxManage clonehd sdb.vdi sdb.raw --format RAW
 	
-	Alternative solution to get back raw image after applying modifications is to use qemu-img command from qemu package:
+	Alternative solution to get back raw image after applying modifications is
+	to use qemu-img command from qemu package:
 	$ qemu-img convert -f vmdk sdb.vmdk -O raw sdb.raw
 	
 	Now we can write image to the device:
 	$ sudo dd if=./sdb.raw of=/dev/sdb
 		
-------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
 Run program automatically
 	Place to make app automatically run on boot
 	http://stackoverflow.com/questions/7221757/run-automatically-program-on-startup-under-linux-ubuntu
@@ -751,7 +829,7 @@ https://oracle-base.com/articles/linux/linux-network-configuration
 https://wiki.centos.org/FAQ/CentOS6
 http://unix.stackexchange.com/questions/269516/how-to-set-static-ip-for-guest-os-on-virtualbox
 
-------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
 PUDB
 	> python -m pudb your_python.py
 	> python -m pudb.run your_python.py
@@ -772,13 +850,18 @@ PUDB
 	m: Open a module in a different file
 	L: Go to line
 	!: Go to the Python command line subwindow at the bottom of the screen
-	?: Display the help dialog which includes a complete listing of shortcut commands
-	<SHIFT+V>: Switch context to the variables subwindow on the right of the screen
-	<SHIFT+B>: Switch context to the breakpoints subwindow on the right of the screen
-	<CTRL+X>: Toggle contexts between the lines of code and the Python command line
+	?: Display the help dialog which includes a complete listing of shortcut
+	   commands
+	<SHIFT+V>: Switch context to the variables subwindow on the right of the
+			   screen
+	<SHIFT+B>: Switch context to the breakpoints subwindow on the right of the
+			   screen
+	<CTRL+X>: Toggle contexts between the lines of code and the Python command
+			  line
 
-	Configure the Variables list to always display string representations, as well as set other subwindow
-	sizing properties, using the example ~/.config/pudb/pudb.cfg file given below:
+	Configure the Variables list to always display string representations, as
+	well as set other subwindow sizing properties, using the example
+	~/.config/pudb/pudb.cfg file given below:
 
      [pudb]
      breakpoints_weight = 0.5
@@ -797,7 +880,7 @@ PUDB
      variables_weight = 1.5
      wrap_variables = True
 
-------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
 psql
 	Initialize database cluster (one time run)
 	> initdb -D path/to/db/cluster/folder
@@ -827,9 +910,10 @@ psql
 
 	> \d {schema}.{table_name}
 
-------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
 iperf
-	iperf is a IP traffic client / server traffic testing tool.  We have typically used it to test multicast traffic on our network
+	iperf is a IP traffic client / server traffic testing tool. We have
+	typically used it to test multicast traffic on our network
 	https://iperf.fr/
 	http://taosecurity.blogspot.com/2006/09/generating-multicast-traffic.html
 	
@@ -853,28 +937,43 @@ iperf
 	-l:  buffer length
 	-t:  time of test
 
-	Note:  We use the "-l 1k" parameter to limit the published packets to a smaller size so PIM encapsulation does not exceed the MTU of the upstream links (to the RP). 
+	Note:  We use the "-l 1k" parameter to limit the published packets to a
+	smaller size so PIM encapsulation does not exceed the MTU of the upstream
+	links (to the RP). 
 
 	Issues
-	As you know, IPerf stopped working once we switched over to Arista switches for our LAN / WAN infrastructure. The mystery of why it would not work is no more.
+	As you know, IPerf stopped working once we switched over to Arista switches
+	for our LAN / WAN infrastructure. The mystery of why it would not work is no
+	more.
 
-	Lets take a look at IPerf traffic. IPerf starts by immediately puking out multicast packet close to the full interface MTU of 1500
+	Lets take a look at IPerf traffic. IPerf starts by immediately puking out
+	multicast packet close to the full interface MTU of 1500
 
 	Initial IPerf Packet
 	Full Frame Size: 1512 bytes
 	| Ethernet: 14 | IP: 20 | UDP: 8 | Data: 1470 |
 
-	This size packet is fine. The interface MTU limit is 1500 and the IP, UDP and data add up to 1498 bytes. This packet should pass thru our network without problem. The the problem is that this is multicast traffic and it needs to be encapsulated into a PIM register packet and sent to the RP.
+	This size packet is fine. The interface MTU limit is 1500 and the IP, UDP
+	and data add up to 1498 bytes. This packet should pass thru our network
+	without problem. The the problem is that this is multicast traffic and it
+	needs to be encapsulated into a PIM register packet and sent to the RP.
 
-	The PIM packet header size is 64 bytes. If you add this to IPerf's initial packet, it become too big for the upstream link to handle. A ICMP "Fragmentation Needed" message is sent back to the host. IPerf ignores this and continues to send out the oversized packets. All of them get dropped, the RP never sees them and the mcast flow is never set up.
+	The PIM packet header size is 64 bytes. If you add this to IPerf's initial
+	packet, it become too big for the upstream link to handle. A ICMP
+	"Fragmentation Needed" message is sent back to the host. IPerf ignores this
+	and continues to send out the oversized packets. All of them get dropped,
+	the RP never sees them and the mcast flow is never set up.
 
-	A back of the hand calculation show the max packet size for the initial mcast packet required to encapsulate a PIM register message to our RP. The max size is 1436 bytes.
+	A back of the hand calculation show the max packet size for the initial
+	mcast packet required to encapsulate a PIM register message to our RP. The
+	max size is 1436 bytes.
 
 	Max packet size of 1514 bytes = | Ethernet: 14 | PIM: 64 | Data: 1436 |
 
-	Most multicast applications do a slow start knowing that the PIM messages will need to use smaller than MTU packets to establish flow.
+	Most multicast applications do a slow start knowing that the PIM messages
+	will need to use smaller than MTU packets to establish flow.
 
-	We can use iperf, we just need to tell it to use a smaller packet size. You can do this with the "-l" flag
+	We can use iperf, we just need to tell it to use a smaller packet size. You
+	can do this with the "-l" flag
 
 	iperf -c 224.0.55.55 -u -T 32 -t 20 -l 1k -i 1
-

@@ -1,4 +1,4 @@
-------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
 Latency Numbers Every Programmer Should Know
 
 https://gist.github.com/jboner/2841832
@@ -41,18 +41,31 @@ TODO: many great summaries about hardware cost!!
 http://stackoverflow.com/questions/4087280/approximate-cost-to-access-various-caches-and-main-memory
 
 
-------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+https://software.intel.com/zh-cn/articles/book-Processor-Architecture_CPU_work_process
 https://www.quora.com/What-is-clock-cycle-machine-cycle-and-instruction-cycle-in-a-microprocessor
 Clock cycle vs. Machine cycle vs. Instruction Cycle
 
 Clock cycle:
 
-The speed of a computer processor, or CPU, is determined by the clock cycle, which is the amount of time between two pulses of an oscillator. Generally speaking, the higher number of pulses per second, the faster the computer processor will be able to process information. The clock speed is measured in Hz, typically either megahertz (MHz) or gigahertz (GHz). For example, a 4GHz processor performs 4,000,000,000 clock cycles per second.
-Computer processors can execute one or more instructions per clock cycle, depending on the type of processor. Early computer processors and slower processors can only execute one instruction per clock cycle, but faster, more advanced processors can execute multiple instructions per clock cycle, processing data more efficiently.
+The speed of a computer processor, or CPU, is determined by the clock cycle,
+which is the amount of time between two pulses of an oscillator. Generally
+speaking, the higher number of pulses per second, the faster the computer
+processor will be able to process information. The clock speed is measured in
+Hz, typically either megahertz (MHz) or gigahertz (GHz). For example, a 4GHz
+processor performs 4,000,000,000 clock cycles per second.
+Computer processors can execute one or more instructions per clock cycle,
+depending on the type of processor. Early computer processors and slower
+processors can only execute one instruction per clock cycle, but faster, more
+advanced processors can execute multiple instructions per clock cycle,
+processing data more efficiently.
 
 Machine cycle:
 
-The steps performed by the computer processor for each machine language instruction received. The machine cycle is a 4 process cycle that includes reading and interpreting the machine language, executing the code and then storing that code.
+The steps performed by the computer processor for each machine language
+instruction received. The machine cycle is a 4 process cycle that includes
+reading and interpreting the machine language, executing the code and then
+storing that code.
 ​
 Four steps of Machine cycle
 
@@ -63,7 +76,8 @@ Store - Send and write the results back in memory.
 
 Instruction cycle:
 
-The sequence of operations that the cpu has to carry out while execution is called instruction cycle.
+The sequence of operations that the cpu has to carry out while execution is
+called instruction cycle.
 1:- Read an Instruction
 2:- Decode the instruction
 3:- Find the address of operand
@@ -73,13 +87,26 @@ The sequence of operations that the cpu has to carry out while execution is call
 7:- store the result into the destination
 
 -------------
-The clock cycle is the smallest unit of time. Like a metronome, it just keeps time, and everybody marches to that sequential beat.
+The clock cycle is the smallest unit of time. Like a metronome, it just keeps
+time, and everybody marches to that sequential beat.
 
-A machine cycle, is how long it takes something to happen on the machine (ie… the BUS). If your front side bus, has a multiplier of 5, and your system clock is 2.5Ghz, then your front side bus is running at 500Mhz, and a bus operation like write data to a port takes one machine cycle, and 5 clocks.
+A machine cycle, is how long it takes something to happen on the machine (i.e.
+the BUS). If your front side bus, has a multiplier of 5, and your system clock
+is 2.5Ghz, then your front side bus is running at 500Mhz, and a bus operation
+like write data to a port takes one machine cycle, and 5 clocks.
 
-An instruction cycle, is a single operation that is either a clock cycle, or a machine cycle, needed to execute a machine language opcode and it’s parameters. How many instruction cycles are required to execute a single machine language opcode depends upon the instruction. An instruction that increments a register will usually take just 1 or 2 instruction cycles. To make matters more complicated modern processors have an instruction pipeline that allows another instruction to start executing before the last one finished. And in some instances, one instruction can even pass another instruction in that pipeline, while the previous instruction was stalled, waiting for a machine cycle (like a memory read) to finish.
+An instruction cycle, is a single operation that is either a clock cycle, or a
+machine cycle, needed to execute a machine language opcode and it’s parameters.
+How many instruction cycles are required to execute a single machine language
+opcode depends upon the instruction. An instruction that increments a register
+will usually take just 1 or 2 instruction cycles. To make matters more complex
+modern processors have an instruction pipeline that allows another instruction
+to start executing before the last one finished. And in some instances, one
+instruction can even pass another instruction in that pipeline, while the
+previous instruction was stalled, waiting for a machine cycle (like a memory
+read) to finish.
 
-------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
 C++
 http://programmers.stackexchange.com/questions/183723/low-latency-unix-linux
 http://cppcon.org/using-c-for-low-latency-systems/
@@ -90,11 +117,11 @@ http://www.aristeia.com/FastwareForC++.html
 https://www.reddit.com/r/cpp/comments/2klcb6/what_to_expect_for_a_c_interview/
 
 
-------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
 Software optimization resources
 http://agner.org/optimize/
 
-------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
 Java
 http://stackoverflow.com/questions/2574579/what-is-your-development-checklist-for-java-low-latency-application
 http://www.infoq.com/articles/low-latency-vp
@@ -104,22 +131,24 @@ http://martinfowler.com/articles/lmax.html
 http://stackoverflow.com/questions/1481853/technique-or-utility-to-minimize-java-warm-up-time
 
 
-------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
 Why memory alignment impacts performance?
 http://www.songho.ca/misc/alignment/dataalign.html
 http://stackoverflow.com/questions/2006216/why-is-data-structure-alignment-important-for-performance
 
-The CPU fetches data from memory in groups of 4 bytes (depend on the hardware, maybe 8/16/32, but lets stick with 4
-to keep it simple), all is well if the data begins in an address which is dividable by 4, the CPU goes to the memory
-address and loads the data.
-Now suppose the data begins in an address not dividable by 4 say for the sake of simplicity at address 1, the CPU
-must take data from address 0 and then apply some algorithm to dump the byte at the 0 address , to gain access to
-the actual data at byte 1. this takes time and therefore lowers preformance. So it is much more efficient to have all
-data addresses aligned.
-It can be even worse if the data structure spawns a boundary that requires an additional bus transaction, then the
-performance goes out the window.
+The CPU fetches data from memory in groups of 4 bytes (depend on the hardware,
+maybe 8/16/32, but lets stick with 4 to keep it simple), all is well if the
+data begins in an address which is dividable by 4, the CPU goes to the memory
+address and loads the data. Now suppose the data begins in an address not
+dividable by 4 say for the sake of simplicity at address 1, the CPU must take
+data from address 0 and then apply some algorithm to dump the byte at the 0
+address , to gain access to the actual data at byte 1. This takes time and
+therefore lowers preformance. So it is much more efficient to have all data
+addresses aligned. It can be even worse if the data structure spawns a boundary
+that requires an additional bus transaction, then the performance goes out the
+window.
 
-------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
 CPU, memory cache
 
 What every programmer should know about memory
@@ -142,21 +171,33 @@ https://www.quora.com/How-is-the-dirty-bit-of-caches-in-microprocessors-related-
 Cache coherence in shared-memory architectures
 http://www.cs.utexas.edu/~pingali/CS377P/2017sp/lectures/mesi.pdf
 
-Dirty data: the data in the cache is called dirty data, if it's modified within cache but not modified in main memory.
-Dirty/Modified bit: is a cache line condition(status) identifier, showing whether contents of a particular cache line are
-different to what is stored in operating memory.
-1) CPU writes to variable in a cache line, this cache line will have dirty bit set
-2) CPU informs all CPUs about the change so same cache line across CPUs have state as Invalid 
-   (cache coherency states including Shared, Modified, Exclusive and Invalid)
-3) CPU (any) accesses same variable, and finds the cache line Invalid or dirty bit set
-4) CPU inquery all CPUS so the one holdings dirty bit will write data back to main memory, and
-   change the line status to Exclusive; the same cache line in other CPUs will be marked as Invalid
+Dirty data: the data in the cache is called dirty data, if it's modified within
+			cache but not modified in main memory.
+Dirty/Modified bit: is a cache line condition(status) identifier, showing
+					whether contents of a particular cache line are different to
+					what is stored in operating memory.
+1) CPU writes to variable in a cache line, this cache line will have dirty bit
+   set
+2) CPU informs all CPUs about the change so same cache line across CPUs have
+   state as Invalid (cache coherency states including Shared/Modified/Exclusive
+   /Invalid)
+3) CPU (any) accesses same variable, and finds the cache line Invalid or dirty
+   bit set
+4) CPU inquery all CPUs so the one holds dirty bit will write data back to main
+   memory, and change the line status to Exclusive; the same cache line in other
+   CPUs will be marked as Invalid
 5) CPU that has Invalid cache line needs to read data from main memory again
 
 Eliminate False Sharing
 http://www.drdobbs.com/parallel/eliminate-false-sharing/217500206?pgno=1
+https://software.intel.com/en-us/articles/avoiding-and-identifying-false-sharing-among-threads
+https://software.intel.com/en-us/articles/intel-guide-for-developing-multithreaded-applications
 
-------------------------------------------------------------------------------------
+MMU vs. TLB vs. vs. page table vs. kernel
+https://unix.stackexchange.com/questions/473274/is-the-mmu-inside-of-unix-linux-kernel-or-just-in-a-hardware-device-with-its-ow
+https://en.wikipedia.org/wiki/Translation_lookaside_buffer
+
+-------------------------------------------------------------------------------
 Lock free
 
 Solving the ABA Problem for Lock-Free Free Lists
@@ -166,15 +207,20 @@ http://www.linuxjournal.com/content/lock-free-multi-producer-multi-consumer-queu
 https://github.com/natsys/blog/blob/master/lockfree_rb_q.cc
 http://www.codeproject.com/Articles/153898/Yet-another-implementation-of-a-lock-free-circular
 
-------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
 futex vs. mutex (sample codes included)
 https://www.quora.com/How-different-is-a-futex-from-mutex-conceptually-and-also-implementation-wise
 http://www.kernel.org/pub/linux/kernel/people/rusty/futex-2.2.tar.gz
 
-------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
 mmap
 https://www.ibm.com/developerworks/cn/linux/l-ipc/part5/index1.html
 http://www.cnblogs.com/huxiao-tee/p/4660352.html
 https://felixzhang00.github.io/2017/02/25/%E7%90%86%E8%A7%A3mmap/
 https://stackoverflow.com/questions/45972/mmap-vs-reading-blocks
 https://marc.info/?l=linux-kernel&m=95496636207616&w=2
+
+-------------------------------------------------------------------------------
+UMA vs. NUMA
+https://www.ukessays.com/essays/computer-science/numa-and-uma-and-shared-memory-multiprocessors-computer-science-essay.php
+https://techdifferences.com/difference-between-uma-and-numa.html

@@ -8,7 +8,9 @@ http://blog.csdn.net/maimang1001/article/details/9206167
 
 1, switch from user space to OS/kernel space
 2, OS/kernel sends interrupt signal to process/thread
-3, save the state information into process/thread's stack, including program counter (points to next instruction to execute), CPU registers (variables), etc.
+3, save the state information into process/thread's stack, including program
+   counter (points to next instruction to execute), CPU registers (variables),
+   etc.
 4, for process switch, switch the memory space; also including CPU cache flush
 5, OS/kernel determines the next process/thread from waiting list
 6, restore the state of waiting process/thread's
@@ -18,50 +20,105 @@ http://blog.csdn.net/maimang1001/article/details/9206167
 
 http://stackoverflow.com/questions/5440128/thread-context-switch-vs-process-context-switch
 
-The main distinction between a thread switch and a process switch is that during a thread switch, the virtual memory space remains the same, while it does not during a process switch. Both types involve handing control over to the operating system kernel to perform the context switch. The process of switching in and out of the OS kernel along with the cost of switching out the registers is the largest fixed cost of performing a context switch.
+The main distinction between a thread switch and a process switch is that
+during a thread switch, the virtual memory space remains the same, while it
+does not during a process switch. Both types involve handing control over to
+the operating system kernel to perform the context switch. The process of
+switching in and out of the OS kernel along with the cost of switching out
+the registers is the largest fixed cost of performing a context switch.
 
-A more fuzzy cost is that a context switch messes with the processors cacheing mechanisms. Basically, when you context switch, all of the memory addresses that the processor "remembers" in it's cache effectively become useless. The one big distinction here is that when you change virtual memory spaces, the processor's Translation Lookaside Buffer (TLB) or equivalent gets flushed making memory accesses much more expensive for a while. This does not happen during a thread switch. 
+A more fuzzy cost is that a context switch messes with the processors cacheing
+mechanisms. Basically, when you context switch, all of the memory addresses
+that the processor "remembers" in it's cache effectively become useless. The
+one big distinction here is that when you change virtual memory spaces, the 
+processor's Translation Lookaside Buffer (TLB) or equivalent gets flushed
+making memory accesses much more expensive for a while. This does not happen
+during a thread switch. 
 
 
 http://stackoverflow.com/questions/7439608/steps-in-context-switching
 
 A typical thread context switch on a single-core CPU happens like this:
 
-1) All context switches are initiated by an 'interrupt'. This could be an actual hardware interrupt that runs a driver, (eg. from a network card, keyboard, memory-management or timer hardware), or a software call, (system call), that performs a hardware-interrupt-like call sequence to enter the OS. In the case of a driver interrupt, the OS provides an entry point that the driver can call instead of performing the 'normal' direct interrupt-return & so allows a driver to exit via the OS scheduler if it needs the OS to set a thread ready, (eg. it has signaled a semaphore).
+1) All context switches are initiated by an 'interrupt'. This could be an
+   actual hardware interrupt that runs a driver, (eg. from a network card,
+   keyboard, memory-management or timer hardware), or a software call, (system
+   call), that performs a hardware-interrupt-like call sequence to enter the OS.
+   In the case of a driver interrupt, the OS provides an entry point that the
+   driver can call instead of performing the 'normal' direct interrupt-return &
+   so allows a driver to exit via the OS scheduler if it needs the OS to set a
+   thread ready, (eg. it has signaled a semaphore).
 
-2) Non-trivial systems will have to initiate a hardware-protection-level change to enter a kernel-state so that the kernel code/data etc. can be accessed.
+2) Non-trivial systems will have to initiate a hardware-protection-level change
+   to enter a kernel-state so that the kernel code/data etc. can be accessed.
 
-3) Core state for the interrupted thread has to be saved. On a simple embedded system, this might just be pushing all registers onto the thread stack and saving the stack pointer in its TCB.
+3) Core state for the interrupted thread has to be saved. On a simple embedded
+   system, this might just be pushing all registers onto the thread stack and
+   saving the stack pointer in its TCB.
 
-4) Many systems switch to an OS-dedicated stack at this stage so that the bulk of OS-internal stack requirements are not inflicted on the stack of every thread.
+4) Many systems switch to an OS-dedicated stack at this stage so that the bulk
+   of OS-internal stack requirements are not inflicted on the stack of every
+   thread.
 
-5) It may be necessary to mark the thread stack position where the change to interrupt-state occurred to allow for nested interrupts.
+5) It may be necessary to mark the thread stack position where the change to
+   interrupt-state occurred to allow for nested interrupts.
 
-6) The driver/system call runs and may change the set of ready threads by adding/removing TCB's from internal queues for the different thread priorities, eg. network card driver may have set an event or signaled a semaphore that another thread was waiting on, so that thread will be added to the ready set, or a running thread may have called sleep() and so elected to remove itself from the ready set.
+6) The driver/system call runs and may change the set of ready threads by
+   adding/removing TCB's from internal queues for the different thread
+   priorities, eg. network card driver may have set an event or signaled a 
+   semaphore that another thread was waiting on, so that thread will be added
+   to the ready set, or a running thread may have called sleep() and so elected
+   to remove itself from the ready set.
 
-7) The OS scheduler algorithm is run to decide which thread to run next, typically the highest-priority ready thread that is at the front of the queue for that priority. If the next-to-run thread belongs to a different process to the previously-run thread, some extra stuff is needed here, (see later).
+7) The OS scheduler algorithm is run to decide which thread to run next,
+   typically the highest-priority ready thread that is at the front of the
+   queue for that priority. If the next-to-run thread belongs to a different
+   process to the previously-run thread, some extra stuff is needed here, (see
+   later).
 
-8) The saved stack pointer from the TCB for that thread is retrieved and loaded into the hardware stack pointer.
+8) The saved stack pointer from the TCB for that thread is retrieved and loaded
+   into the hardware stack pointer.
 
-9) The core state for the selected thread is restored. On my simple system, the registers would be popped from the stack of the selected thread. More complex systems will have to handle a return to user-level protection.
+9) The core state for the selected thread is restored. On my simple system, the
+   registers would be popped from the stack of the selected thread. More
+   complex systems will have to handle a return to user-level protection.
 
-9) An interrupt-return is performed, so transferring execution to the selected thread.
+9) An interrupt-return is performed, so transferring execution to the selected
+   thread.
 
-In the case of a multicore CPU, things are more complex. The scheduler may decide that a thread that is currently running on another core may need to be stopped and replaced by a thread that has just become ready. It can do this by using its interprocessor driver to hardware-interrupt the core running the thread that has to be stopped. The complexities of this operation, on top of all the other stuff, is a good reason to avoid writing OS kernels :)
+In the case of a multicore CPU, things are more complex. The scheduler may
+decide that a thread that is currently running on another core may need to be
+stopped and replaced by a thread that has just become ready. It can do this by
+using its interprocessor driver to hardware-interrupt the core running the
+thread that has to be stopped. The complexities of this operation, on top of
+all the other stuff, is a good reason to avoid writing OS kernels :)
 
 A typical process context switch happens like this:
 
-1) Process context switches are initiated by a thread-context switch, so all of the above, 1-9, is going to need to happen.
+1) Process context switches are initiated by a thread-context switch, so all of
+   the above, 1-9, is going to need to happen.
 
-2) At step 5 above, the scheduler decides to run a thread belonging to a different process from the one that owned the previously-running thread.
+2) At step 5 above, the scheduler decides to run a thread belonging to a
+   different process from the one that owned the previously-running thread.
 
-3) The memory-management hardware has to be loaded with the address-space for the new process, ie whatever selectors/segments/flags/whatever that allow the thread/s of the new process to access its memory.
+3) The memory-management hardware has to be loaded with the address-space for
+   the new process, ie whatever selectors/segments/flags/whatever that allow
+   the thread/s of the new process to access its memory.
 
 4) The context of any FPU hardware needs to be saved/restored from the PCB.
 
 5) There may be other process-dedicated hardware that needs to be saved/restored.
 
-On any real system, the mechanisms are architecture-dependent and the above is a rough and incomplete guide to the implications of either context switch. There are other overheads generated by a process-switch that are not strictly part of the switch - there may be extra cache-flushes and page-faults after a process-switch since some of its memory may have been paged out in favour of pages belonging to the process owning the thread that was running before.
+On any real system, the mechanisms are architecture-dependent and the above is
+a rough and incomplete guide to the implications of either context switch. There
+are other overheads generated by a process-switch that are not strictly part of
+the switch - there may be extra cache-flushes and page-faults after a
+process-switch since some of its memory may have been paged out in favour of
+pages belonging to the process owning the thread that was running before.
+
+------------------------------------------------------------------------------------------------
+multi-threading vs. multi-process
+https://blogs.datalogics.com/2013/09/25/threads-vs-processes-for-program-parallelization/
 
 ------------------------------------------------------------------------------------------------
 linux内核调度算法
@@ -79,15 +136,27 @@ https://github.com/ColZer/DigAndBuried/blob/master/system/cpu.md
 ------------------------------------------------------------------------------------------------
 LWP: Light Weight Process
 
-“进程是资源的管理单位，线程是计算的调度单位”这句话是常识，但是在linux中，线程这个概念却是依赖LWD（轻量进程）来实现；
+“进程是资源的管理单位，线程是计算的调度单位”这句话是常识，但是在linux中，线程这个
+概念却是依赖LWD（轻量进程）来实现；
 
 线程从类型与实现来说，可以分为三种类型：
 
-1) 
-内核线程：只运行在内核态，不受用户态上下文的拖累
-2)
-用户线程：完全建立在用户空间的线程库，用户线程的创建、调度、同步和销毁全部都是在用户空间完成，不需要内核的参与;这种线程是极其低消耗和高效的。但是这种多个线程在内核中只对应一个调度对象（内核线程），此时如果一个线程的堵塞在系统调度上，势必会导致整个进程的堵塞，这也是用户线程的缺点；
-3) 轻量级进程：是目前linux线程的实现方式；它建立在内核之上并由内核支持，每一个轻量级进程都与一个调度对象（内核线程）关联（因此linux创建一个线程（轻量级进程），需要经过一次系统调用，在内核中创建相对应的内核线程，相比用户线程，开销较大，同时受限内核线程数目，整个系统的线程数也是有限制的）；轻量级进程由clone()系统调用创建，即与父进程是共享进程地址空间和系统资源，即它的创建只需要一个最小的执行上下文，相比创建普通进程，开销还是要小很多很多！
+1) 内核线程
+只运行在内核态，不受用户态上下文的拖累
+
+2) 用户线程
+完全建立在用户空间的线程库，用户线程的创建、调度、同步和销毁全部都是在用户空间完成，
+不需要内核的参与; 这种线程是极其低消耗和高效的。但是这种多个线程在内核中只对应一个
+调度对象（内核线程），此时如果一个线程的堵塞在系统调度上，势必会导致整个进程的堵塞，
+这也是用户线程的缺点；
+
+3) 轻量级进程
+是目前linux线程的实现方式；它建立在内核之上并由内核支持，每一个轻量级进程都与一个
+调度对象（内核线程）关联（因此linux创建一个线程（轻量级进程），需要经过一次系统调
+用，在内核中创建相对应的内核线程，相比用户线程，开销较大，同时受限内核线程数目，
+整个系统的线程数也是有限制的）；轻量级进程由clone()系统调用创建，即与父进程是共享
+进程地址空间和系统资源，即它的创建只需要一个最小的执行上下文，相比创建普通进程，
+开销还是要小很多很多！
 
 ------------------------------------------------------------------------------------------------
 实践：在linux中获取指定进程的线程
@@ -96,19 +165,26 @@ LWP: Light Weight Process
 ls /proc/PID/task | wc -l
 cat /proc/pid/status ?
 
-//task目录下面有该PID进程下所有的线程号或轻量进程号的目录，每个linux进程默认有一个线程，所以该目录下必然有一个PID目录，每个LWP目录下面有该轻量进程的相关数据，由于多个轻量进程之间共享了进程地址空间和系统资源，所以LWD目录下面的数据大部分是一样的；
+// task目录下面有该PID进程下所有的线程号或轻量进程号的目录，每个linux进程默认有一
+// 个线程，所以该目录下必然有一个PID目录，每个LWP目录下面有该轻量进程的相关数据，
+// 由于多个轻量进程之间共享了进程地址空间和系统资源，所以LWD目录下面的数据大部分
+// 是一样的；
 
 方法二：ps -efL | grep NAME
 
-ps的-f参数解析：does full-format listing. When used with -L, the NLWP (number of threads) and LWP (thread ID) columns will be added. -f参数将会完整的显示进程信息，比如PPID（父进程ID），C（CPU使用率）等，如果-L配合，将会线程每个PID的轻量进程数目和每个轻量进程号
+ps的-f参数解析：does full-format listing. When used with -L, the NLWP (number of
+				threads) and LWP (thread ID) columns will be added. -f参数将会完整
+				的显示进程信息，比如PPID（父进程ID），C（CPU使用率）等，如果-L配合
+				，将会线程每个PID的轻量进程数目和每个轻量进程号
     ps -efL |grep scribed-lighty
     UID        PID  PPID   LWP  C NLWP STIME TTY          TIME CMD
     work     20811     1 20811  5   86 Nov13 ?        1-01:37:21 ./scribed-lighty
     work     20811     1 21074  0   86 Nov13 ?        00:00:00 ./scribed-lighty
     work     20811     1 21075  0   86 Nov13 ?        00:00:00 ./scribed-lighty
     work     20811     1 21076  0   86 Nov13 ?        00:52:47 ./scribed-lighty
-我们看到主进程20811，它的LWP=20811，CPU总计开销C=5%，轻量进程数目NLWP=86个；而LWP=21074，它的归属的进程PID=20811；
-(每个linuxthread线程都同时具有线程id和进程id(PID)，其中进程id就是内核所维护的进程号 ，而线程id则由linuxthreads分配和维护)
+我们看到主进程20811，它的LWP=20811，CPU总计开销C=5%，轻量进程数目NLWP=86个；而
+LWP=21074，它的归属的进程PID=20811；(每个linuxthread线程都同时具有线程id和进程
+id(PID)，其中进程id就是内核所维护的进程号，而线程id则由linuxthreads分配和维护)
 
 To display the header line:
 ps -efL | grep -E "PID|NAME"
@@ -116,7 +192,7 @@ To view via the 'top' window:
 top -H -p PID
 
 方法三：pstree -p PID 会将线程以进程树的方式展现出来
-To show command line arguments (-a), highlight current process and its ancestors (-h):
+To show command line arguments (-a), highlight current process and ancestors (-h):
 pstree -pah PID
 
 ------------------------------------------------------------------------------------------------
@@ -133,21 +209,32 @@ http://honglus.blogspot.com/2011/03/understanding-cpu-scheduling-priority.html
 Most  processes are SCHED_NORMAL 
 
 2) Scheduling priorities
-- Real-time process (SCHED_FIFO/SCHED_RR) real-time priority , ranging from 1 (lowest priority) to 99 (higest priority). 
-- Conventional process static priority(SCHED_NORMAL), ranging from 100 (highest priority) to 139 (lowest priority).
+- Real-time process (SCHED_FIFO/SCHED_RR) real-time priority , ranging from 1
+  (lowest priority) to 99 (higest priority). 
+- Conventional process static priority(SCHED_NORMAL), ranging from 100 (highest
+  priority) to 139 (lowest priority).
 
 3) Nice value and static priority
 Conventional process's  static priority = (120 + Nice value)
-So user can use nice/renice command to change nice value in order to change conventional process's priority.
-By default, conventional process starts with nice value of 0 which equals static priority 120
+So user can use nice/renice command to change nice value in order to change
+conventional process's priority. By default, conventional process starts with
+nice value of 0 which equals static priority 120
 
-总结来说，priority 在[0,99]，则属于realtime process,由rt_priority决定, [100, 139] 属于 normal process 由 nice + DEFAULT_PRIO (i.e., 120) 决定。而 ps 打印出的 PRI 值是在以上的基础上根据不同的计算方法算出来的。进程切换时候根据进程之间的PR值来调度CPU的资源。但是注意：PR值只会影响用户态的CPU时间片，内核态不受PR值影响
+总结来说，priority 在[0,99]，则属于realtime process,由rt_priority决定,
+[100, 139] 属于 normal process 由 nice + DEFAULT_PRIO (i.e., 120) 决定。而 ps 打印
+出的 PRI 值是在以上的基础上根据不同的计算方法算出来的。进程切换时候根据进程之间的
+PR值来调度CPU的资源。但是注意：PR值只会影响用户态的CPU时间片，内核态不受PR值影响
 
-假设一次调度中，有2个runnable的进程A和B，假设nice都为0时，内核会依次给每个进程分配1k个CPU时间片用于计算用户态指令。如果此时nice_A=0,nice_B=-10，此时CPU可能分别给A和B分配1k和1.5k的时间片用于计算用户态指令，即本次调度过程中，因为改变过优先级的进程多占用了0.5k个时间片。
+假设一次调度中，有2个runnable的进程A和B，假设nice都为0时，内核会依次给每个进程分配
+1k个CPU时间片用于计算用户态指令。如果此时nice_A=0,nice_B=-10，此时CPU可能分别给A和
+B分配1k和1.5k的时间片用于计算用户态指令，即本次调度过程中，因为改变过优先级的进程多
+占用了0.5k个时间片。
 
-对于kernel每个进程有个Linux kernel priority，其数值在[1, 139]；其中[1, 99]是RT process，[100, 139]是normal process。也就是2)中的介绍。
+对于kernel每个进程有个Linux kernel priority，其数值在[1, 139]；其中[1, 99]是
+RT process，[100, 139]是normal process。也就是2)中的介绍。
 
-使用ps命令来查进程信息，kernel给出了多个优先级的数值，比如rtprio,ni,pri,priority,opri等，通常关注priority就够了。
+使用ps命令来查进程信息，kernel给出了多个优先级的数值，比如rtprio,ni,pri,priority,
+opri等，通常关注priority就够了。
 > ps -eo user,state,uid,pid,ppid,rtprio,ni,pri,priority,opri,class,time,comm --sort=rtprio,ni
 > ps -elf
 top命令显示的PR等价于ps中的priority参数，对normal process，其值=20+NI
