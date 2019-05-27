@@ -1,4 +1,4 @@
-------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
 Understanding Processes in Linux
 http://careers.directi.com/display/tu/Understanding+Processes+in+Linux
 线程上下文切换的性能损耗测试
@@ -16,6 +16,12 @@ http://blog.csdn.net/maimang1001/article/details/9206167
 6, restore the state of waiting process/thread's
 7, switch from OS/kernel to user space
 8, start executing the process/thread
+
+In addition, process switch causes additional cost -
+1) CPU cache is reusable for threads belong to same process, but not for
+   different processes. When process switch happens, there has CPU cache flush.
+2) Process switch needs MMU (memory management unit) reload but thread switch
+   doesn't need.
 
 
 http://stackoverflow.com/questions/5440128/thread-context-switch-vs-process-context-switch
@@ -116,11 +122,11 @@ the switch - there may be extra cache-flushes and page-faults after a
 process-switch since some of its memory may have been paged out in favour of
 pages belonging to the process owning the thread that was running before.
 
-------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
 multi-threading vs. multi-process
 https://blogs.datalogics.com/2013/09/25/threads-vs-processes-for-program-parallelization/
 
-------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
 linux内核调度算法
 http://blog.chinaunix.net/uid-25435571-id-3059350.html
 浅析Linux线程调度
@@ -133,11 +139,11 @@ http://blog.csdn.net/ylyuanlu/article/details/8830374
 https://github.com/ColZer/DigAndBuried/blob/master/system/cpu.md
 
 
-------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
 LWP: Light Weight Process
 
-“进程是资源的管理单位，线程是计算的调度单位”这句话是常识，但是在linux中，线程这个
-概念却是依赖LWD（轻量进程）来实现；
+“进程是资源的管理单位，线程是计算的调度单位”这句话是常识，但是在linux中，线程这
+个概念却是依赖LWD（轻量进程）来实现；
 
 线程从类型与实现来说，可以分为三种类型：
 
@@ -145,20 +151,20 @@ LWP: Light Weight Process
 只运行在内核态，不受用户态上下文的拖累
 
 2) 用户线程
-完全建立在用户空间的线程库，用户线程的创建、调度、同步和销毁全部都是在用户空间完成，
-不需要内核的参与; 这种线程是极其低消耗和高效的。但是这种多个线程在内核中只对应一个
-调度对象（内核线程），此时如果一个线程的堵塞在系统调度上，势必会导致整个进程的堵塞，
-这也是用户线程的缺点；
+完全建立在用户空间的线程库，用户线程的创建、调度、同步和销毁全部都是在用户空间
+完成，不需要内核的参与; 这种线程是极其低消耗和高效的。但是这种多个线程在内核中
+只对应一个调度对象（内核线程），此时如果一个线程的堵塞在系统调度上，势必会导致
+整个进程的堵塞，这也是用户线程的缺点；
 
 3) 轻量级进程
-是目前linux线程的实现方式；它建立在内核之上并由内核支持，每一个轻量级进程都与一个
-调度对象（内核线程）关联（因此linux创建一个线程（轻量级进程），需要经过一次系统调
-用，在内核中创建相对应的内核线程，相比用户线程，开销较大，同时受限内核线程数目，
-整个系统的线程数也是有限制的）；轻量级进程由clone()系统调用创建，即与父进程是共享
-进程地址空间和系统资源，即它的创建只需要一个最小的执行上下文，相比创建普通进程，
-开销还是要小很多很多！
+是目前linux线程的实现方式；它建立在内核之上并由内核支持，每一个轻量级进程都与一
+个调度对象（内核线程）关联（因此linux创建一个线程（轻量级进程），需要经过一次系
+统调用，在内核中创建相对应的内核线程，相比用户线程，开销较大，同时受限内核线程数
+目，整个系统的线程数也是有限制的）；轻量级进程由clone()系统调用创建，即与父进程
+是共享进程地址空间和系统资源，即它的创建只需要一个最小的执行上下文，相比创建普通
+进程，开销还是要小很多很多！
 
-------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
 实践：在linux中获取指定进程的线程
 
 方法一：
@@ -173,9 +179,9 @@ cat /proc/pid/status ?
 方法二：ps -efL | grep NAME
 
 ps的-f参数解析：does full-format listing. When used with -L, the NLWP (number of
-				threads) and LWP (thread ID) columns will be added. -f参数将会完整
-				的显示进程信息，比如PPID（父进程ID），C（CPU使用率）等，如果-L配合
-				，将会线程每个PID的轻量进程数目和每个轻量进程号
+				threads) and LWP (thread ID) columns will be added. -f参数将会完
+                整的显示进程信息，比如PPID（父进程ID），C（CPU使用率）等，如果-L
+                配合，将会线程每个PID的轻量进程数目和每个轻量进程号
     ps -efL |grep scribed-lighty
     UID        PID  PPID   LWP  C NLWP STIME TTY          TIME CMD
     work     20811     1 20811  5   86 Nov13 ?        1-01:37:21 ./scribed-lighty
@@ -192,17 +198,17 @@ To view via the 'top' window:
 top -H -p PID
 
 方法三：pstree -p PID 会将线程以进程树的方式展现出来
-To show command line arguments (-a), highlight current process and ancestors (-h):
+To show command line args (-a), highlight current process and ancestors (-h):
 pstree -pah PID
 
-------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
 https://www.zhihu.com/question/38975681
 https://superuser.com/questions/286752/unix-ps-l-priority
 http://honglus.blogspot.com/2011/03/understanding-cpu-scheduling-priority.html
 
 1) scheduling classes 
-- SCHED_FIFO: A First-In, First-Out real-time process 
-- SCHED_RR: A Round Robin real-time process 
+- SCHED_FIFO: A First-In, First-Out real-time process
+- SCHED_RR: A Round Robin real-time process
 - SCHED_NORMAL: A conventional, time-shared process 
 - SCHED_BATCH
 - SCHED_IDLE
@@ -221,14 +227,14 @@ conventional process's priority. By default, conventional process starts with
 nice value of 0 which equals static priority 120
 
 总结来说，priority 在[0,99]，则属于realtime process,由rt_priority决定,
-[100, 139] 属于 normal process 由 nice + DEFAULT_PRIO (i.e., 120) 决定。而 ps 打印
+[100, 139] 属于 normal process 由 nice + DEFAULT_PRIO (i.e., 120) 决定。而ps打印
 出的 PRI 值是在以上的基础上根据不同的计算方法算出来的。进程切换时候根据进程之间的
 PR值来调度CPU的资源。但是注意：PR值只会影响用户态的CPU时间片，内核态不受PR值影响
 
-假设一次调度中，有2个runnable的进程A和B，假设nice都为0时，内核会依次给每个进程分配
-1k个CPU时间片用于计算用户态指令。如果此时nice_A=0,nice_B=-10，此时CPU可能分别给A和
-B分配1k和1.5k的时间片用于计算用户态指令，即本次调度过程中，因为改变过优先级的进程多
-占用了0.5k个时间片。
+假设一次调度中，有2个runnable的进程A和B，假设nice都为0时，内核会依次给每个进程分
+配1k个CPU时间片用于计算用户态指令。如果此时nice_A=0,nice_B=-10，此时CPU可能分别给
+A和B分配1k和1.5k的时间片用于计算用户态指令，即本次调度过程中，因为改变过优先级的
+进程多占用了0.5k个时间片。
 
 对于kernel每个进程有个Linux kernel priority，其数值在[1, 139]；其中[1, 99]是
 RT process，[100, 139]是normal process。也就是2)中的介绍。
@@ -239,3 +245,4 @@ opri等，通常关注priority就够了。
 > ps -elf
 top命令显示的PR等价于ps中的priority参数，对normal process，其值=20+NI
 > top
+

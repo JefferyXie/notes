@@ -66,7 +66,7 @@ The steps performed by the computer processor for each machine language
 instruction received. The machine cycle is a 4 process cycle that includes
 reading and interpreting the machine language, executing the code and then
 storing that code.
-​
+
 Four steps of Machine cycle
 
 Fetch - Retrieve an instruction from the memory.

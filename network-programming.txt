@@ -10,6 +10,12 @@ http://tangentsoft.net/wskfaq/advanced.html#backlog
 http://alas.matf.bg.ac.rs/manuals/lspe/snode=68.html
 http://stackoverflow.com/questions/29874763/does-listen-backlog-affect-established-tcp-connections
 
+Network congestion
+http://linuxgazette.net/144/menon.html
+http://euclid.nmu.edu/~rappleto/Classes/CS228/Notes/IP-Protocols/tcp.html
+http://www.brendangregg.com/blog/2014-09-06/linux-ftrace-tcp-retransmit-tracing.html
+http://serverfault.com/questions/318909/how-passively-monitor-for-tcp-packet-loss-linux
+
 Non-blocking
 http://beej.us/guide/bgnet/output/html/multipage/advanced.html
 http://www.wangafu.net/~nickm/libevent-book/01_intro.html
@@ -32,6 +38,69 @@ What is IGMP Querying and IGMP Snooping and why would I need it on my network?
   traffic to all ports.
 http://www.vsicam.com/_faq/what-is-igmp-querying-and-igmp-snooping-and-why-would-i-need-it-on-my-network/
 
+Traditional name for different layers -
+TCP: segment
+IP:  datagram, fragmentation
+Link:frame
+
+MTU vs. MSS vs. Window size
+MTU: max transimitted unit (payload of link layer (frame))
+MSS: max segment size (for tcp)
+Window size: telling how many bytes the receiver is willing/able to receive for
+             next segment, theoretically [2, 60k]
+
+a frame's total size is 1526 bytes, so -
+1526 = (8+6+6+2+4) + (20 + 20 + 1460)
+       ----------    ---------------
+           26         MTU, 1500, payload for datagram coming from ip (ethernet)
+                      IP   TCP  TCP(MSS)
+
+While TCP contains mechanisms for avoiding IP fragmentation, UDP does not. With
+UDP, we can easily cause IP fragmentation by transimitting a datagram that 
+exceeds the MTU of the local data link.
+UDP based app typically adopt a conservative approach that is to ensure the
+transimitted IP datagram less than IPv4 min reassembly buffer size of 576 bytes
+576 = 20 + 8  +  548
+      --   --    ---
+      IP   UDP   UDP datagram
+In practice, many UDP based app opt for a still lower limit of 512 bytes for
+datagrams.
+
+Nagle's algorithm: reduce the number of packets sent over the network by
+                   combining small outgoing msgs into one
+                   TCP_NODELAY is used to diable Nagle's algorithm
+TCP delayed ack: several ack resp may be combined into a single response. Host
+                 may delay sending ack by up to 500ms
+                 TCP_QUICKACK is used to disable delayed ack
+                
+
+TCP states
+LISTEN:     wait for a connection
+SYN_SENT:   has sent a SYN and is waiting for reply
+SYN_RECV:   the TCP formerly in LISTEN state has received SYN and has responded
+            with SYN/ACK, and is now waiting for ACK to complete connection
+ESTABLISHED:
+
+(active close side)
+|FIN_WAIT1: TCP has sent a FIN to the peer and is waiting for ACK
+|FIN_WAIT2: TCP formerly in the FIN_WAIT1 state has now received ACK
+|CLOSING:   TCP formerly awaiting ACK in the FIN_WAIT1 state, instead received
+|           FIN from its peer meaning the peer simultaneously tried to perform
+|           an active close. THIS is a rare scenario.
+|TIME_WAIT: having done an active close, the TCP received FIN, indicating the
+|           peer has performed a passive close. Then this TCP spends a fixed
+|           amount of time in the TIME_WAIT state, in order to ensure reliable
+|           termination of connection and to ensure any old duplicate segments
+|           expire in the nextwork before a new incarnation of the same
+|           connection is created.
+
+(passive close side)
+|CLOSE_WAIT:has received FIN from peer
+|LAST_ACK:  formerly in CLOSE_WAIT state, sent FIN and is waiting ACK. When the
+|           ACK is received, the connection is closed and kernel resources are
+|           freed.
+
+
 C and Linux Socket topics
 http://www.tenouk.com/cnlinuxsockettutorials.html
 
@@ -39,12 +108,6 @@ Socket programming and the C BSD API
 http://www.yolinux.com/TUTORIALS/Sockets.html
 
 http://inst.eecs.berkeley.edu/~ee122/fa09/notes/
-
-Network congestion
-http://linuxgazette.net/144/menon.html
-http://euclid.nmu.edu/~rappleto/Classes/CS228/Notes/IP-Protocols/tcp.html
-http://www.brendangregg.com/blog/2014-09-06/linux-ftrace-tcp-retransmit-tracing.html
-http://serverfault.com/questions/318909/how-passively-monitor-for-tcp-packet-loss-linux
 
 C10k - handle thousands of connections simultaneously
 http://www.kegel.com/c10k.html
