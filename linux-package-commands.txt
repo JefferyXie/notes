@@ -1,11 +1,11 @@
-------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
 EPEL
 
 EPEL (Extra Packages for Enterprise Linux) repository provides useful software packages that are not included in the official CentOS or Red Hat Enterprise Linux repositories.
 
 http://www.rackspace.com/knowledge_center/article/install-epel-and-additional-repositories-on-centos-and-red-hat
 
-------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
 How to list all installed packages on CentOS or RHEL?
 	http://ask.xmodulo.com/list-all-installed-packages-centos-rhel.html
 	1), The easiest way to show all installed packages on CentOS is via rpm command. The following command queries all installed packages and shows the result.
@@ -33,7 +33,7 @@ How to list all installed packages on CentOS or RHEL?
 	Check whether any updates are available for your installed packages.
 	$ yum check-update
 
-------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
 Important group package for development
 	$ sudo yum groupinstall "Additional Development"
 	*	Additional Development
@@ -43,7 +43,7 @@ Important group package for development
 	*	Java Platform
 	*	Performance Tools
 
-------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
 How to list configured repositories?
 	1), command line
 	http://www.cyberciti.biz/faq/centos-fedora-redhat-yum-repolist-command-tolist-package-repositories/
@@ -83,7 +83,7 @@ How to list configured repositories?
 
 	The difference between yum.conf and yum.repos.d is in earliar system yum.conf (/etc/yum.conf) was using, within a single file we have to configure everything it was very congesting so now what they did is, they created several repo files, instead of one repo file and all the repos are kept under /etc/yum.repos.d/ directory.
 
-------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
 How to install additional package from extra repository?
 	http://superuser.com/questions/834862/how-to-install-g-4-9-2-in-cent-os-6-5
 	https://www.softwarecollections.org/en/scls/rhscl/devtoolset-3/
@@ -107,7 +107,7 @@ How to install additional package from extra repository?
 	source /opt/rh/devtoolset-3/enable
 
 
-------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
 How to solve "Protected multilib versions" issue when doing update?
 	The problem happens when doing update as below -
 
@@ -128,7 +128,7 @@ How to solve "Protected multilib versions" issue when doing update?
 	Check which package owns the file
 	$ rpm -qf /path/to/the/file
 
-------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
 How to install Python 2.7 and Python 3.3 on CentOS 6?
 	DON'T INSTALL WITH RPM PACKAGE DIRECTLY WHICH WILL CAUSE PROBLEM!!
 	It is critical that you use make altinstall when you install your custom version of Python. If you use the normal make install you will end up with two different versions of Python in the filesystem both named python. This can lead to problems that are very hard to diagnose.
@@ -164,3 +164,4 @@ http://www.idevelopment.info/data/Unix/Linux/LINUX_AddGNOMEToCentOSMinimalInstal
 
 How to install postgresql with source?
 http://blog.endpoint.com/2013/06/installing-postgresql-without-root.html
+

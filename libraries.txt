@@ -1,4 +1,4 @@
-------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
 Log
 C++ 日志库 boost::log 以及 glog (g2log,g3log) 的对比
 https://yq.aliyun.com/articles/2620
@@ -13,27 +13,27 @@ boost::log
 http://theboostcpplibraries.com/boost.log
 
 
-------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
 gflags简明使用（解析配置命令行参数）
 http://dreamrunner.org/blog/2014/03/09/gflags-jian-ming-shi-yong/
 
-------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
 gperftools (originally Google Performance Tools)
 The fastest malloc we’ve seen; works particularly well with threads and STL, plus pretty
 performance analysis tools: thread-friendly heap-checker, heap-profiler, and cpu-profiler.
 https://github.com/gperftools/gperftools
 
-------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
 ***The Boost C++ Libraries (book, articles, guidance)
 http://theboostcpplibraries.com/
 
 
-------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
 libcds: C++ Concurrent Data Structures (lock free)
 http://libcds.sourceforge.net/
 
 
-------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
 libcurl: client-side URL transfers, http, https, ftp, etc.
 http://curl.haxx.se
 curlpp: C++ version of libcurl
@@ -50,18 +50,18 @@ http://stackoverflow.com/questions/356705/how-to-send-a-header-using-a-http-requ
 >>> print(r.content)
 >>> r.text
 
-------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
 libconfig: reading, manipulating, and writing structured configuration files.
 http://www.hyperrealm.com/libconfig/libconfig_manual.html
 https://www.pacificsimplicity.ca/blog/libconfig-reading-and-editingwriting-c-tutorial
 
-------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
 libjson: C++ interface json lib
 https://sourceforge.net/projects/libjson/
 libjson-c: C interface json lib
 https://linuxprograms.wordpress.com/2010/05/20/json-c-libjson-tutorial/
 https://github.com/json-c/json-c
 
-------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
 UNIX System Calls and Subroutines using C (pointer, file, I/O, process, IPC, socket, thread, etc.)
 https://users.cs.cf.ac.uk/Dave.Marshall/C/

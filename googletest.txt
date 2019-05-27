@@ -5,7 +5,7 @@ http://www.ibm.com/developerworks/aix/library/au-googletestingframework.html
 http://www.yolinux.com/TUTORIALS/Cpp-GoogleTest.html
 https://github.com/google/googletest/blob/master/googletest/docs/FAQ.md#why-is-it-not-recommended-to-install-a-pre-compiled-copy-of-google-test-for-example-into-usrlocal
 
-------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
 Installation
 http://stackoverflow.com/questions/13513905/how-to-setup-googletest-as-a-shared-library-on-linux
 
@@ -72,14 +72,14 @@ For example:
 ./foo_test --gtest_filter=-*DeathTest.* Runs all non-death tests.
 ./foo_test --gtest_filter=FooTest.*-FooTest.Bar Runs everything in test case FooTest except FooTest.Bar.
 
-------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
 To run the disabled tests
 --gtest_also_run_disabled_tests
 
 To catch error in the debugger - stop at the wrong test
 --getst_break_on_failure
 
-------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
 To set breakpoint at a test case
 $ break TestcaseName_TestName_Test::TestBody
 i.e.
