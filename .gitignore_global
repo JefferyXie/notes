@@ -1,0 +1,26 @@
+# c++ generated files #
+######################
+*.o
+*.so
+*.so.*
+*.out
+gdb.txt
+main_exe
+build/*
+
+# app generated files #
+######################
+*.log
+tags
+*.swp
+
+# OS generated files #
+######################
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+

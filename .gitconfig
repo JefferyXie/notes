@@ -6,6 +6,7 @@
 [core]
 	editor = vi
 	filemode = false
+	excludesfile = /Users/jeffery/.gitignore_global
 [diff]
 	tool = vimdiff
 [merge]
