@@ -79,3 +79,7 @@ line from master br
 
 ###
 2nd line from master
+
+---
+new line added in rebase-test1
+
