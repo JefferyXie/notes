@@ -83,3 +83,5 @@ line from master br
 ---
 new line added in rebase-test1
 
+----
+the other line from rebase-test1
