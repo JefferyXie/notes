@@ -74,14 +74,3 @@ NppExport
 ViSimulator
 XML Tools
 
-###
-line from master br
-
-###
-2nd line from master
-
----
-new line added in rebase-test1
-
-----
-the other line from rebase-test1
