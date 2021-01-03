@@ -139,22 +139,100 @@ Shell command
 	$ netstat -tulpn | grep :22  // check if port 22 is opened
 	$ ps aux | grep sshd
 
-	11) search word and replace in multiple files
-	http://stackoverflow.com/questions/11392478/how-to-replace-a-string-in-multiple-files-in-linux-command-line
-	
-	Use grep + xargs + sed:
-	> grep -rl string1 somedir/ | xargs sed -i 's/string1/string2/g'
-	Examples:
-	> grep -rl 'windows' ./ | xargs sed -i 's/windows/linux/g'
+	11) grep
+        https://staff.washington.edu/weller/grep.html
+        -c: count the number of matches and not print the actual matches
+        -n: print the line number before each match printout
+        -l: print the file names with lines match the expression
+        -w: match the whole word only
+        -f {pattern-file}: read pattern(s) from file line by line and apply all
+        -e {pat}: use {pat} as pattern can ignore the meta-character inside;
+                  typically this is used to protect pattern beginning with '-'
+                  while -F won't work!
+        -B {num}: print {num} lines before the match
+        -A {num}: print {num} lines after the match
+        
+        * word consists of letter, number, and underscore; other characters
+          (i.e. space, ., *, %, +, -) are treated as separation of words
 
-	Use find + sed
-	> find ./ -type f -exec sed -i 's/string1/string2/g' {} \;
+        meta-characters:
+        .: any single character
+        \: ignore the special meaning of the character following it
+        ^: (anchoring) the following pattern must be at the beginning of a line
+        $: (anchoring) the preceding pattern must be at the end of a line
+        []: match any single character in the ranging/list; if first character
+            of the list is ^ then it matches any character not in the list
+            i.e. [abc], [^abc]
+        \<: match the empty string at the beginning of a word
+        \>: match the empty string at the end of a word
+        \b: match the empty string at the edge of a word
+        \B: match the empty string provided it's not at the edge of a word
+        *:  the preceding item will be matched zero or more times
+        ?:  (extended regular expression) the preceding item is optional and
+            matched at most once
+        +:  (extended regular expression) the preceding item will be matched
+            one or more times
+        (): (extended regular expression) group the characters
+        \s: shorthand for space - [[:space:]]
+
+        pre-defined characters classes used in bracket expression ([]):
+        [:alnum:] – Alphanumeric characters
+        [:alpha:] – Alphabetic characters
+        [:blank:] – Blank characters: space and tab
+        [:digit:] – Digits: '0 1 2 3 4 5 6 7 8 9'
+        [:lower:] – Lower-case letters
+        [:space:] – Space characters: tab, newline, vertical tab, form feed,
+                     carriage return, and space
+        [:upper:] – Upper-case letters
+
+     a) differences among grep, pgrep, egrep, and fgrep
+        grep: meta-characters ?, +, {, |, (, and ) lose their special meaning;
+              instead use the backslashed versions \?, \+, \{, \|, \(, and \).}
+        egrep: extended regular expression, same as grep -E
+        fgrep: fixed-string regular expression, same as grep -F, NOT recognize
+               any meta-characters as being special
+        pgrep: process-id regular expression, look through running processes
+               and list the process id(s)
+
+     b) search word and replace in multiple files
+        http://stackoverflow.com/questions/11392478/how-to-replace-a-string-in-multiple-files-in-linux-command-line
+        
+        Use grep + xargs + sed:
+        > grep -rl string1 somedir/ | xargs sed -i 's/string1/string2/g'
+        Examples:
+        > grep -rl 'windows' ./ | xargs sed -i 's/windows/linux/g'
+
+        Use find + sed
+        > find ./ -type f -exec sed -i 's/string1/string2/g' {} \;
+        
+        Separate steps:
+        > cd /your/folder
+        > sed -i 's/string1/string2/g' *
+
+     c) use cases
+        grep email address
+        -o: tells to dump the match only than whole line
+        \b: automatically excludes none-words since word only includes letter,
+            number and underscore
+        > grep -E -o "\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,6}\b" {your-file}
+
+        grep blank lines
+        > grep '^$' {your-file}
+
+        grep all lines with exactly two characters
+        > grep '^..$' {your-file}
+
+        grep lines having '--test--', (-F won't work!)
+        > grep -e '--test--' {your-file}
+
+	12) split file into pieces
+        split into files up to 1000 lines each
+        > split -l 1000 your-file.txt
+
+        split into files up to 1m bytes each
+        > split -b 1000000 your-file.txt
 	
-	Separate steps:
-	> cd /your/folder
-	> sed -i 's/string1/string2/g' *
-	
-	12) use {cut} to distill specific field from output
+	13) use {cut} to distill specific field from output
 	List sub-directories, get the dir name (last second field), and remove them
 	> ls -d /your/target/dir/*/ | rev | cut -d '/' -f 2 | rev | xargs -r rm -rf
 	The command equals to:
@@ -163,9 +241,6 @@ Shell command
 	Get root partition's usage percentage, -P is to output in Posix format so no
 	wrapped lines
 	> df -Ph | awk '$6=="/" {print $5}' | cut -d '%' -f 1
-	
-	13) Differences among grep, pgrep, egrep, and fgrep
-	https://superuser.com/questions/508881/what-is-the-difference-between-grep-pgrep-egrep-fgrep
 	
 	14) sudo environment setup
 	http://stackoverflow.com/questions/257616/sudo-changes-path-why

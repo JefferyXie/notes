@@ -7,7 +7,14 @@ https://github.com/google/googletest/blob/master/googletest/docs/FAQ.md#why-is-i
 
 -------------------------------------------------------------------------------
 Installation
+
+***
+LATEST CONFIRMED GUIDE on 06/12/2020 -
+https://www.eriksmistad.no/getting-started-with-google-test-on-ubuntu/
+***
+
 http://stackoverflow.com/questions/13513905/how-to-setup-googletest-as-a-shared-library-on-linux
+
 
 To install the package in ~/usr/gtest/ as shared libraries, together with sample build as well:
 
