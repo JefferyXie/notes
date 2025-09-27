@@ -1,18 +1,3 @@
-
-" 5/15/2015 jeffery: below codes are system default config
-if v:lang =~ "utf8$" || v:lang =~ "UTF-8$"
-   set fileencodings=ucs-bom,utf-8,latin1
-endif
-
-set nocompatible	" Use Vim defaults (much better!)
-set bs=indent,eol,start		" allow backspacing over everything in insert mode
-"set ai			" always set autoindenting on
-"set backup		" keep a backup file
-set viminfo='20,\"50	" read/write a .viminfo file, don't store more
-			" than 50 lines of registers
-set history=50		" keep 50 lines of command line history
-set ruler		" show the cursor position all the time
-
 " Only do this part when compiled with support for autocommands
 if has("autocmd")
   augroup redhat
@@ -58,38 +43,62 @@ if &term=="xterm"
      set t_Sf=[3%dm
 endif
 
+set history=100		        " keep 100 lines of command line history
+set ruler		            " show the cursor position all the time
+set bs=indent,eol,start		" allow backspacing over everything in insert mode
+
 " Don't wake up system with blinking cursor:
 " http://www.linuxpowertop.org/known.php
 let &guicursor = &guicursor . ",a:blinkon0"
 
-" 5/14/2015: added by Jeffery
-let &termencoding=&encoding " to support chinese
-set fileencodings=utf-8,ucs-bom,gbk18030,gbk,gbk2312,cp936 " to support chinese
+" is this 'fileencodings' not work for rh8 or higher?
+"set fileencodings=utf-8,ucs-bom,gbk18030,gbk,gbk2312,cp936 " is this 'fileencodings' not work for rh8 or higher?
+scriptencoding utf-8 " or try: let &termencoding=&encoding " to support chinese
+
 set ignorecase
 set wildmenu " vi command auto complete
 set number
 set autoindent
-color desert
 set laststatus=2
+color desert
+" below color setup works well under some circumstance
+"if &diff
+"    colorschme murphy
+"endif
 set cursorline " highlight current row
 "set cursorcolumn " highlight current column
 set hlsearch " highlight search result
 highlight Search guibg=Yellow guifg=Black ctermbg=Yellow ctermfg=Black
-
-highlight Comment ctermfg=LightBlue 
-highlight LineNr cterm=NONE ctermfg=DarkGrey ctermbg=NONE gui=NONE guifg=DarkGrey guibg=NONE 
+highlight Comment ctermfg=LightBlue
+highlight LineNr cterm=NONE ctermfg=DarkGrey ctermbg=NONE gui=NONE guifg=DarkGrey guibg=NONE
 highlight CursorLineNr cterm=bold ctermfg=Yellow ctermbg=DarkGrey gui=bold guifg=Yellow guibg=DarkGrey
+"below a few of color settings are used in macbook
+"highlight Search guibg=Yellow guifg=Black ctermbg=Yellow ctermfg=Black
+"highlight Comment ctermfg=LightBlue
+"highlight LineNr cterm=NONE ctermfg=DarkGrey ctermbg=NONE gui=NONE guifg=DarkGrey guibg=NONE
+"highlight CursorLineNr cterm=bold ctermfg=Yellow ctermbg=DarkGrey gui=bold guifg=Yellow guibg=DarkGrey
+
 
 " Disable highlight when <leader><cr> is pressed, <silent> tells vi to show no message
 noremap <silent> <leader><cr> :noh<cr> 
 " Remove the Windows ^M when encodings get messed up
 noremap <leader>rm mmHmt:%s/<C-V><cr>//ge<cr>'tzt'm
 " Search all files in current folder/project and show the occurrences
-noremap <leader>vv :grep -ir -F <cword> --exclude='tags' --exclude='*.o' --exclude='*.so' --exclude='*.a' --exclude='*.swp' */** <cr>:cwindow<cr>
+noremap <leader>vv :grep -ir -F <cword> --exclude-dir='__learn' --exclude='tags' --exclude='*.o' --exclude='*.so' --exclude='*.a' --exclude='*.swp' */** <cr>:cwindow<cr>
 " Search all inherited classes
 noremap <leader>cc :grep -r :.*<cword> --exclude='tags' --exclude='*.o' --exclude='*.so' --exclude='*.cpp' --exclude='*.a' */** <cr>:cwindow<cr>
+" use * than */** in macbook :)
+"noremap <leader>vv :grep -ir -F <cword> --exclude-dir='__learn' --exclude='tags' --exclude='*.o' --exclude='*.so' --exclude='*.a' --exclude='*.swp' * <cr>:cwindow<cr>
 
-set clipboard=unnamedplus " enable copy/paste between different vi instances
+" yank to clipboard
+if has("clipboard")
+  set clipboard=unnamed " copy to the system clipboard
+
+  if has("unnamedplus") " X11 support
+    set clipboard+=unnamedplus
+  endif
+endif
+
 set foldmethod=indent " fold based on indent
 "set foldmethod=syntax " fold based on syntax
 set nofoldenable " turn off fold when launch vi
@@ -101,7 +110,7 @@ set tabstop=4 softtabstop=4 shiftwidth=4 expandtab
 set mouse=v " with this, copy menu works again
 
 " 5/18/2015: added by Jeffery for Vundle
-set nocompatible              " be iMproved, required
+set nocompatible " be iMproved, required
 
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
@@ -134,7 +143,10 @@ Plugin 'python-mode/python-mode' " python plugin bundle
 Plugin 'ruediger/Boost-Pretty-Printer' " GDB Pretty Printers for Boost
 Plugin 'kshenoy/vim-signature' " toggle, display and navigate marks
 Plugin 'vim-scripts/BOOKMARKS--Mark-and-Highlight-Full-Lines' " Easily Highlight Lines with Marks, and Add/Remove Marks 
-Plugin 'jiangmiao/auto-pairs' " insert or delete brackets, parens, quotes in pair 
+Plugin 'jiangmiao/auto-pairs' " insert or delete brackets, parents, quotes in pair 
+Plugin 'luochen1990/rainbow'
+Plugin 'airblade/vim-gitgutter'
+Plugin 'rhysd/vim-clang-format'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -150,6 +162,7 @@ filetype plugin on
 "
 " see :h vundle for more details or wiki for FAQ
 " Put your non-Plugin stuff after this line
+
 
 " YouCompleteMe config
 " 配置默认的ycm_extra_conf.py
@@ -172,7 +185,7 @@ set completeopt-=preview
 let g:ycm_min_num_of_chars_for_completion=1
 " 禁止缓存匹配项，每次都重新生成匹配项
 let g:ycm_cache_omnifunc=0
-" 语法关键字补全         
+" 语法关键字补全
 let g:ycm_seed_identifiers_with_syntax=1
 " Goto definition, supported in filetypes: 'c, cpp, objc, objcpp, cs, go, python, rust'
 "noremap <leader>jc :YcmCompleter GoToDeclaration<CR>
@@ -181,24 +194,41 @@ noremap <leader>jc :YcmCompleter GoTo<CR>
 noremap <leader>jd :YcmCompleter GoToDefinition<CR>
 " specify python version
 let g:ycm_python_binary_path = '/usr/local/bin/python3'
+let g:ycm_python_interpreter_path = '/usr/local/bin/python3'
+let g:ycm_server_python_interpreter = '/usr/local/bin/python3'
+" let g:ycm_python_sys_path = ['/Users/jeffery/anaconda3']
+let g:ycm_path_to_python_interpreter = '/usr/local/bin/python3'
 
 " To avoid YCM conflict with UltiSnips with tab key
 " http://www.alexeyshmalko.com/2014/youcompleteme-ultimate-autocomplete-plugin-for-vim/
 let g:ycm_key_list_select_completion=[]
 let g:ycm_key_list_previous_completion=[]
+let g:ycm_max_diagnostics_to_display=0
+
+let g:ycm_filter_diagnostics = {
+    \ "cpp": {
+    \           "regex": ["-W#warnings", "-Wunused-parameter", "-Winconnsistent-missing-override"],
+    \           "level": "warning",
+    \       }
+    \}
+
+" specify clangd path if needed
+"let g:ycm_clangd_binary_path="/your/path/to/clangd"
 
 " to config Syntastic, enable c++11 and use libc++ library with gcc
 " http://vi.stackexchange.com/questions/3190/syntastic-c14-support
-let g:syntastic_cpp_checkers=['gcc']
+let g:syntastic_cpp_checkers=['clang_check','gcc']
 let g:syntastic_cpp_compiler='gcc'
-let g:syntastic_cpp_compiler_options=' -std=c++14 -stdlib=libc++ '
+let g:syntastic_cpp_compiler_options=' -std=c++17 -stdlib=libc++ '
 "let g:ycm_show_diagnostics_ui=0
+"let g:ycm_register_as_syntastic_checker=0
 let g:syntastic_always_populate_loc_list=1
 let g:syntastic_auto_loc_list=0
 let g:syntastic_check_on_open=1
 let g:syntastic_check_on_wq=0
 " disable python check since python-mode does better job than Syntastic
 let g:syntastic_mode_map = { 'passive_filetypes': ['python'] }
+let g:syntastic_python_python_exec = 'python3'
 
 " search first in current directory then file directory for tag file
 set tags+=tags,./tags
@@ -208,6 +238,7 @@ let g:airline#extensions#tabline#enabled=1 " enable the list of buffers
 let g:airline#extensions#tabline#left_sep=' '
 let g:airline#extensions#tabline#left_alt_sep='|'
 " let g:airline#extensions#tabline#fnamemod=':t' " show just the filename
+let g:airline#extensions#whitespace#enabled=0
 
 " tagbar config
 noremap <F8> :TagbarToggle<CR>
@@ -237,6 +268,11 @@ let NERDTreeMinimalUI=1
 let NERDTreeAutoDeleteBuffer=1
 " hide file types
 let NERDTreeIgnore=['\.pyc$','\.swp$','\.zip$','\.o$','\.so$','\.a$','\.lib$','\.gz$','\.out$','\.so.*$','\.ui$','\.pro$','\.pro.user$','\.pro.user.*$']
+let g:NERDTreeNodeDelimiter = "\u00a0"
+
+" don't need icon things in macbook
+let g:NERDTreeDirArrowExpandable="+"
+let g:NERDTreeDirArrowCollapsible="~"
 
 " ListToggle config
 let g:lt_location_list_toggle_map='<leader>l' " shortkey to toggle locationlist
@@ -265,6 +301,14 @@ au FileType xml setlocal foldmethod=syntax
 " enable js fold by using syntax
 let g:javaScript_fold=1
 au FileType javascript setlocal foldmethod=syntax
+
+autocmd BufEnter *.inc :setLocal filetype=cpp
+let g:alternateExtensions_h = "c,C,cpp,CPP,cxx,CXX,cc,CC,inc,INC"
+let g:alternateExtensions_H = "c,C,cpp,CPP,cxx,CXX,cc,CC,inc,INC"
+let g:alternateExtensions_c = "h,H,hpp,HPP"
+let g:alternateExtensions_C = "h,H,hpp,HPP"
+let g:alternateExtensions_inc = "h,H,hpp,HPP"
+let g:alternateExtensions_INC = "h,H,hpp,HPP"
 
 " CtrlP configuration
 " 'r' - the nearest ancestor that contains one of these directories or files:
@@ -302,7 +346,7 @@ noremap <F5> :call UpdateTags()
 " <Leader>b     Set, unset breakpoint (g:pymode_breakpoint enabled)
 
 " by default python-mode uses python 2 syntax checking, we need VI support python3 to enable here
-"let g:pymode_python = 'python3'
+let g:pymode_python = 'python3'
 
 " rope is a python refactoring lib, code completion and code assists
 let g:pymode_rope = 0 " disable rope before understanding it
@@ -336,6 +380,16 @@ let g:pymode_syntax_space_errors = g:pymode_syntax_all
 " Don't autofold code
 let g:pymode_folding = 0
 
+let g:clang_format#command='/usr/local/bin/clang-format'
+let g:clang_format#detect_style_file=1
+"let g:clang_format#auto_format=1
+
+"autocmd FileType c ClangFormatAutoEnable
+" map to <Leader>cf in C++ code
+autocmd FileType c,cpp,objc nnoremap <buffer><Leader>cf :<C-u>ClangFormat<CR>
+autocmd FileType c,cpp,objc vnoremap <buffer><Leader>cf :ClangFormat<CR>
+
+
 " NOT tested yet, from https://realpython.com/blog/python/vim-and-python-a-match-made-in-heaven/
 " python with virtualenv support
 " This determines if you are running inside a virtualenv, and then switches to that specific virtualenv and sets up your system path so that YouCompleteMe will find the appropriate site packages.
@@ -364,18 +418,7 @@ EOF
 " <F5>             Add a mark on the current line (and highlight)
 " <SHIFT-F5> Remove the mark on the current line
 
-" nerdtree-git-plugin config
-let g:NERDTreeIndicatorMapCustom = {
-    \ "Modified"  : "*",
-    \ "Staged"    : "@",
-    \ "Untracked" : "$",
-    \ "Renamed"   : ">",
-    \ "Unmerged"  : "=",
-    \ "Deleted"   : "!",
-    \ "Dirty"     : "!",
-    \ "Clean"     : "&",
-    \ "Unknown"   : "?"
-    \ }
+let g:rainbow_active = 1 "set to 0 if you want to enable it later via :RainbowToggle
 
 " enable FZF by adding FZF directory to runtimepath (all vi plugins are part
 " of rtp).
@@ -467,7 +510,7 @@ function! AutoSearch()
     let temp_word = substitute(search_word, '^\s*\(.\{-}\)\s*$', '\1', '')
     if len(temp_word) > 0
         "call inputrestore()
-        let search_cmd = ":grep -ir -F " . "'" . search_word . "'" . " --exclude='tags' --exclude='*.o' --exclude='*.so' --exclude='*.a' --exclude='*.swp' */**"
+        let search_cmd = ":grep -ir -F " . "'" . search_word . "'" . " --exclude-dir='__learn' --exclude='tags' --exclude='*.o' --exclude='*.so' --exclude='*.a' --exclude='*.swp' *"
         silent execute search_cmd
         silent execute ":cwindow"
         silent execute ":redraw!"
