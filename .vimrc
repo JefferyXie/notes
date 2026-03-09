@@ -1,50 +1,5 @@
-" Only do this part when compiled with support for autocommands
-if has("autocmd")
-  augroup redhat
-  autocmd!
-  " In text files, always limit the width of text to 78 characters
-  " autocmd BufRead *.txt set tw=78
-  " When editing a file, always jump to the last cursor position
-  autocmd BufReadPost *
-  \ if line("'\"") > 0 && line ("'\"") <= line("$") |
-  \   exe "normal! g'\"" |
-  \ endif
-  " don't write swapfile on most commonly used directories for NFS mounts or USB sticks
-  autocmd BufNewFile,BufReadPre /media/*,/run/media/*,/mnt/* set directory=~/tmp,/var/tmp,/tmp
-  " start with spec file template
-  autocmd BufNewFile *.spec 0r /usr/share/vim/vimfiles/template.spec
-  augroup END
-endif
-
-if has("cscope") && filereadable("/usr/bin/cscope")
-   set csprg=/usr/bin/cscope
-   set csto=0
-   set cst
-   set nocsverb
-   " add any database in current directory
-   if filereadable("cscope.out")
-      cs add $PWD/cscope.out
-   " else add database pointed to by environment
-   elseif $CSCOPE_DB != ""
-      cs add $CSCOPE_DB
-   endif
-   set csverb
-endif
-
-" Switch syntax highlighting on, when the terminal has colors
-" Also switch on highlighting the last used search pattern.
-if &t_Co > 2 || has("gui_running")
-  syntax on
-endif
-
-if &term=="xterm"
-     set t_Co=8
-     set t_Sb=[4%dm
-     set t_Sf=[3%dm
-endif
-
-set history=100		        " keep 100 lines of command line history
-set ruler		            " show the cursor position all the time
+set history=100
+set ruler		" show the cursor position all the time
 set bs=indent,eol,start		" allow backspacing over everything in insert mode
 
 " Don't wake up system with blinking cursor:
@@ -65,30 +20,20 @@ color desert
 "if &diff
 "    colorschme murphy
 "endif
-set cursorline " highlight current row
-"set cursorcolumn " highlight current column
+
+syntax on
 set hlsearch " highlight search result
 highlight Search guibg=Yellow guifg=Black ctermbg=Yellow ctermfg=Black
 highlight Comment ctermfg=LightBlue
 highlight LineNr cterm=NONE ctermfg=DarkGrey ctermbg=NONE gui=NONE guifg=DarkGrey guibg=NONE
 highlight CursorLineNr cterm=bold ctermfg=Yellow ctermbg=DarkGrey gui=bold guifg=Yellow guibg=DarkGrey
-"below a few of color settings are used in macbook
-"highlight Search guibg=Yellow guifg=Black ctermbg=Yellow ctermfg=Black
-"highlight Comment ctermfg=LightBlue
-"highlight LineNr cterm=NONE ctermfg=DarkGrey ctermbg=NONE gui=NONE guifg=DarkGrey guibg=NONE
-"highlight CursorLineNr cterm=bold ctermfg=Yellow ctermbg=DarkGrey gui=bold guifg=Yellow guibg=DarkGrey
 
+noremap <silent> <leader><cr> :noh<cr>
 
-" Disable highlight when <leader><cr> is pressed, <silent> tells vi to show no message
-noremap <silent> <leader><cr> :noh<cr> 
-" Remove the Windows ^M when encodings get messed up
-noremap <leader>rm mmHmt:%s/<C-V><cr>//ge<cr>'tzt'm
 " Search all files in current folder/project and show the occurrences
-noremap <leader>vv :grep -ir -F <cword> --exclude-dir='__learn' --exclude='tags' --exclude='*.o' --exclude='*.so' --exclude='*.a' --exclude='*.swp' */** <cr>:cwindow<cr>
-" Search all inherited classes
-noremap <leader>cc :grep -r :.*<cword> --exclude='tags' --exclude='*.o' --exclude='*.so' --exclude='*.cpp' --exclude='*.a' */** <cr>:cwindow<cr>
+"noremap <leader>vv :grep -ir -F <cword> --exclude='tags' --exclude='*.o' --exclude='*.so' --exclude='*.a' --exclude='*.swp' */** <cr>:cwindow<cr>
 " use * than */** in macbook :)
-"noremap <leader>vv :grep -ir -F <cword> --exclude-dir='__learn' --exclude='tags' --exclude='*.o' --exclude='*.so' --exclude='*.a' --exclude='*.swp' * <cr>:cwindow<cr>
+noremap <leader>vv :grep -ir -F <cword> --exclude-dir='__learn' --exclude='tags' --exclude='*.o' --exclude='*.so' --exclude='*.a' --exclude='*.swp' * <cr>:cwindow<cr>
 
 " yank to clipboard
 if has("clipboard")
@@ -115,12 +60,20 @@ set nocompatible " be iMproved, required
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
-" alternatively, pass a path where Vundle should install plugins
-"call vundle#begin('~/some/path/here')
+
 
 " let Vundle manage Vundle, required
 Plugin 'gmarik/Vundle.vim'
 Plugin 'Valloric/YouCompleteMe' " cannot use YCM since it requires glibc2.14+
+
+" DONOT yet figure out below solution by using deoplete...
+"Plugin 'Shougo/deoplete.nvim'
+"Plugin 'roxma/nvim-yarp'
+"Plugin 'roxma/vim-hug-neovim-rpc'
+"Plugin 'zchee/deoplete-clang'
+"let g:deoplete#enable_at_startup = 1
+
+
 Plugin 'scrooloose/syntastic'
 Plugin 'bling/vim-airline' " lean & mean status/tabline for vim that is light as air
 Plugin 'SirVer/ultisnips' " ultimate solution for snippet
@@ -143,7 +96,7 @@ Plugin 'python-mode/python-mode' " python plugin bundle
 Plugin 'ruediger/Boost-Pretty-Printer' " GDB Pretty Printers for Boost
 Plugin 'kshenoy/vim-signature' " toggle, display and navigate marks
 Plugin 'vim-scripts/BOOKMARKS--Mark-and-Highlight-Full-Lines' " Easily Highlight Lines with Marks, and Add/Remove Marks 
-Plugin 'jiangmiao/auto-pairs' " insert or delete brackets, parents, quotes in pair 
+"Plugin 'jiangmiao/auto-pairs' " insert or delete brackets, parents, quotes in pair 
 Plugin 'luochen1990/rainbow'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'rhysd/vim-clang-format'
@@ -165,16 +118,14 @@ filetype plugin on
 
 
 " YouCompleteMe config
-" 配置默认的ycm_extra_conf.py
-"let g:ycm_global_ycm_extra_conf = '/home/jexie/jeffery/.ycm_extra_conf.py'   
-let g:ycm_global_ycm_extra_conf = '/home/jexie/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py'
+"let g:ycm_global_ycm_extra_conf = '/home/jexie/jeffery/.ycm_extra_conf.py'
+let g:ycm_global_ycm_extra_conf = '/Users/jeffery/.vim/bundle/YouCompleteMe/third_party/ycmd/.ycm_extra_conf.py'
 " 补全功能在注释中有效
 let g:ycm_complete_in_comments=1
 " 允许 vim 加载 .ycm_extra_conf.py 文件，需要提示！
 let g:ycm_confirm_extra_conf=1
-" NEVER load another .ycm_extra_conf.py under debesys folder!
-let g:ycm_extra_conf_globlist = ['/home/jexie/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/*','!/home/jexie/work/debesys/*']
-"let g:ycm_extra_conf_globlist = ['/home/jexie/jeffery/*','!/home/jexie/work/debesys/*']
+" NEVER load another .ycm_extra_conf.py under notes folder!
+"let g:ycm_extra_conf_globlist = ['/Users/jeffery/.vim/bundle/YouCompleteMe/third_party/ycmd/*','!/Users/jeffery/Desktop/code/notes/*']
 " 开启 YCM 标签补全引擎
 let g:ycm_collect_identifiers_from_tags_files=1
 " 引入 C++ 标准库tags
@@ -219,7 +170,7 @@ let g:ycm_filter_diagnostics = {
 " http://vi.stackexchange.com/questions/3190/syntastic-c14-support
 let g:syntastic_cpp_checkers=['clang_check','gcc']
 let g:syntastic_cpp_compiler='gcc'
-let g:syntastic_cpp_compiler_options=' -std=c++17 -stdlib=libc++ '
+let g:syntastic_cpp_compiler_options=' -std=c++20 -stdlib=libc++ '
 "let g:ycm_show_diagnostics_ui=0
 "let g:ycm_register_as_syntastic_checker=0
 let g:syntastic_always_populate_loc_list=1
@@ -267,12 +218,12 @@ let NERDTreeMinimalUI=1
 " 删除文件时自动删除文件对应 buffer
 let NERDTreeAutoDeleteBuffer=1
 " hide file types
-let NERDTreeIgnore=['\.pyc$','\.swp$','\.zip$','\.o$','\.so$','\.a$','\.lib$','\.gz$','\.out$','\.so.*$','\.ui$','\.pro$','\.pro.user$','\.pro.user.*$']
+let NERDTreeIgnore=['\.pyc$','\.swp$','\.zip$','\.o$','\.d$','\.so$','\.a$','\.lib$','\.gz$','\.out$','\.so.*$','\.ui$','\.pro$','\.pro.user$','\.pro.user.*$']
 let g:NERDTreeNodeDelimiter = "\u00a0"
 
 " don't need icon things in macbook
-let g:NERDTreeDirArrowExpandable="+"
-let g:NERDTreeDirArrowCollapsible="~"
+"let g:NERDTreeDirArrowExpandable="+"
+"let g:NERDTreeDirArrowCollapsible="~"
 
 " ListToggle config
 let g:lt_location_list_toggle_map='<leader>l' " shortkey to toggle locationlist
@@ -393,14 +344,14 @@ autocmd FileType c,cpp,objc vnoremap <buffer><Leader>cf :ClangFormat<CR>
 " NOT tested yet, from https://realpython.com/blog/python/vim-and-python-a-match-made-in-heaven/
 " python with virtualenv support
 " This determines if you are running inside a virtualenv, and then switches to that specific virtualenv and sets up your system path so that YouCompleteMe will find the appropriate site packages.
-py << EOF
-import os
-import sys
-if 'VIRTUAL_ENV' in os.environ:
-  project_base_dir = os.environ['VIRTUAL_ENV']
-  activate_this = os.path.join(project_base_dir, 'bin/activate_this.py')
-  execfile(activate_this, dict(__file__=activate_this))
-EOF
+"py << EOF
+"import os
+"import sys
+"if 'VIRTUAL_ENV' in os.environ:
+"  project_base_dir = os.environ['VIRTUAL_ENV']
+"  activate_this = os.path.join(project_base_dir, 'bin/activate_this.py')
+"  execfile(activate_this, dict(__file__=activate_this))
+"EOF
 " end NOT tested yet
 
 " vim-signature shortcuts
@@ -434,14 +385,22 @@ set rtp+=~/.fzf
 
 noremap <Tab> :bn <Enter>
 noremap <S-Tab> :bp <Enter>
+
 " create a new file: Ctrl+N
 noremap <C-n> :enew <CR>
-" resize current window height by 5 rows
-noremap <C-up> <C-w>+5
-noremap <C-down> <C-w>-5
-" resize current window width by 5 cols
-noremap <C-left> <C-w><5
-noremap <C-right> <C-w>>5
+
+" windows: resize current window by 5 rows/cols
+"noremap <C-up> <C-w>+5
+"noremap <C-down> <C-w>-5
+"noremap <C-left> <C-w><5
+"noremap <C-right> <C-w>>5
+
+" macbook: resize current window by 5 rows/cols
+nnoremap <S-up> <C-w>+5
+nnoremap <S-down> <C-w>-5
+nnoremap <S-left> <C-w><5
+nnoremap <S-right> <C-w>>5
+
 " move cursor to left/right/up/down window
 noremap <A-left> <C-w><Left>
 noremap <A-right> <C-w><Right>
@@ -510,6 +469,7 @@ function! AutoSearch()
     let temp_word = substitute(search_word, '^\s*\(.\{-}\)\s*$', '\1', '')
     if len(temp_word) > 0
         "call inputrestore()
+        "let search_cmd = ":grep -ir -F " . "'" . search_word . "'" . " --exclude='tags' --exclude='*.o' --exclude='*.so' --exclude='*.a' --exclude='*.swp' */**"
         let search_cmd = ":grep -ir -F " . "'" . search_word . "'" . " --exclude-dir='__learn' --exclude='tags' --exclude='*.o' --exclude='*.so' --exclude='*.a' --exclude='*.swp' *"
         silent execute search_cmd
         silent execute ":cwindow"
@@ -517,4 +477,3 @@ function! AutoSearch()
     endif
 endfunction
 noremap <leader>f :call AutoSearch() <cr>
-
