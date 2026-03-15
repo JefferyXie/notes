@@ -1,0 +1,3 @@
+
+> nvcc -g -G -arch sm_61 -o a 01_idxing.cu
+> nvcc -g -G -gencode arch=compute_61,code=sm_61 -o a 01_idxing.cu
