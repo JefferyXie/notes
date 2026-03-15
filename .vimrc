@@ -16,6 +16,9 @@ set number
 set autoindent
 set laststatus=2
 color desert
+"color vimicks
+set cursorline " highlight current row
+set cursorcolumn " highlight current column
 " below color setup works well under some circumstance
 "if &diff
 "    colorschme murphy
@@ -27,9 +30,12 @@ highlight Search guibg=Yellow guifg=Black ctermbg=Yellow ctermfg=Black
 highlight Comment ctermfg=LightBlue
 highlight LineNr cterm=NONE ctermfg=DarkGrey ctermbg=NONE gui=NONE guifg=DarkGrey guibg=NONE
 highlight CursorLineNr cterm=bold ctermfg=Yellow ctermbg=DarkGrey gui=bold guifg=Yellow guibg=DarkGrey
+highlight Pmenu ctermbg=gray guibg=gray
 
+" Disable highlight when <leader><cr> is pressed, <silent> tells vi to show no message
 noremap <silent> <leader><cr> :noh<cr>
-
+" Remove the Windows ^M when encodings get messed up
+noremap <leader>rm mmHmt:%s/<C-V><cr>//ge<cr>'tzt'm
 " Search all files in current folder/project and show the occurrences
 "noremap <leader>vv :grep -ir -F <cword> --exclude='tags' --exclude='*.o' --exclude='*.so' --exclude='*.a' --exclude='*.swp' */** <cr>:cwindow<cr>
 " use * than */** in macbook :)
@@ -60,7 +66,8 @@ set nocompatible " be iMproved, required
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
-
+" alternatively, pass a path where Vundle should install plugins
+"call vundle#begin('~/some/path/here')
 
 " let Vundle manage Vundle, required
 Plugin 'gmarik/Vundle.vim'
@@ -369,6 +376,19 @@ autocmd FileType c,cpp,objc vnoremap <buffer><Leader>cf :ClangFormat<CR>
 " <F5>             Add a mark on the current line (and highlight)
 " <SHIFT-F5> Remove the mark on the current line
 
+" win (may not be needed in macbook): nerdtree-git-plugin config
+let g:NERDTreeGitStatusIndicatorMapCustom = {
+    \ 'Modified'  : '*',
+    \ 'Staged'    : '@',
+    \ 'Untracked' : '$',
+    \ 'Renamed'   : '>',
+    \ 'Unmerged'  : '=',
+    \ 'Deleted'   : '!',
+    \ 'Dirty'     : '!',
+    \ 'Clean'     : '&',
+    \ 'Unknown'   : '?',
+    \ }
+
 let g:rainbow_active = 1 "set to 0 if you want to enable it later via :RainbowToggle
 
 " enable FZF by adding FZF directory to runtimepath (all vi plugins are part
@@ -477,3 +497,26 @@ function! AutoSearch()
     endif
 endfunction
 noremap <leader>f :call AutoSearch() <cr>
+
+" wsl: use cursor block
+" https://github.com/microsoft/terminal/issues/4335
+if &term =~ '^xterm'
+  " enter vim
+  "autocmd VimEnter * silent !echo -ne "\e[2 q"
+
+  " otherwise
+  let &t_EI .= "\<Esc>[2 q"
+  " insert mode
+  let &t_SI .= "\<Esc>[5 q"
+  " 1 or 0 -> blinking block
+  " 2 -> solid block
+  " 3 -> blinking underscore
+  " 4 -> solid underscore
+  " Recent versions of xterm (282 or above) also support
+  " 5 -> blinking vertical bar
+  " 6 -> solid vertical bar
+
+  " leave vim
+  "autocmd VimLeave * silent !echo -ne "\e[5 q"
+endif
+
